@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'main/css/style.css'%}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="nav-bar">
+            <img class="logo-nav-bar" src="{% static 'main/image/bird-svgrepo-com.svg'%}" alt="Logo">
+        <div>
+            <div class="nav-bar-list">
+                <li class="nav-elements">
+                    <ul >
+                        <a href="#">Home</a>
+                    </ul>
+                    <ul>
+                        <a href="#">Catalog</a>
+                    </ul>
+                    <ul>
+                        <a href="#">Sign in</a>
+                    </ul>
+                    <ul>
+                        <a href="#">Profile</a>
+                    </ul>
+                    <ul>
+                        <a href="#">About us</a>
+                    </ul>
+                </li>
+            </div>
+            <!--
+                <div>
+                    <a href="#">Inventory</a>
+                    <a href="#">Statistic</a>
+                    <a href="#">Sign out</a>
+                </div>
+            -->
+            
+        </div>
+        </div>
+    </header>
+    <body>
+        <div class="content">
+            <div>
+                <img class="img-content" src="{% static 'main/image/ad72e3fb-fc9f-43d7-97fd-24259a0e2c59.jpg' %}" alt="...">
+            </div>
+            <div class="text-content">
+                <h1>Lorem, ipsum dolor.</h1>
+                <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, eligendi!</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit aut quia quasi alias natus perferendis culpa reiciendis iusto qui magni aliquid vero, hic eaque, suscipit, vitae nobis cum quis autem laudantium perspiciatis? Pariatur architecto sequi temporibus neque provident minus ab, libero accusantium quas unde, dicta voluptate odio porro veritatis consectetur!</p>
+                <div class="resources">
+                    <a href="#"><img src="{% static 'main/image/icons8-github-100.svg' %}" alt="github"></a>
+                    <a href="#"><img src="{% static 'main/image/icons8-telegram-100.svg' %}" alt="telegram"></a>
+                    <a href="#"><img src="{% static 'main/image/icons8-youtube-100.svg' %}" alt="youtube"></a>
+                </div>
+                <div class="btn">
+                    <a href="#">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <p>&copy;</p>
+    </footer>
+</body>
+</html>
