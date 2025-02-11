@@ -5,6 +5,27 @@
     <title>{{ title }}</title>
 </head>
 <body>
-
+    <div style="display: flex">
+        <img src="{{ product.image.url }}" width="400">
+        <div>
+            <p>{{product.name}}</p>
+            <a href="#" style="text-deciration: none">{{product.author}}</a>
+            <p>{{product.quantity_page}}</p>
+            <p>{{product.year_of_publications}}</p>
+            <div style="border: 1px solid black">
+                {% for tag in product.get_tags %}
+                <p style="border: 1px solid red">
+                    {{tag.name}}
+                </p>
+                {% endfor%}
+            </div>
+            <div style="border: 1px dotted black">
+                <p>Данные связанные с авторизованным пользователем</p>
+            </div>
+        </div>
+        <div style="margin-left: 20px">
+            <p>{{product.description}}</p>
+        </div>
+    </div>
 </body>
 </html>

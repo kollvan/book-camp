@@ -1,4 +1,5 @@
 {% load static %}
+{% load goods_custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +8,51 @@
 </head>
 <body>
     <div style="display: flex">
-        {% for product in products %}
-        <div style="display: flex">
-            <img src="{{product.image.url}}" width="200" alt="...">
-            <div>
-                <ul style="list-style: none">
-                    <li>{{ product.name }}</li>
-                    <li>{{ product.author }}</li>
-                    <li style="width: 400px">{{ product.description|truncatewords:25}}</li>
-                    <div>
-                        {% for tag in product.get_tags %}
-                            <a href="#" style="text-decoration: none">{{tag.name}}</a>
-                        {% endfor %}
-                    </div>
-                </ul>
-            </div>
-        </div>
-        {% endfor %}
+        <div>
+            {% include 'goods/list_categories.html'%}
         </div>
         <div>
+            {% for product in products %}
+            <div style="display: flex">
+                <a href="{% url 'goods:product' product.slug %}"><img src="{{product.image.url}}" width="200" alt="..."></a>
+                <div>
+                    <ul style="list-style: none">
+                        <li>{{ product.name }}</li>
+                        <li>{{ product.author }}</li>
+                        <li style="width: 400px">{{ product.description|truncatewords:25}}</li>
+                        <div>
+                            {% for tag in product.get_tags %}
+                                <a href="?{% append_params tag=tag.slug %}" style="text-decoration: none">{{tag.name}}</a>
+                            {% endfor %}
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
 
+        <div style="border: 1px solid black">
+            <div>
+                <input type="search">
+            </div>
+            <div style="border: 1px solid black">
+                <p style="border-bottom: 1px solid black">Теги</p>
+                {% for tag in get_all_tags %}
+                <a href="#" style="text-decoration: none">{{tag.name}}</a>
+                {% endfor %}
+            </div>
+            <div>
+                <select name="year_of_publication">
+                    <option>2018</option>
+                    <option>2019</option>
+                    <option>2020</option>
+                    <option>2021</option>
+                    <option>2022</option>
+                    <option>2023</option>
+                    <option>2024</option>
+                    <option>2025</option>
+                </select>
+            </div>
         </div>
     </div>
 {% if products.has_other_pages %}
@@ -34,7 +60,7 @@
         <ul style="list-style: none">
         {% if products.has_previous %}
             <li>
-                <a href="?page={{ products.previous_page_number }}">&lt;</a>
+                <a href="?{% append_params page=products.previous_page_number %}">&lt;</a>
             </li>
             {% endif %}
             {% for p in products.paginator.page_range %}
@@ -42,13 +68,13 @@
                 <li>{{p}}</li>
             {% elif p >= products.number|add:-2  and p <= products.number|add:2 %}
                 <li>
-                <a href="?page={{ p }}">{{ p }}</a>
+                <a href="?{% append_params page=p %}">{{ p }}</a>
                 </li>
             {% endif %}
             {% endfor %}
             {% if products.has_next %}
             <li>
-                <a href="?page={{ products.next_page_number }}">&gt;</a>
+                <a href="?{% append_params page=products.next_page_number %}">&gt;</a>
             </li>
             {% endif %}
         </ul>
