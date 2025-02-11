@@ -1,10 +1,58 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
 </head>
 <body>
+    <div style="display: flex">
+        {% for product in products %}
+        <div style="display: flex">
+            <img src="{{product.image.url}}" width="200" alt="...">
+            <div>
+                <ul style="list-style: none">
+                    <li>{{ product.name }}</li>
+                    <li>{{ product.author }}</li>
+                    <li style="width: 400px">{{ product.description|truncatewords:25}}</li>
+                    <div>
+                        {% for tag in product.get_tags %}
+                            <a href="#" style="text-decoration: none">{{tag.name}}</a>
+                        {% endfor %}
+                    </div>
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        <div>
 
+        </div>
+    </div>
+{% if products.has_other_pages %}
+    <nav>
+        <ul style="list-style: none">
+        {% if products.has_previous %}
+            <li>
+                <a href="?page={{ products.previous_page_number }}">&lt;</a>
+            </li>
+            {% endif %}
+            {% for p in products.paginator.page_range %}
+            {% if products.number == p%}
+                <li>{{p}}</li>
+            {% elif p >= products.number|add:-2  and p <= products.number|add:2 %}
+                <li>
+                <a href="?page={{ p }}">{{ p }}</a>
+                </li>
+            {% endif %}
+            {% endfor %}
+            {% if products.has_next %}
+            <li>
+                <a href="?page={{ products.next_page_number }}">&gt;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
 </body>
 </html>
