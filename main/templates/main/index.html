@@ -21,13 +21,13 @@
                         <a href="{% url 'goods:catalog' 'all' %}">Catalog</a>
                     </ul>
                     <ul>
-                        <a href="#">Sign in</a>
-                    </ul>
-                    <ul>
-                        <a href="#">Profile</a>
+                        <a href="{% url 'user:login' %}">Sign in</a>
                     </ul>
                     <ul>
                         <a href="{% url 'main:about' %}">About us</a>
+                    </ul>
+                    <ul>
+                        <a href="{% url 'user:profile' %}">{{user.username}}</a>
                     </ul>
                 </li>
             </div>
@@ -57,7 +57,7 @@
                     <a href="#"><img src="{% static 'main/image/icons8-youtube-100.svg' %}" alt="youtube"></a>
                 </div>
                 <div class="btn">
-                    <a href="#">Sign in</a>
+                    <a href="{% url 'user:login' %}">Sign in</a>
                 </div>
             </div>
         </div>

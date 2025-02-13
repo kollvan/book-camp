@@ -1,7 +1,7 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
-from goods.models import Product, Tag
+from goods.models import Product
 
 
 # Create your views here.

@@ -23,7 +23,8 @@ from bookcamp import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
-    path('books/', include('goods.urls', namespace='goods'))
+    path('books/', include('goods.urls', namespace='goods')),
+    path('user/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:

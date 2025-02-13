@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,36 @@
     <title>Title</title>
 </head>
 <body>
-
+    <div>
+        {% if user.image %}
+        <img src="{{ user.image.url }}" width="600">
+        {% else %}
+        <img src="{% static 'static/image/default_image_user.jpg'">
+        {% endif %}
+        <div>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="id_username">Логин</label>
+                    <input id="id_username"  name="username" type="text" value="{{ user.username }}">
+                </div>
+                <div>
+                    <label for="id_email">E-mail</label>
+                    <input id="id_email" name="email" type="text" value="{{ user.email }}">
+                </div>
+                <div>
+                    <label for="id_first_name">Имя</label>
+                    <input id="id_first_name" name="first_name" type="text" value="{{user.first_name}}">
+                </div>
+                <div>
+                    <label for="id_last_name">Фамилия</label>
+                    <input id="id_last_name" name="last_name" type="text" value="{{user.last_name}}">
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
+        <p>Данные взятые из статистики</p>
+    </div>
 </body>
 </html>
