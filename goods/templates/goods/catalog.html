@@ -37,8 +37,9 @@
             </div>
             <div style="border: 1px solid black">
                 <p style="border-bottom: 1px solid black">Теги</p>
-                {% for tag in get_all_tags %}
-                <a href="#" style="text-decoration: none">{{tag.name}}</a>
+                {% get_all_tags as all_tags%}
+                {% for tag in all_tags %}
+                    <a href="?{% append_params tags=tag.slug%}" style="text-decoration: none">{{tag.name}}</a>
                 {% endfor %}
             </div>
             <div>

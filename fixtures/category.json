@@ -1,0 +1,1 @@
+[{"model": "goods.category", "pk": 1, "fields": {"name": "Психология", "slug": "psihologiya"}}, {"model": "goods.category", "pk": 2, "fields": {"name": "Программирование", "slug": "programmirovanie"}}, {"model": "goods.category", "pk": 3, "fields": {"name": "Физика", "slug": "fizika"}}]
