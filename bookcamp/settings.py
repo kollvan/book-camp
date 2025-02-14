@@ -71,8 +71,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bookcamp.wsgi.application'
+STATICFILES_DIRS= [
+    BASE_DIR / 'static/',
+]
 
+WSGI_APPLICATION = 'bookcamp.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

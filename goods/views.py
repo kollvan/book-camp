@@ -11,9 +11,9 @@ def catalog(request, category_slug=None):
       products = Product.objects.all()
     else:
         products = Product.objects.filter(category__slug=category_slug)
-
-    if request.GET.get('tag', None):
-        products = products.filter(tags__slug=request.GET['tag'])
+    print(request.GET.get('tags', None))
+    if request.GET.get('tags', None):
+        products = products.filter(tags__slug=request.GET['tags'])
 
     paginator = Paginator(products, 3)
     page_number = request.GET.get('page')

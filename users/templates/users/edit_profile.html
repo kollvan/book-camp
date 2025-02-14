@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label for="id_image">Изменить изображение</label>
+            <input id="id_image" name="image" type="file">
+        </div>
+        <div>
+            <label for="id_username">Логин</label>
+            <input id="id_username"  name="username" type="text" value="{{ user.username }}">
+        </div>
+        <div>
+            <label for="id_email">E-mail</label>
+            <input id="id_email" placeholder="example@ex.com" name="email" type="text" value="{{ user.email }}">
+        </div>
+        <div>
+            <label for="id_first_name">Имя</label>
+            <input id="id_first_name" name="first_name" type="text" value="{{user.first_name}}">
+        </div>
+        <div>
+            <label for="id_last_name">Фамилия</label>
+            <input id="id_last_name" name="last_name" type="text" value="{{user.last_name}}">
+        </div>
+        <button type="submit">Сохранить</button>
+        <button type="reset">Сбросить</button>
+    </form>
+
+</body>
+</html>

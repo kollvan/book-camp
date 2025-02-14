@@ -3,36 +3,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
 </head>
 <body>
     <div>
         {% if user.image %}
         <img src="{{ user.image.url }}" width="600">
         {% else %}
-        <img src="{% static 'static/image/default_image_user.jpg'">
+        <img src="{% static 'bookcamp/image/default_image_user.jpg' %}" width="600">
         {% endif %}
         <div>
-            <form method="post">
-                {% csrf_token %}
-                <div>
-                    <label for="id_username">Логин</label>
-                    <input id="id_username"  name="username" type="text" value="{{ user.username }}">
-                </div>
-                <div>
-                    <label for="id_email">E-mail</label>
-                    <input id="id_email" name="email" type="text" value="{{ user.email }}">
-                </div>
-                <div>
-                    <label for="id_first_name">Имя</label>
-                    <input id="id_first_name" name="first_name" type="text" value="{{user.first_name}}">
-                </div>
-                <div>
-                    <label for="id_last_name">Фамилия</label>
-                    <input id="id_last_name" name="last_name" type="text" value="{{user.last_name}}">
-                </div>
-            </form>
+            <div>
+                <p>Логин: {{ user.username }}</p>
+            </div>
+            <div>
+                <p>E-mail: {{ user.email }}</p>
+            </div>
+            <div>
+                <p>Имя: {{ user.first_name}}</p>
+            </div>
+            <div>
+                <p>Фамилия: {{ user.last_name }}</p>
+            </div>
         </div>
+        <a href="{% url 'user:edit' %}">Редактировать профиль</a>
     </div>
     <div>
         <p>Данные взятые из статистики</p>

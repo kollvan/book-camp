@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 
 from users.models import User
 
@@ -16,10 +16,10 @@ class RegisterUserForm(UserCreationForm):
             'password1',
             'password2',
         ]
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
     username = forms.CharField()
-    email = forms.CharField()
+    email = forms.CharField(required=False)
     password1 = forms.CharField()
     password2 = forms.CharField()
 
@@ -32,18 +32,18 @@ class LoginUserForm(AuthenticationForm):
         model = User
         fields = ['username', 'password']
 
-# class ProfileForm(UserChangeForm):
-#     class Meta:
-#         model = User
-#         fields=[
-#             'image',
-#             'first_name',
-#             'last_name',
-#             'username',
-#             'email',
-#         ]
-#         image = forms.ImageField(required=False)
-#         first_name = forms.CharField()
-#         last_name = forms.CharField()
-#         username = forms.CharField()
-#         email = forms.CharField()
+class ProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields=[
+            'image',
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+        ]
+        image = forms.ImageField(required=False)
+        first_name = forms.CharField(required=False)
+        last_name = forms.CharField(required=False)
+        username = forms.CharField()
+        email = forms.CharField()

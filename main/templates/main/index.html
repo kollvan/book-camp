@@ -21,14 +21,20 @@
                         <a href="{% url 'goods:catalog' 'all' %}">Catalog</a>
                     </ul>
                     <ul>
-                        <a href="{% url 'user:login' %}">Sign in</a>
-                    </ul>
-                    <ul>
                         <a href="{% url 'main:about' %}">About us</a>
                     </ul>
+                    {% if user.is_authenticated %}
                     <ul>
                         <a href="{% url 'user:profile' %}">{{user.username}}</a>
                     </ul>
+                    <ul>
+                        <a href="{% url 'user:logout' %}">Sign out</a>
+                    </ul>
+                    {% else %}
+                    <ul>
+                        <a href="{% url 'user:login' %}">Sign in</a>
+                    </ul>
+                    {% endif %}
                 </li>
             </div>
             <!--
@@ -56,9 +62,15 @@
                     <a href="#"><img src="{% static 'main/image/icons8-telegram-100.svg' %}" alt="telegram"></a>
                     <a href="#"><img src="{% static 'main/image/icons8-youtube-100.svg' %}" alt="youtube"></a>
                 </div>
+                {% if user.is_authenticated %}
+                <div class="btn">
+                    <a href="{% url 'user:profile' %}">Profile</a>
+                </div>
+                {% else %}
                 <div class="btn">
                     <a href="{% url 'user:login' %}">Sign in</a>
                 </div>
+                {% endif %}
             </div>
         </div>
     </body>
