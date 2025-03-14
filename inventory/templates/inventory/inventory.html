@@ -1,0 +1,29 @@
+{% load static %}
+{% load goods_custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <div style="display:flex">
+        {% for item in inventory %}
+            <div style="display:flex">
+                <img src="{{ item.product.image.url }}" alt="Изображение" width="100">
+                <div>
+                    <p>{{ item.product.name }}</p>
+                    <p>{{ item.product.author }}</p>
+                    <p>{{ item.product.page_count }}</p>
+                    <p>{{ item.product.description|truncatewords:10 }}</p>
+                <div>
+                    {% for tag in item.product.get_tags %}
+                    <a href="?{% append_params tags=tag.slug %}" style="text-decoration: none">{{tag.name}}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</body>
+</html>

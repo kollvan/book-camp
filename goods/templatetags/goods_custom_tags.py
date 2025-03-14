@@ -1,7 +1,9 @@
 from django import template
+from django.db.models import Q
 from django.utils.http import urlencode
 
 from goods.models import Category, Tag
+from inventory.models import Inventory
 
 register = template.Library()
 @register.simple_tag(takes_context=True)
@@ -17,3 +19,5 @@ def get_categories():
 @register.simple_tag()
 def get_all_tags():
     return Tag.objects.all()
+
+

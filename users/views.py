@@ -19,8 +19,10 @@ class LoginUser(LoginView):
         'title': 'Авторизация',
     }
 
-    def get_success_url(self):
-        return reverse_lazy('main:index')
+    # def get_success_url(self):
+    #     if self.request.GET.get('next', None):
+    #         return redirect(self.request.GET['next'])
+    #     return reverse_lazy('main:index')
 
 
 class RegisterUser(CreateView):

@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render
 
 from goods.models import Product
+from inventory.models import Inventory
 
 
 # Create your views here.
@@ -11,7 +12,7 @@ def catalog(request, category_slug=None):
       products = Product.objects.all()
     else:
         products = Product.objects.filter(category__slug=category_slug)
-    print(request.GET.get('tags', None))
+
     if request.GET.get('tags', None):
         products = products.filter(tags__slug=request.GET['tags'])
 
@@ -19,11 +20,9 @@ def catalog(request, category_slug=None):
     page_number = request.GET.get('page')
     page_products = paginator.get_page(page_number)
 
-
     context = {
         'title': 'Каталог',
         'products': page_products,
-
     }
 
     return render(request, 'goods/catalog.html', context=context)
