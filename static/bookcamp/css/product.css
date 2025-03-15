@@ -1,0 +1,29 @@
+.container-image{
+    grid-column-start: 2;
+    grid-column-end: 6;
+    margin-block: 3em;
+}
+.container-data{
+    grid-column-start: 6;
+    grid-column-end: 12;
+}
+
+.product-title{
+    display: inline;
+    color: white;
+    font-size: 1.5em;
+}
+
+.product-status{
+    display: inline;
+    padding-inline: 0.5em;
+}
+
+.container-title{
+    margin-bottom: 2em;
+}
+
+.product-image{
+    border-radius: 5px;
+    box-shadow: 15px 16px 10px 1px #d3cece81;
+}

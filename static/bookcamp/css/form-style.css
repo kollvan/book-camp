@@ -1,0 +1,75 @@
+.form-content{
+    grid-column-start: 5;
+    grid-column-end: 9;
+    border: 5px double white;
+    padding: 1em;
+    font-size: 1em;
+}
+
+.help-login{
+    text-align:right;
+    margin-block: 1em;
+}
+.help-login a{
+    text-decoration: none;
+    color: rgb(166, 82, 82);
+
+}
+
+.form-content h1{
+    margin: 0;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.input-field{
+    margin: 1em;
+    border-bottom: 1px solid grey;
+}
+
+.input-field input{
+    margin-top: 0.5em;
+    width: 100%;
+    background-color: inherit;
+    outline: none;
+    color: white;
+    border: none;
+}
+
+.image-field{
+    border-bottom: none;
+}
+
+.form-content button{
+    padding: 0.5em;
+    margin-left: 1em;
+    cursor: pointer;
+}
+
+::file-selector-button:hover,
+.form-content button:hover{
+    box-shadow: 1px -2px 25px 0px #656161 inset;
+}
+
+::file-selector-button{
+    padding: 0.1em;
+    cursor: pointer;
+}
+
+::placeholder{
+    color: grey;
+}
+
+@media (max-width: 1100px){
+    .form-content{
+        grid-column-start: 4;
+        grid-column-end: 10;
+    }
+}
+
+@media (max-width: 500px){
+    .form-content{
+        grid-column-start: 1;
+        grid-column-end: 13;
+    }
+}

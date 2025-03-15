@@ -1,81 +1,27 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static 'main/css/style.css'%}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <div class="nav-bar">
-            <img class="logo-nav-bar" src="{% static 'main/image/bird-svgrepo-com.svg'%}" alt="Logo">
-        <div>
-            <div class="nav-bar-list">
-                <li class="nav-elements">
-                    <ul >
-                        <a href="#">Home</a>
-                    </ul>
-                    <ul>
-                        <a href="{% url 'goods:catalog' 'all' %}">Catalog</a>
-                    </ul>
-                    <ul>
-                        <a href="{% url 'main:about' %}">About us</a>
-                    </ul>
-                    {% if user.is_authenticated %}
-                    <ul>
-                        <a href="{% url 'user:profile' %}">{{user.username}}</a>
-                    </ul>
-                    <ul>
-                        <a href="{% url 'user:logout' %}">Sign out</a>
-                    </ul>
-                    {% else %}
-                    <ul>
-                        <a href="{% url 'user:login' %}">Sign in</a>
-                    </ul>
-                    {% endif %}
-                </li>
-            </div>
-            <!--
+{% block section %}
+    <section class="content">
+        <div class="img-content">
+            <img src="..." alt="...">
+        </div>
+        <div class="text-content">
+            <h1>BookCamp</h1>
+            <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h3>
+            <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia hic eos sunt optio excepturi consequatur animi nostrum illo? Placeat iusto id, obcaecati maxime corporis quas?</h6>
+            <div class="container-contact">
                 <div>
-                    <a href="#">Inventory</a>
-                    <a href="#">Statistic</a>
-                    <a href="#">Sign out</a>
+                    <a href="#"><img class='img-contact' src="{% static 'bookcamp/image/icon-telegram.svg'%}" alt="Telegram"></a>
                 </div>
-            -->
-            
-        </div>
-        </div>
-    </header>
-    <body>
-        <div class="content">
-            <div>
-                <img class="img-content" src="{% static 'main/image/ad72e3fb-fc9f-43d7-97fd-24259a0e2c59.jpg' %}" alt="...">
-            </div>
-            <div class="text-content">
-                <h1>Lorem, ipsum dolor.</h1>
-                <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, eligendi!</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit aut quia quasi alias natus perferendis culpa reiciendis iusto qui magni aliquid vero, hic eaque, suscipit, vitae nobis cum quis autem laudantium perspiciatis? Pariatur architecto sequi temporibus neque provident minus ab, libero accusantium quas unde, dicta voluptate odio porro veritatis consectetur!</p>
-                <div class="resources">
-                    <a href="#"><img src="{% static 'main/image/icons8-github-100.svg' %}" alt="github"></a>
-                    <a href="#"><img src="{% static 'main/image/icons8-telegram-100.svg' %}" alt="telegram"></a>
-                    <a href="#"><img src="{% static 'main/image/icons8-youtube-100.svg' %}" alt="youtube"></a>
+                <div>
+                    <a href="#"><img class='img-contact' src="{% static 'bookcamp/image/icon-youtube.svg'%}" alt="YouTube"></a>
                 </div>
-                {% if user.is_authenticated %}
-                <div class="btn">
-                    <a href="{% url 'user:profile' %}">Profile</a>
-                </div>
-                {% else %}
-                <div class="btn">
-                    <a href="{% url 'user:login' %}">Sign in</a>
-                </div>
-                {% endif %}
             </div>
         </div>
-    </body>
+    </section>
+{% endblock %}
+{% block footer%}
     <footer>
-        <p>&copy;</p>
+        <p>&copy;Bookcamp </p>
     </footer>
-</body>
-</html>
+{% endblock %}

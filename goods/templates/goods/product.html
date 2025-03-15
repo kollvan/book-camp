@@ -1,31 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-    <div style="display: flex">
-        <img src="{{ product.image.url }}" width="400">
+{% extends 'base.html' %}
+{% load goods_custom_tags %}
+{% load static %}
+{% block extends_style %}
+    <link rel="stylesheet" href="{% static 'bookcamp/css/product.css' %}">
+{% endblock %}
+{% block section %}
+<section class="content">
+    <div class="container-image">
+        <img height="500" title="{{ product.name }}" class="product-image"
+             src="{{ product.image.url }}" alt="Image {{ product.name }}">
+    </div>
+    <div class="container-data">
         <div>
-            <p>{{product.name}}</p>
-            <a href="#" style="text-deciration: none">{{product.author}}</a>
-            <p>{{product.quantity_page}}</p>
-            <p>{{product.year_of_publications}}</p>
-            <div style="border: 1px solid black">
+            <div class="container-title">
+                <span class="product-title">
+                    {{ product.name }}
+                </span>
+                <div class="card-status product-status">
+                    Прочитанно
+                </div>
+            </div>
+            <a class="card-author" href="#">Автор: {{product.author}}</a>
+            <p>Дата выхода: {{product.year_of_publication}}</p>
+            <p>{{ product.description}}</p>
+            <p>
+                Тэги:
+            </p>
+            <ul class="tag-list">
                 {% for tag in product.get_tags %}
-                <p style="border: 1px solid red">
-                    {{tag.name}}
-                </p>
-                {% endfor%}
-            </div>
-            <div style="border: 1px dotted black">
-                <p>Данные связанные с авторизованным пользователем</p>
-            </div>
-        </div>
-        <div style="margin-left: 20px">
-            <p>{{product.description}}</p>
+                <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
-</body>
-</html>
+</section>
+{% endblock %}
+{% block footer %}
+    <footer>
+        <p>&copy;Bookcamp </p>
+    </footer>
+{% endblock%}

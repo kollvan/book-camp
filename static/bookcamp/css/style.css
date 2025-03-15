@@ -1,0 +1,281 @@
+body{
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    background: linear-gradient(47deg, #f8f7f7 1%, #121212 24%);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-bar a{
+    text-decoration: none;
+    color: black;
+}
+
+ul{
+    padding: 0;
+    margin: 0;
+}
+
+.nav-bar{
+    display: flex;
+    min-height: 3em;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-bar-style{
+    border: 1px double black;
+    background-color: rgba(255, 255, 255, 0.79);
+}
+
+footer{
+    background-color: rgba(252, 252, 252, 0.645);
+    text-align: center;
+}
+
+.content{
+    min-height: 89vh;
+    display: grid;
+    align-items: center;
+    font-size: 0.9em;
+}
+.content-catalog{
+    display: grid;
+}
+section{
+    display: grid;
+
+    color: white;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+}
+
+
+.nav-elements li{
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+
+.img-profile{
+    border-radius: 50px;
+    padding: 2px;
+    padding-bottom: 0;
+}
+
+.img-content{
+    grid-column-start: 1;
+    grid-column-end: 5;
+    text-align: center;
+}
+
+.text-content{
+    grid-column-start: 5;
+    grid-column-end: 13;
+}
+
+.nav-bar-style{
+    box-shadow: 51px 5px 10px 1px #000000;
+}
+
+.nav-button{
+    margin: 0;
+    padding: 0;
+    padding-block: 0.9em;
+    padding-inline: 0.5em;
+    text-align: center;
+}
+
+.nav-button:hover{
+    background-color: white;
+    border: 2px solid rgb(204, 196, 196);
+    box-shadow: 1px -2px 25px 0px #656161 inset;
+}
+
+.nav-profile{
+    background-color: white;
+}
+
+.container-contact{
+    display: flex;
+    gap: 1.5em;
+}
+.img-contact{
+    background-color: white;
+    border-radius: 50%;
+    width: 3em;
+}
+
+.img-contact:active{
+    background-color: rgb(162, 157, 157);
+}
+
+
+.nav-bar-logo{
+    filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.7));
+}
+.catalog{
+    grid-column-start: 1;
+    grid-column-end: 10;
+}
+
+.filter{
+    border: 1px solid white;
+    grid-column-start: 10;
+    grid-column-end: 16;
+
+}
+/*удалить*/
+.img-card{
+    width: 150px;
+}
+
+
+.row{
+    display: grid;
+    grid-template-columns: repeat(3, 3fr);
+    gap: 1em;
+    padding: 2em;
+    padding-bottom: 0.5em;
+}
+
+.card{
+    font-size: 0.9em;
+    display: flex;
+    grid-column: span 1;
+    align-items: center;
+    gap: 1em;
+}
+.card-author{
+    text-decoration: none;
+    background-color: rgba(128, 128, 128, 0.885);
+    border-bottom: 1px solid white;
+    color:black;
+    padding-inline: 0.2em;
+    border-radius: 2px;
+}
+
+.card-title{
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding-bottom: 0.5em;
+    font-size: 1.1em;
+}
+.tag-list{
+    display: flex;
+    gap: 0.3em;
+    flex-wrap: wrap;
+}
+.card .tag-list{
+    max-height: 3em;
+    overflow: hidden;
+}
+
+.card-status{
+    border: 1px solid green;
+    background-color: grey;
+    border-radius: 5px;
+    color: aquamarine;
+    text-align: center;
+    margin-bottom:0.5em;
+}
+.card p{
+    margin: 0.5em;
+}
+.tags-filter{
+    padding: 0.3em;
+    border: 2px solid grey;
+    background-color: white;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+.tag{
+    border: 1px solid rgb(12, 8, 8);
+    border-radius: 5px;
+    background-color: rgb(216, 175, 175);
+    color:black;
+    
+}
+.tag-list{
+    list-style: none;
+}
+.tag a{
+    text-decoration: none;
+}
+input[type="checkbox"]{
+    display: none;
+}
+input:checked + label{
+    background-color: rgb(166, 66, 66);
+}
+.tag label{
+    cursor: pointer;
+}
+
+.filter{
+    background-color: rgb(165, 155, 155);
+}
+
+.container-search{
+    display: flex;
+    background-color: white;
+    justify-content: space-evenly;
+    border: 3px solid black;
+}
+
+.container-search input{
+    font-size: 1em;
+    padding: 0.5em;
+    outline: none;
+    border: none;
+    min-width: 70%;
+}
+
+
+
+.container-search button{
+    margin-block: 0.1em;
+    font-size: 1em;
+    border-radius: 5px;
+    margin-left: 0.5em;
+}
+
+.button{
+    cursor: pointer;
+    background-color: rgba(198, 72, 72, 0.995);
+}
+.inscription{
+    background: black;
+    color: white;
+    padding: 0.3em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.filter-container{
+    /*пока пусто*/
+}
+.filter-container input{
+    max-width: 4em;
+    margin-block: 0.5em;
+}
+::placeholder{
+    color: black;
+}
+
+.container-search:hover{
+    box-shadow: 0px 0px 35px 0px #0b0909;
+}
+
+.button:hover{
+    background-color: rgb(199, 58, 58);
+}
+
+@media (min-width: 2000px){
+    body{
+        font-size: 2em;
+    }
+}

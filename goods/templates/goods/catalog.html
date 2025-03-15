@@ -1,85 +1,97 @@
+{% extends 'base.html'%}
 {% load static %}
 {% load goods_custom_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-    <div style="display: flex">
-        <div>
-            {% include 'goods/list_categories.html'%}
-        </div>
-        <div>
-            {% for product in products %}
-            <div style="display: flex">
-                <a href="{% url 'goods:product' product.slug %}"><img src="{{product.image.url}}" width="200" alt="..."></a>
-                <div>
-                    <ul style="list-style: none">
-                        <li>{{ product.name }}</li>
-                        <li>{{ product.author }}</li>
-                        <li style="width: 400px">{{ product.description|truncatewords:25}}</li>
-                        <div>
-                            {% for tag in product.get_tags %}
-                                <a href="?{% append_params tags=tag.slug %}" style="text-decoration: none">{{tag.name}}</a>
-                            {% endfor %}
+{% block section %}
+  <section class="content-catalog">
+        <div class="catalog">
+            <div class="row">
+                {% for product in products %}
+                <div class="card">
+                    <a href="{% url 'goods:product' product.slug %}">
+                        <img src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}"></a>
+                    <div>
+                        <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
+                        <div class="card-status">
+                            Прочитанно
                         </div>
-                    </ul>
+                        <a class="card-author" href="#">Автор: {{ product.author }}</a>
+                        <p>Дата выхода: {{ product.year_of_publication }}</p>
+                        <p>{{ product.description|truncatewords:10 }}</p>
+                        <p>
+                            Тэги:
+                        </p>
+                        <ul class="tag-list">
+                            {% for tag in product.get_tags %}
+                            <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
-        </div>
-
-        <div style="border: 1px solid black">
-            <div>
-                <input type="search">
-            </div>
-            <div style="border: 1px solid black">
-                <p style="border-bottom: 1px solid black">Теги</p>
-                {% get_all_tags as all_tags%}
-                {% for tag in all_tags %}
-                    <a href="?{% append_params tags=tag.slug%}" style="text-decoration: none">{{tag.name}}</a>
                 {% endfor %}
             </div>
-            <div>
-                <select name="year_of_publication">
-                    <option>2018</option>
-                    <option>2019</option>
-                    <option>2020</option>
-                    <option>2021</option>
-                    <option>2022</option>
-                    <option>2023</option>
-                    <option>2024</option>
-                    <option>2025</option>
-                </select>
-            </div>
         </div>
-    </div>
-{% if products.has_other_pages %}
-    <nav>
-        <ul style="list-style: none">
-        {% if products.has_previous %}
-            <li>
-                <a href="?{% append_params page=products.previous_page_number %}">&lt;</a>
-            </li>
-            {% endif %}
-            {% for p in products.paginator.page_range %}
-            {% if products.number == p%}
-                <li>{{p}}</li>
-            {% elif p >= products.number|add:-2  and p <= products.number|add:2 %}
-                <li>
-                <a href="?{% append_params page=p %}">{{ p }}</a>
-                </li>
-            {% endif %}
-            {% endfor %}
-            {% if products.has_next %}
-            <li>
-                <a href="?{% append_params page=products.next_page_number %}">&gt;</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-{% endif %}
-</body>
-</html>
+        <div class="filter">
+            <form onsubmit="submitForm(event)" type="get" action="#">
+                <div class="container-search">
+                    <input placeholder="..." name="q" type="text">
+                    <button class="button" type="submit">Поиск</button>
+                </div>
+                <div>
+                    <details>
+                        <summary class="inscription">
+                            Теги:
+                        </summary>
+
+                        <div class="tags-filter">
+                            {% get_all_tags as all_tags%}
+                            {% for tag in all_tags%}
+                            <div class="tag">
+                                <input type="checkbox" value="{{ tag.slug }}" name="tags" id="id_{{ tag.slug }}">
+                                <label for="id_{{ tag.slug }}">{{ tag.name }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </details>
+                    <details class="filter-container">
+                        <summary class="inscription">
+                            Год издания:
+                        </summary>
+                        <label for="id_year_publication1">
+                            от
+                        </label>
+                        <input id="id_year_publication1" name="year_from" value="2020" type="number">
+                        <label for="id_year_publication2">
+                            до
+                        </label>
+                        <input id="id_year_publication2" name="year_to" value="2025" type="number">
+                    </details>
+                    <details class="filter-container">
+                        <summary class="inscription">
+                            Сортировка:
+                        </summary>
+                        <div>
+                            <input type="radio" value="author" name="ordering" id="id_ord_author">
+                            <label for="id_ord_author">По автору</label>
+                        </div>
+                        <div>
+                            <input type="radio" value="date" name="ordering"  id="id_ord_date">
+                            <label for="id_ord_date">По дате выхода</label>
+                        </div>
+                        <div>
+
+                            <input type="radio" value="name" name="ordering" id="id_ord_name">
+                            <label for="id_ord_name">По названию книги</label>
+                        </div>
+                    </details>
+                    <button class="button" type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+{% endblock %}
+{% block footer %}
+    <footer>
+        <p>&copy;Bookcamp </p>
+    </footer>
+{% endblock %}
