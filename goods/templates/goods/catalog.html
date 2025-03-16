@@ -8,7 +8,7 @@
                 {% for product in products %}
                 <div class="card">
                     <a href="{% url 'goods:product' product.slug %}">
-                        <img src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}"></a>
+                        <img height="200" src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}"></a>
                     <div>
                         <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
                         <div class="card-status">

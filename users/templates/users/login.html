@@ -1,38 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <div>
-        <form method="post" action="{% url 'user:login'%}">
+{% extends 'base.html' %}
+{% load static %}
+{% block extends_style %}
+<link rel="stylesheet" href="{% static 'bookcamp/css/form-style.css'%}">
+{% endblock %}
+
+{% block section %}
+<section class="content">
+        <form class="form-content" method="post">
             {% csrf_token %}
-            <div>{{ form.non_field_errors }}</div>
+            <h1>Вход</h1>
             <div>
-                <label for="id_username">Логин</label>
-                <input id="id_username" name="username">
+                <div class="input-field">
+                    <label for="id_username">Логин</label>
+                    <input id="id_username" name="username">
+                </div>
+                <div class="input-field">
+                    <label for="id_password">Пароль</label>
+                    <input id="id_password" type="password" name="password">
+                </div>
             </div>
-            {% if user.username.errors %}
-            <div>
-                {{ user.username.errors}}
-            </div>
-            {% endif %}
-            <div>
-                <label for="id_password">Пароль</label>
-                <input id="id_password" type="password" name="password">
-            </div>
-            {% if user.password.errors %}
-            <div>
-                {{ user.password.errors}}
-            </div>
-            {% endif %}
             <button type="submit">Войти</button>
+            <input type="hidden" name="next" value="{{next}}" />
+            <div class="help-login">
+                <a href="{% url 'user:register' %}">Регистрация</a> |
+                <a href="#">Забыли пароль?</a>
+            </div>
         </form>
-        <div>
-            <a href="{% url 'user:register' %}">Регистрация</a>
-            <a href="#">Забыли пароль?</a>
-        </div>
-    </div>
-</body>
-</html>
+    </section>
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <p>&copy;Bookcamp </p>
+    </footer>
+{% endblock %}

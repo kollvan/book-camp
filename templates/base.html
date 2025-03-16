@@ -29,11 +29,11 @@
                     </ul>
                     {% if user.is_authenticated %}
                     <ul>
-                        <a class="nav-button" href="{% url 'users:login' %}">Log out</a>
+                        <a class="nav-button" href="{% url 'users:logout' %}">Log out</a>
                     </ul>
                     {% else %}
                     <ul>
-                        <a class="nav-button" href="{% url 'users:logout' %}">Login</a>
+                        <a class="nav-button" href="{% url 'users:login' %}">Login</a>
                     </ul>
                     {% endif %}
                     <ul>
@@ -43,7 +43,7 @@
             </div>
             <div>
                 {% if user.is_authenticated %}
-                   <a href="{% url 'users:profile'%}"><img class="img-profile" src="{{ user.image.url }}" width="45" alt=""></a>
+                    <a href="{% url 'users:profile'%}"><img class="img-profile" src="{{ user.image.url }}" width="45" alt=""></a>
                 {% else %}
                     <a class='nav-button  nav-profile' href="{% url 'users:login' %}">Sign in</a>
                 {% endif %}
