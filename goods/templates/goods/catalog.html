@@ -1,5 +1,9 @@
 {% extends 'base.html'%}
 {% load static %}
+
+{% block extends_style %}
+    <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
+{% endblock %}
 {% load goods_custom_tags %}
 {% block section %}
   <section class="content-catalog">
@@ -29,6 +33,33 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if page_obj.has_other_pages %}
+            <div class="pagination">
+                <div class="links">
+                    {% if page_obj.has_previous %}
+                        <div class="pagination-item pagination-button">
+                            <a class="pagination-link" href="?page={{page_obj.previous_page_number}}">&lt;</a>
+                        </div>
+                    {% endif %}
+                    {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                    <div class="pagination-item select-item">
+                        <a class="pagination-link">{{p}}</a>
+                    </div>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                    <div class="pagination-item pagination-button">
+                        <a class="pagination-link" href="?page={{p}}">{{p}}</a>
+                    </div>
+                    {% endif%}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                    <div class="pagination-item pagination-button">
+                        <a class="pagination-link" href="?page={{page_obj.next_page_number}}">&gt;</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
         </div>
         <div class="filter">
             <form onsubmit="submitForm(event)" type="get" action="#">
@@ -41,7 +72,6 @@
                         <summary class="inscription">
                             Теги:
                         </summary>
-
                         <div class="tags-filter">
                             {% get_all_tags as all_tags%}
                             {% for tag in all_tags%}
@@ -52,7 +82,7 @@
                             {% endfor %}
                         </div>
                     </details>
-                    <details class="filter-container">
+                    <details open="true" class="filter-container">
                         <summary class="inscription">
                             Год издания:
                         </summary>
@@ -65,7 +95,7 @@
                         </label>
                         <input id="id_year_publication2" name="year_to" value="2025" type="number">
                     </details>
-                    <details class="filter-container">
+                    <details open="true" class="filter-container">
                         <summary class="inscription">
                             Сортировка:
                         </summary>
@@ -74,11 +104,10 @@
                             <label for="id_ord_author">По автору</label>
                         </div>
                         <div>
-                            <input type="radio" value="date" name="ordering"  id="id_ord_date">
+                            <input type="radio" value="year_of_publication" name="ordering"  id="id_ord_date">
                             <label for="id_ord_date">По дате выхода</label>
                         </div>
                         <div>
-
                             <input type="radio" value="name" name="ordering" id="id_ord_name">
                             <label for="id_ord_name">По названию книги</label>
                         </div>
@@ -87,7 +116,6 @@
                 </div>
             </form>
         </div>
-
     </section>
 {% endblock %}
 {% block footer %}
