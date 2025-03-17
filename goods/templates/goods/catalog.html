@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load goods_custom_tags %}
 
 {% block extends_style %}
     <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
@@ -38,7 +39,7 @@
                 <div class="links">
                     {% if page_obj.has_previous %}
                         <div class="pagination-item pagination-button">
-                            <a class="pagination-link" href="?page={{page_obj.previous_page_number}}">&lt;</a>
+                            <a class="pagination-link" href="?{% append_params page=page_obj.previous_page_number %}">&lt;</a>
                         </div>
                     {% endif %}
                     {% for p in paginator.page_range %}
@@ -48,13 +49,13 @@
                     </div>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                     <div class="pagination-item pagination-button">
-                        <a class="pagination-link" href="?page={{p}}">{{p}}</a>
+                        <a class="pagination-link" href="?{% append_params page=p %}">{{p}}</a>
                     </div>
                     {% endif%}
                     {% endfor %}
                     {% if page_obj.has_next %}
                     <div class="pagination-item pagination-button">
-                        <a class="pagination-link" href="?page={{page_obj.next_page_number}}">&gt;</a>
+                        <a class="pagination-link" href="?{% append_params page=page_obj.next_page_number %}">&gt;</a>
                     </div>
                     {% endif %}
                 </div>
@@ -62,7 +63,7 @@
             {% endif %}
         </div>
         <div class="filter">
-            <form onsubmit="submitForm(event)" type="get" action="#">
+            <form onsubmit="submitForm(event)" type="get" action="{% url 'goods:catalog' 'all' %}">
                 <div class="container-search">
                     <input placeholder="..." name="q" type="text">
                     <button class="button" type="submit">Поиск</button>
@@ -76,7 +77,8 @@
                             {% get_all_tags as all_tags%}
                             {% for tag in all_tags%}
                             <div class="tag">
-                                <input type="checkbox" value="{{ tag.slug }}" name="tags" id="id_{{ tag.slug }}">
+                                <input type="checkbox" {% if tag.slug in selected_tags %}checked{% endif %}
+                                       value="{{ tag.slug }}" name="tags" id="id_{{ tag.slug }}">
                                 <label for="id_{{ tag.slug }}">{{ tag.name }}</label>
                             </div>
                             {% endfor %}
@@ -89,26 +91,31 @@
                         <label for="id_year_publication1">
                             от
                         </label>
-                        <input id="id_year_publication1" name="year_from" value="2020" type="number">
+                        <input id="id_year_publication1" name="year_from"
+                               value="{% if year_from %}{{ year_from }}{% else %}2020{% endif %}" type="number">
                         <label for="id_year_publication2">
                             до
                         </label>
-                        <input id="id_year_publication2" name="year_to" value="2025" type="number">
+                        <input id="id_year_publication2" name="year_to"
+                               value="{% if year_to %}{{ year_to }}{% else %}2025{% endif %}" type="number">
                     </details>
                     <details open="true" class="filter-container">
                         <summary class="inscription">
                             Сортировка:
                         </summary>
                         <div>
-                            <input type="radio" value="author" name="ordering" id="id_ord_author">
+                            <input type="radio"  {% if ordering == 'author'%}checked{% endif %}
+                                   value="author" name="ordering" id="id_ord_author">
                             <label for="id_ord_author">По автору</label>
                         </div>
                         <div>
-                            <input type="radio" value="year_of_publication" name="ordering"  id="id_ord_date">
+                            <input type="radio" {% if ordering == 'year_of_publication'%}checked{% endif %}
+                                   value="year_of_publication" name="ordering"  id="id_ord_date">
                             <label for="id_ord_date">По дате выхода</label>
                         </div>
                         <div>
-                            <input type="radio" value="name" name="ordering" id="id_ord_name">
+                            <input type="radio" {% if ordering == 'name'%}checked{% endif %}
+                                   value="name" name="ordering" id="id_ord_name">
                             <label for="id_ord_name">По названию книги</label>
                         </div>
                     </details>

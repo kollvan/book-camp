@@ -18,7 +18,13 @@ class CatalogView(ListView):
     extra_context = {
         'title': 'BookCamp - Каталог',
     }
-
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ordering'] = context['view'].request.GET.get('ordering', None)
+        context['selected_tags'] = context['view'].request.GET.getlist('tags', None)
+        context['year_from'] = context['view'].request.GET.get('year_from', None)
+        context['year_to'] = context['view'].request.GET.get('year_to', None)
+        return context
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
         if category_slug == 'all':
@@ -28,7 +34,7 @@ class CatalogView(ListView):
 
         tags = self.request.GET.getlist('tags', None)
         if tags:
-            products = products.filter(tags__slug__in=tags)
+            products = products.filter(tags__slug__in=tags).distinct()
 
         current_year = get_current_year()
 

@@ -197,14 +197,15 @@ section{
     border: 1px solid rgb(12, 8, 8);
     border-radius: 5px;
     background-color: rgb(216, 175, 175);
-    color:black;
-    
+    color: black;
 }
 .tag-list{
     list-style: none;
 }
+
 .tag a{
     text-decoration: none;
+    color: black;
 }
 input[type="checkbox"]{
     display: none;
