@@ -1,3 +1,17 @@
+.errors-field{
+    margin-inline: 1em;
+}
+.errorlist{
+    background-color: white;
+    padding-block: 0.5em;
+    color: black;
+}
+.errorlist li{
+    list-style: none;
+    margin-inline: 0.5em;
+}
+
+
 .form-content{
     grid-column-start: 5;
     grid-column-end: 9;
@@ -25,6 +39,7 @@
 .input-field{
     margin: 1em;
     border-bottom: 1px solid grey;
+    margin-bottom: 0.5em;
 }
 
 .input-field input{
@@ -42,6 +57,7 @@
 
 .form-content button{
     padding: 0.5em;
+    margin-top: 0.5em;
     margin-left: 1em;
     cursor: pointer;
 }

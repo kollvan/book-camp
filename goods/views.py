@@ -1,10 +1,9 @@
-from django.core.paginator import Paginator
-from django.shortcuts import render
+
 from django.views.generic import ListView, DetailView
 
 from goods.models import Product
 from goods.utls import RangeYear, get_current_year
-from inventory.models import Inventory
+
 
 
 # Create your views here.
@@ -22,8 +21,10 @@ class CatalogView(ListView):
         context = super().get_context_data(**kwargs)
         context['ordering'] = context['view'].request.GET.get('ordering', None)
         context['selected_tags'] = context['view'].request.GET.getlist('tags', None)
+        context['selected_authors'] = context['view'].request.GET.getlist('authors', None)
         context['year_from'] = context['view'].request.GET.get('year_from', None)
         context['year_to'] = context['view'].request.GET.get('year_to', None)
+        context['category_slug'] = self.kwargs['category_slug']
         return context
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
@@ -31,11 +32,12 @@ class CatalogView(ListView):
             products = Product.objects.all()
         else:
             products = Product.objects.filter(category__slug=category_slug)
-
         tags = self.request.GET.getlist('tags', None)
         if tags:
             products = products.filter(tags__slug__in=tags).distinct()
-
+        authors = self.request.GET.getlist('authors', None)
+        if authors:
+            products = products.filter(author__slug__in=authors)
         current_year = get_current_year()
 
         years = RangeYear(

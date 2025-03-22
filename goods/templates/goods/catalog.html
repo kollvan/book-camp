@@ -19,7 +19,7 @@
                         <div class="card-status">
                             Прочитанно
                         </div>
-                        <a class="card-author" href="#">Автор: {{ product.author }}</a>
+                        <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
                         <p>Дата выхода: {{ product.year_of_publication }}</p>
                         <p>{{ product.description|truncatewords:10 }}</p>
                         <p>
@@ -36,29 +36,29 @@
             </div>
             {% if page_obj.has_other_pages %}
             <div class="pagination">
-                <div class="links">
+                <ul class="links">
                     {% if page_obj.has_previous %}
-                        <div class="pagination-item pagination-button">
-                            <a class="pagination-link" href="?{% append_params page=page_obj.previous_page_number %}">&lt;</a>
-                        </div>
+                        <li>
+                            <a href="?{% append_params page=page_obj.previous_page_number %}" class="pagination-button">&lt;</a>
+                        </li>
                     {% endif %}
                     {% for p in paginator.page_range %}
                     {% if page_obj.number == p %}
-                    <div class="pagination-item select-item">
-                        <a class="pagination-link">{{p}}</a>
-                    </div>
+                    <li>
+                        <a class="pagination-button button-select">{{p}}</a>
+                    </li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                    <div class="pagination-item pagination-button">
-                        <a class="pagination-link" href="?{% append_params page=p %}">{{p}}</a>
-                    </div>
+                    <li>
+                        <a class="pagination-button" href="?{% append_params page=p %}">{{p}}</a>
+                    </li>
                     {% endif%}
                     {% endfor %}
                     {% if page_obj.has_next %}
-                    <div class="pagination-item pagination-button">
-                        <a class="pagination-link" href="?{% append_params page=page_obj.next_page_number %}">&gt;</a>
-                    </div>
+                    <li>
+                        <a class="pagination-button" href="?{% append_params page=page_obj.next_page_number %}">&gt;</a>
+                    </li>
                     {% endif %}
-                </div>
+                </ul>
             </div>
             {% endif %}
         </div>
@@ -69,7 +69,7 @@
                     <button class="button" type="submit">Поиск</button>
                 </div>
                 <div>
-                    <details>
+                    <details open>
                         <summary class="inscription">
                             Теги:
                         </summary>
@@ -84,7 +84,7 @@
                             {% endfor %}
                         </div>
                     </details>
-                    <details open="true" class="filter-container">
+                    <details open class="filter-container">
                         <summary class="inscription">
                             Год издания:
                         </summary>
@@ -118,6 +118,22 @@
                                    value="name" name="ordering" id="id_ord_name">
                             <label for="id_ord_name">По названию книги</label>
                         </div>
+                    </details>
+                    <details open class="filter-container">
+                        <summary class="inscription">
+                            Авторы:
+                        </summary>
+                        {% get_authors category_slug as authors%}
+                        <ul>
+                            {% for author in authors %}
+                            <li class="filter-list">
+                                <input value="{{author.slug}}" {% if author.slug in selected_authors %}checked{% endif %}
+                                       type="checkbox" name="authors" id="id_{{author.slug}}">
+                                <label for="id_{{author.slug}}">{{author.name}}</label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
                     </details>
                     <button class="button" type="submit">Сохранить</button>
                 </div>

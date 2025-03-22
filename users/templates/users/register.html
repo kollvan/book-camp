@@ -13,32 +13,66 @@
             <div class="inputs">
                 <div class="input-field">
                     <label for="id_username">Логин:</label>
-                    <input id="id_username"  name="username" type="text" value="">
+                    <input id="id_username" value="{% if form.username.value %}{{form.username.value}}{%endif%}"
+                           name="username" type="text" value="">
                 </div>
+                {% if form.username.errors %}
+                <div class="errors-field">
+                    {{form.username.errors}}
+                </div>
+                {% endif %}
                 <div class="input-field">
                     <label for="id_email">E-mail:</label>
-                    <input id="id_email" name="email" type="email" placeholder="myemail@email.com" value="">
+                    <input id="id_email" value="{% if form.email.value %}{{form.email.value}}{%endif%}"
+                           name="email" type="email" placeholder="myemail@email.com" value="">
                 </div>
+                {% if form.email.errors %}
+                <div class="errors-field">
+                    {{form.email.errors}}
+                </div>
+                {% endif %}
                 <div class="input-field image-field">
                     <label for="id_image">Изображение профиля:</label>
                     <input id="id_image" type="file" >
                 </div>
                 <div class="input-field">
                     <label for="id_first_name">Имя:</label>
-                    <input id="id_first_name" name="first_name" type="text" value="">
+                    <input id="id_first_name" value="{% if form.first_name.value %}{{form.first_name.value}}{% endif %}"
+                           name="first_name" type="text" value="">
                 </div>
+                {% if form.first_name.errors %}
+                <div class="errors-field">
+                    {{form.first_name.errors}}
+                </div>
+                {% endif %}
                 <div class="input-field">
                     <label for="id_last_name">Фамилия:</label>
-                    <input id="id_last_name" name="last_name" type="text" value="">
+                    <input id="id_last_name" value="{% if form.last_name.value %}{{form.last_name.value}}{% endif %}"
+                           name="last_name" type="text" value="">
                 </div>
+                {% if form.last_name.errors %}
+                <div class="errors-field">
+                    {{form.last_name.errors}}
+                </div>
+                {% endif %}
                 <div class="input-field">
                     <label for="id_password1">Пароль:</label>
                     <input id="id_password1" name="password1" type="password">
                 </div>
+                {% if form.password1.errors %}
+                <div class="errors-field">
+                    {{form.password1.errors}}
+                </div>
+                {% endif %}
                 <div class="input-field">
                     <label for="id_password2">Повторите пароль:</label>
                     <input id="id_password2" name="password2" type="password">
                 </div>
+                {% if form.password2.errors %}
+                <div class="errors-field">
+                    {{form.password2.errors}}
+                </div>
+                {% endif %}
             </div>
             <button type="submit">Регистрация</button>
         </form>

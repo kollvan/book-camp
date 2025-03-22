@@ -28,7 +28,7 @@
             </p>
             <ul class="tag-list">
                 {% for tag in product.get_tags %}
-                <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
+                <li class="tag"><a href="{% url 'goods:catalog' 'all' %}?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
