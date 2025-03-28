@@ -15,8 +15,8 @@
     <header>
         <div class="nav-bar nav-bar-style">
             <div>
-                <a href="#">
-                    <img class="nav-bar-logo" width ="50" src="static/image/default_image_user" alt="Logo">
+                <a href="{% url 'main:index' %}">
+                    <img class="nav-bar-logo" src="{% static 'bookcamp/image/logo.png'%}" alt="Logo">
                 </a>
             </div>
             <div class="nav-elements">

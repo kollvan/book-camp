@@ -2,7 +2,7 @@ from django import template
 from django.utils.http import urlencode
 
 from goods.models import Category, Tag, Author
-
+from inventory.models import Inventory
 
 register = template.Library()
 @register.simple_tag(takes_context=True)
@@ -29,4 +29,10 @@ def get_authors(category_slug):
         return Author.objects.all()[:10]
     return Author.objects.filter(product__category__slug=category_slug)[:10]
 
+@register.simple_tag()
+def get_product_status(product_pk):
+    try:
+        return Inventory.objects.get(product=product_pk).status
+    except Inventory.DoesNotExist:
+        return None
 

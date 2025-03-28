@@ -20,7 +20,7 @@
                     Прочитанно
                 </div>
             </div>
-            <a class="card-author" href="#">Автор: {{product.author}}</a>
+            <a class="card-author" href="{% url 'goods:catalog' 'all' %}?authors={{product.author.slug}}">Автор: {{product.author}}</a>
             <p>Дата выхода: {{product.year_of_publication}}</p>
             <p>{{ product.description}}</p>
             <p>

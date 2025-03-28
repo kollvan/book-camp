@@ -12,6 +12,8 @@
             <div style="display:flex">
                 <img src="{{ item.product.image.url }}" alt="Изображение" width="100">
                 <div>
+                    <p>{{ item.status }}</p>
+                    <p>{{ item.get_status}}</p>
                     <p>{{ item.product.name }}</p>
                     <p>{{ item.product.author }}</p>
                     <p>{{ item.product.page_count }}</p>

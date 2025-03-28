@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView
 
 from goods.models import Product
 from goods.utls import RangeYear, get_current_year
-
+from inventory.models import Inventory
 
 
 # Create your views here.
@@ -19,12 +19,15 @@ class CatalogView(ListView):
     }
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['ordering'] = context['view'].request.GET.get('ordering', None)
-        context['selected_tags'] = context['view'].request.GET.getlist('tags', None)
-        context['selected_authors'] = context['view'].request.GET.getlist('authors', None)
-        context['year_from'] = context['view'].request.GET.get('year_from', None)
-        context['year_to'] = context['view'].request.GET.get('year_to', None)
-        context['category_slug'] = self.kwargs['category_slug']
+        extra_context = {
+            'ordering': context['view'].request.GET.get('ordering', None),
+            'selected_tags': context['view'].request.GET.getlist('tags', None),
+            'selected_authors':context['view'].request.GET.getlist('authors', None),
+            'year_from':context['view'].request.GET.get('year_from', None),
+            'year_to':context['view'].request.GET.get('year_to', None),
+            'category_slug':self.kwargs['category_slug'],
+        }
+        context.update(extra_context)
         return context
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']

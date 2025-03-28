@@ -6,7 +6,7 @@ from inventory.models import Inventory
 
 # Create your views here.
 def inventory(request):
-    inventory = Inventory.objects.filter(user=request.user.pk)
+    inventory = Inventory.objects.filter(user=request.user.pk).order_by('-status')
 
     context={
         'title':'Инвентарь',

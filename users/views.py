@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -18,11 +19,13 @@ class LoginUser(LoginView):
     extra_context = {
         'title': 'Авторизация',
     }
-
-    # def get_success_url(self):
-    #     if self.request.GET.get('next', None):
-    #         return redirect(self.request.GET['next'])
-    #     return reverse_lazy('main:index')
+    #Может пригодиться
+    # def form_invalid(self, form):
+    #     messages.success(
+    #         self.request,
+    #         '''Проверьте свою почту, мы отправили Вам ссылку,
+    #         которую можно использовать для входа на сайт.''')
+    #     return super().form_invalid(form)
 
 
 class RegisterUser(CreateView):
