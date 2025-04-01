@@ -13,18 +13,22 @@
             <div>
                 <select class="inventory-search" form="filter-form" name="ordering" id="id_ordering">
                     <option value="">-- Сортировка --</option>
-                    <option value="name">По названию</option>
-                    <option value="status">По статусу</option>
-                    <option value="author">По автору</option>
+                    <option {% if selected_ordering == 'name' %} selected {% endif %} value="name">По названию</option>
+                    <option {% if selected_status %}disabled
+                            {% elif selected_ordering == 'status'%}
+                            selected
+                            {% endif %}
+                    value="status">По статусу</option>
+                    <option {% if selected_ordering == 'author'%} selected {% endif %}value="author">По автору</option>
                 </select>
             </div>
             <div>
                 <select class="inventory-search" form="filter-form" name="status" id="id_status">
                     <option value="">-- Выберите статус --</option>
-                    <option value="3">Начато</option>
-                    <option value="2">Отложенно</option>
-                    <option value="1">Добавленно</option>
-                    <option value="0">Прочитанно</option>
+                    <option {% if selected_status == '3'%}selected{% endif %} value="3">Начато</option>
+                    <option {% if selected_status == '2'%}selected{% endif %} value="2">Отложенно</option>
+                    <option {% if selected_status == '1'%}selected{% endif %} value="1">Добавленно</option>
+                    <option {% if selected_status == '0'%}selected{% endif %} value="0">Прочитанно</option>
                 </select>
             </div>
             <div>
@@ -32,7 +36,7 @@
                 <select class="inventory-search" form="filter-form" name="category" id="id_category">
                     <option value="">-- Выберите категорию --</option>
                     {% for cat in categories %}
-                    <option value="{{ cat.slug }}">{{ cat.name }}</option>
+                    <option {% if selected_category == cat.slug%}selected{% endif %} value="{{ cat.slug }}">{{ cat.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -95,20 +99,14 @@
                         <summary class="inscription">
                             Теги:
                         </summary>
-
+                        {% get_available_tags as tags %}
                         <div class="tags-filter">
+                        {% for tag in tags%}
                             <div class="tag">
-                                <input type="checkbox" value="orelly" name="tags" id="id_ORELLY">
-                                <label for="id_ORELLY">O`RELLY</label>
+                                <input type="checkbox" value="{{ tag.slug }}" name="tags" id="id_{{tag.slug}}">
+                                <label for="id_{{tag.slug}}">{{tag.name}}</label>
                             </div>
-                            <div class="tag">
-                                <input type="checkbox" name="tags" value="css" id="id_CSS">
-                                <label for="id_CSS">CSS</label>
-                            </div>
-                            <div class="tag">
-                                <input type="checkbox" name="tags" value="html" id="id_HTML">
-                                <label for="id_HTML">HTML</label>
-                            </div>
+                        {% endfor %}
                         </div>
                     </details>
                     <details class="filter-container">
@@ -130,42 +128,13 @@
                             Авторы:
                         </summary>
                         <ul>
+                            {% get_available_authors as authors%}
+                            {% for author in authors%}
                             <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
+                                <input value="{{author.slug}}" type="checkbox" name="authors" id="id_{{author.slug}}">
+                                <label for="id_{{author.slug}}">{{author.name}}</label>
                             </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
-                            <li class="filter-list">
-                                <input value="author1" type="checkbox" name="authors" id="id_authors">
-                                <label for="id_authors">Кит Грант</label>
-                            </li>
+                            {% endfor %}
                         </ul>
                     </details>
                     <!---->

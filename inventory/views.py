@@ -23,6 +23,10 @@ class InventoryView(LoginRequiredMixin,ListView):
             'status':'-status',
         }
         category = self.request.GET.get('category', None)
+        status = self.request.GET.get('status', None)
+        self.extra_context.update(selected_status=status, selected_category=category, selected_ordering=ordering)
+        if status:
+            inventory = inventory.filter(status=status)
         if category:
             inventory = inventory.filter(product__category__slug=category)
         if ordering:
