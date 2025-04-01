@@ -22,6 +22,7 @@ ul{
     min-height: 3em;
     justify-content: space-between;
     align-items: center;
+    padding-inline: 5em;
 }
 
 .nav-bar-style{
@@ -40,18 +41,13 @@ footer{
     align-items: center;
     font-size: 0.9em;
 }
-.content-catalog{
-    display: grid;
-}
 section{
     display: grid;
-
     color: white;
     grid-template-columns: repeat(12, 1fr);
+    padding-inline: 5em;
     align-items: start;
 }
-
-
 .nav-elements li{
     display: flex;
     align-items: center;
@@ -127,6 +123,22 @@ section{
     grid-column-end: 16;
 
 }
+.filter-container ul{
+    overflow-y: auto;
+    max-height: 10em;
+}
+.filter-container ul::-webkit-scrollbar{
+    width: 10px;
+}
+
+.filter-container ul::-webkit-scrollbar-track {
+    background-color: #f9f9fd;
+    border-radius: 10px;
+}
+.filter-container ul::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(180deg, #a74d45, #161c24);
+}
 /*удалить*/
 .img-card{
     width: 150px;
@@ -137,8 +149,7 @@ section{
     display: grid;
     grid-template-columns: repeat(3, 3fr);
     gap: 1em;
-    padding: 2em;
-    padding-bottom: 0.5em;
+    padding: 2em 0 0.5em;
 }
 
 .card{
@@ -175,12 +186,23 @@ section{
 }
 
 .card-status{
-    border: 1px solid green;
+    border: 1px solid;
     background-color: grey;
     border-radius: 5px;
-    color: aquamarine;
     text-align: center;
     margin-bottom:0.5em;
+}
+.completed{
+    border-color: green;
+    color: aquamarine;
+}
+.started{
+    border-color: yellow;
+    color: yellow;
+}
+.postponed{
+    border-color: blue;
+    color: blue;
 }
 .card p{
     margin: 0.5em;
@@ -197,16 +219,15 @@ section{
     border: 1px solid rgb(12, 8, 8);
     border-radius: 5px;
     background-color: rgb(216, 175, 175);
-    color: black;
+    color:black;
+    
 }
 .tag-list{
     list-style: none;
 }
-
-
 .tag a{
+    color:black;
     text-decoration: none;
-    color: black;
 }
 input[type="checkbox"]{
     display: none;
@@ -220,6 +241,9 @@ input:checked + label{
 
 .filter{
     background-color: rgb(165, 155, 155);
+    margin-left: 2em;
+    grid-row-start: 1;
+    grid-row-end: 3;
 }
 
 .container-search{
@@ -231,32 +255,12 @@ input:checked + label{
 
 .container-search input{
     font-size: 1em;
-    padding: 0.5em;
+    padding-block: 0.5em;
     outline: none;
     border: none;
     min-width: 70%;
 }
 
-
-
-.container-search button{
-    margin-block: 0.1em;
-    font-size: 1em;
-    border-radius: 5px;
-    margin-left: 0.5em;
-}
-
-.button{
-    cursor: pointer;
-    background-color: rgba(198, 72, 72, 0.995);
-}
-.inscription{
-    background: black;
-    color: white;
-    padding: 0.3em;
-    border-radius: 5px;
-    cursor: pointer;
-}
 .filter-list{
     list-style: none;
     margin-left: 0.3em;
@@ -265,6 +269,28 @@ input:checked + label{
 .filter-list input{
     display: inline;
 }
+
+
+.container-search button{
+    margin-block: 0.1em;
+    margin-right: 0.1em;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.button{
+    cursor: pointer;
+    background-color: rgba(198, 72, 72, 0.995);
+    
+}
+.inscription{
+    background: black;
+    color: white;
+    padding: 0.3em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .filter-container input{
     max-width: 4em;
     margin-block: 0.5em;

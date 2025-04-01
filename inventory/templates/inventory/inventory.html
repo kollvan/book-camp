@@ -1,31 +1,179 @@
+{% extends 'base.html'%}
 {% load static %}
-{% load goods_custom_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{title}}</title>
-</head>
-<body>
-    <div style="display:flex">
-        {% for item in inventory %}
-            <div style="display:flex">
-                <img src="{{ item.product.image.url }}" alt="Изображение" width="100">
-                <div>
-                    <p>{{ item.status }}</p>
-                    <p>{{ item.get_status}}</p>
-                    <p>{{ item.product.name }}</p>
-                    <p>{{ item.product.author }}</p>
-                    <p>{{ item.product.page_count }}</p>
-                    <p>{{ item.product.description|truncatewords:10 }}</p>
-                <div>
-                    {% for tag in item.product.get_tags %}
-                    <a href="?{% append_params tags=tag.slug %}" style="text-decoration: none">{{tag.name}}</a>
+{% load inventory_tags %}
+
+{% block extends_style %}
+<link rel="stylesheet" href="{% static 'bookcamp/css/inventory.css'%}">
+<link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css'%}">
+{% endblock %}
+
+{% block section %}
+<section>
+        <div class="inventory-search-container">
+            <div>
+                <select class="inventory-search" form="filter-form" name="ordering" id="id_ordering">
+                    <option value="">-- Сортировка --</option>
+                    <option value="name">По названию</option>
+                    <option value="status">По статусу</option>
+                    <option value="author">По автору</option>
+                </select>
+            </div>
+            <div>
+                <select class="inventory-search" form="filter-form" name="status" id="id_status">
+                    <option value="">-- Выберите статус --</option>
+                    <option value="3">Начато</option>
+                    <option value="2">Отложенно</option>
+                    <option value="1">Добавленно</option>
+                    <option value="0">Прочитанно</option>
+                </select>
+            </div>
+            <div>
+                {% get_available_categories as categories %}
+                <select class="inventory-search" form="filter-form" name="category" id="id_category">
+                    <option value="">-- Выберите категорию --</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.slug }}">{{ cat.name }}</option>
                     {% endfor %}
-                </div>
+                </select>
             </div>
         </div>
-    {% endfor %}
-    </div>
-</body>
-</html>
+        <div class="catalog">
+            <div class="row">
+                {% for item in inventory %}
+                <div class="card">
+                    <a href="{% url 'goods:product' item.product.slug %}">
+                        <img src="{{ item.product.image.url }}" class="img-card" alt="{{ item.product.name}}">
+                    </a>
+                    <div>
+                        <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a>
+                        <div class="card-status">
+                            {{ item.get_status }}
+                        </div>
+                        <a class="card-author"
+                           href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">
+                            Автор: {{ item.product.author }}
+                        </a>
+                        <p>Дата выхода: {{ item.product.year_of_publication}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="pagination">
+                <ul class="links">
+                    <li>
+                        <a href="#" class="pagination-button">&lt;</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button" href="#">1</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button" href="#">2</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button button-select">3</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button" href="#">4</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button" href="#">5</a>
+                    </li>
+                    <li>
+                        <a class="pagination-button" href="#">&gt;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="filter">
+            <form onsubmit="submitForm(event)" id="filter-form" type="get" action="#">
+                <div class="container-search">
+                    <input placeholder="..." name="q" type="text">
+                    <button class="button" type="submit">Поиск</button>
+                </div>
+                <div>
+                    <details>
+                        <summary class="inscription">
+                            Теги:
+                        </summary>
+
+                        <div class="tags-filter">
+                            <div class="tag">
+                                <input type="checkbox" value="orelly" name="tags" id="id_ORELLY">
+                                <label for="id_ORELLY">O`RELLY</label>
+                            </div>
+                            <div class="tag">
+                                <input type="checkbox" name="tags" value="css" id="id_CSS">
+                                <label for="id_CSS">CSS</label>
+                            </div>
+                            <div class="tag">
+                                <input type="checkbox" name="tags" value="html" id="id_HTML">
+                                <label for="id_HTML">HTML</label>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="filter-container">
+                        <summary class="inscription">
+                            Год издания:
+                        </summary>
+                        <label for="id_year_publication1">
+                            от
+                        </label>
+                        <input id="id_year_publication1" name="year_from" value="2020" type="number">
+                        <label for="id_year_publication2">
+                            до
+                        </label>
+                        <input id="id_year_publication2" name="year_to" value="2025" type="number">
+                    </details>
+                    <!---->
+                    <details open class="filter-container">
+                        <summary class="inscription">
+                            Авторы:
+                        </summary>
+                        <ul>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                            <li class="filter-list">
+                                <input value="author1" type="checkbox" name="authors" id="id_authors">
+                                <label for="id_authors">Кит Грант</label>
+                            </li>
+                        </ul>
+                    </details>
+                    <!---->
+                    <button class="button" type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+
+    </section>
+{% endblock %}
+

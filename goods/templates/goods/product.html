@@ -16,9 +16,20 @@
                 <span class="product-title">
                     {{ product.name }}
                 </span>
-                <div class="card-status product-status">
-                    Прочитанно
-                </div>
+                    {% get_product_status product.pk as product_status %}
+                    {% if user.is_authenticated and product_status is not None %}
+                    <div class="card-status product-status">
+                        {% if product_status == 3 %}
+                            Начато
+                        {% elif product_status == 2 %}
+                            Отложенно
+                        {% elif product_status == 1 %}
+                            Добавленно
+                        {% elif product_status == 0 %}
+                            Прочитанно
+                        {% endif %}
+                    </div>
+                    {% endif %}
             </div>
             <a class="card-author" href="{% url 'goods:catalog' 'all' %}?authors={{product.author.slug}}">Автор: {{product.author}}</a>
             <p>Дата выхода: {{product.year_of_publication}}</p>

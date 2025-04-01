@@ -29,6 +29,9 @@
                     </ul>
                     {% if user.is_authenticated %}
                     <ul>
+                        <a class="nav-button" href="{% url 'inventory:inventory'%}">Inventory</a>
+                    </ul>
+                    <ul>
                         <a class="nav-button" href="{% url 'users:logout' %}">Log out</a>
                     </ul>
                     {% else %}
