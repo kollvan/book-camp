@@ -6,7 +6,51 @@ body{
     display: flex;
     flex-direction: column;
 }
+/* dropdown меню*/
+.dropbtn {
+    cursor: pointer;
+    border: none;
+    border-radius: 45px;
+    padding: 0;
+}
+.dropdown{
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content{
+    display: none;
+    position: absolute;
+    background-color: rgb(221, 215, 215);
+    border-radius: 5px;
+    min-width: 5em;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    opacity: 0;
+    list-style: none;
+    animation: fadeIn 0.5s;
+}
 
+.dropdown-content a{
+    padding: 0.8em 1em;
+    display: block;
+}
+.dropdown-content a:hover{
+    background-color: rgb(74, 73, 73);
+    display: block;
+    border-radius: 5px ;
+}
+.dropdown:hover .dropdown-content{
+    display: block;
+    opacity: 1;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* Конец dropdown меню*/
 .nav-bar a{
     text-decoration: none;
     color: black;
@@ -85,6 +129,7 @@ section{
 }
 
 .nav-button:hover{
+    border-radius: 5px;
     background-color: white;
     border: 2px solid rgb(204, 196, 196);
     box-shadow: 1px -2px 25px 0px #656161 inset;
