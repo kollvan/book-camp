@@ -5,15 +5,18 @@
 {% block extends_style %}
     <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
 {% endblock %}
-{% load goods_custom_tags %}
+
 {% block section %}
   <section class="content-catalog">
         <div class="catalog">
             <div class="row">
                 {% for product in products %}
                 <div class="card">
+                    {% if product.image %}
                     <a href="{% url 'goods:product' product.slug %}">
-                        <img height="200" src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}"></a>
+                        <img height="200" src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}">
+                    </a>
+                    {% endif %}
                     <div>
                         <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
                         {% get_product_status product.pk as product_status %}
@@ -45,36 +48,10 @@
                 </div>
                 {% endfor %}
             </div>
-            {% if page_obj.has_other_pages %}
-            <div class="pagination">
-                <ul class="links">
-                    {% if page_obj.has_previous %}
-                        <li>
-                            <a href="?{% append_params page=page_obj.previous_page_number %}" class="pagination-button">&lt;</a>
-                        </li>
-                    {% endif %}
-                    {% for p in paginator.page_range %}
-                    {% if page_obj.number == p %}
-                    <li>
-                        <a class="pagination-button button-select">{{p}}</a>
-                    </li>
-                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
-                    <li>
-                        <a class="pagination-button" href="?{% append_params page=p %}">{{p}}</a>
-                    </li>
-                    {% endif%}
-                    {% endfor %}
-                    {% if page_obj.has_next %}
-                    <li>
-                        <a class="pagination-button" href="?{% append_params page=page_obj.next_page_number %}">&gt;</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </div>
-            {% endif %}
+            {% include 'includes/pagination.html' %}
         </div>
         <div class="filter">
-            <form onsubmit="submitForm(event)" type="get" action="{% url 'goods:catalog' 'all' %}">
+            <form onsubmit="submitForm(event)" type="get" action="{% url 'goods:catalog' category_slug %}">
                 <div class="container-search">
                     <input placeholder="..." name="q" type="text">
                     <button class="button" type="submit">Поиск</button>
@@ -103,7 +80,7 @@
                             от
                         </label>
                         <input id="id_year_publication1" name="year_from"
-                               value="{% if year_from %}{{ year_from }}{% else %}2020{% endif %}" type="number">
+                               value="{% if year_from %}{{ year_from }}{% else %}2000{% endif %}" type="number">
                         <label for="id_year_publication2">
                             до
                         </label>

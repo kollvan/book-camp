@@ -33,18 +33,18 @@
                         <a class="nav-button" href="{% url 'main:index' %}">Home</a>
                     </ul>
                     <ul>
-                        <a class="nav-button" href="{% url 'goods:catalog' 'all' %}">Catalog</a>
+                        <a class="nav-button" href="{% url 'goods:catalog' 'all' %}">Каталог</a>
                     </ul>
                     {% if user.is_authenticated %}
                     <ul>
-                        <a class="nav-button" href="{% url 'inventory:inventory'%}">Inventory</a>
+                        <a class="nav-button" href="{% url 'inventory:collection'%}">Коллекция</a>
                     </ul>
                     <ul>
-                        <a class="nav-button" href="{% url 'users:logout' %}">Log out</a>
+                        <a class="nav-button" href="{% url 'users:logout' %}">Выйти</a>
                     </ul>
                     {% else %}
                     <ul>
-                        <a class="nav-button" href="{% url 'users:login' %}">Login</a>
+                        <a class="nav-button" href="{% url 'users:login' %}">Войти</a>
                     </ul>
                     {% endif %}
                     <ul>
@@ -61,7 +61,7 @@
                     <li><a href="{% url 'user:profile' %}">Профиль</a></li>
                     <li><a href="{% url 'admin:index' %}">Админ панель</a></li>
                     <li><a href="{% url 'user:edit' %}">Редактировать профиль</a></li>
-                    <li><a href="{% url 'inventory:inventory' %}">Инвентарь</a></li>
+                    <li><a href="{% url 'inventory:collection' %}">Коллекция</a></li>
                     <li><a href="{% url 'user:logout'%}">Выйти</a></li>
                 </ul>
                 {% else %}

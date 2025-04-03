@@ -1,6 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% load inventory_tags %}
+{% load goods_custom_tags %}
 
 {% block extends_style %}
 <link rel="stylesheet" href="{% static 'bookcamp/css/inventory.css'%}">
@@ -45,9 +46,11 @@
             <div class="row">
                 {% for item in inventory %}
                 <div class="card">
+                    {% if item.product.image %}
                     <a href="{% url 'goods:product' item.product.slug %}">
                         <img src="{{ item.product.image.url }}" class="img-card" alt="{{ item.product.name}}">
                     </a>
+                    {% endif %}
                     <div>
                         <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a>
                         <div class="card-status">
@@ -62,31 +65,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="pagination">
-                <ul class="links">
-                    <li>
-                        <a href="#" class="pagination-button">&lt;</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button" href="#">1</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button" href="#">2</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button button-select">3</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button" href="#">4</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button" href="#">5</a>
-                    </li>
-                    <li>
-                        <a class="pagination-button" href="#">&gt;</a>
-                    </li>
-                </ul>
-            </div>
+            {% include 'includes/pagination.html'%}
         </div>
         <div class="filter">
             <form onsubmit="submitForm(event)" id="filter-form" type="get" action="#">

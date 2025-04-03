@@ -12,7 +12,7 @@ class CatalogView(ListView):
 
     context_object_name = 'products'
 
-    paginate_by = 6
+    paginate_by = 15
 
     extra_context = {
         'title': 'BookCamp - Каталог',
