@@ -12,11 +12,13 @@
             <div class="row">
                 {% for product in products %}
                 <div class="card">
-                    {% if product.image %}
                     <a href="{% url 'goods:product' product.slug %}">
-                        <img height="200" src="{{ product.image.url }}" class="img-card" alt="{{ product.name }}">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="img-card" alt="{{ product.name}}">
+                        {% else %}
+                            <img src="{% static 'bookcamp/image/empty.jpg' %}" class="img-card" alt="{{ product.name}}">
+                        {% endif %}
                     </a>
-                    {% endif %}
                     <div>
                         <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
                         {% get_product_status product.pk as product_status %}

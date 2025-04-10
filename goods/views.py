@@ -3,7 +3,6 @@ from django.views.generic import ListView, DetailView
 
 from goods.models import Product
 from goods.utls import RangeYear, get_current_year
-from inventory.models import Inventory
 
 
 # Create your views here.
@@ -55,26 +54,7 @@ class CatalogView(ListView):
             products = products.order_by(self.request.GET.get('ordering', None))
         return products
 
-# def catalog(request, category_slug=None):
-#     if category_slug == 'all':
-#       products = Product.objects.all()
-#     else:
-#         products = Product.objects.filter(category__slug=category_slug)
-#
-#     tags = request.GET.getlist('tags', None)
-#     if tags:
-#         products = products.filter(tags__slug__in=tags)
-#
-#     paginator = Paginator(products, 10)
-#     page_number = request.GET.get('page')
-#     page_products = paginator.get_page(page_number)
-#
-#     context = {
-#         'title': 'Каталог',
-#         'products': page_products,
-#     }
-#
-#     return render(request, 'goods/catalog.html', context=context)
+
 
 class ProductView(DetailView):
     template_name = 'goods/product.html'
@@ -84,10 +64,3 @@ class ProductView(DetailView):
         context = super().get_context_data(**kwargs)
         context['title'] = context['product'].name
         return context
-# def product(request, product_slug):
-#     product = Product.objects.get(slug=product_slug)
-#     context = {
-#         'title': product.name,
-#         'product': product,
-#     }
-#     return render(request, 'goods/product.html', context=context)

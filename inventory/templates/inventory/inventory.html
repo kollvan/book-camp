@@ -46,13 +46,15 @@
             <div class="row">
                 {% for item in inventory %}
                 <div class="card">
-                    {% if item.product.image %}
                     <a href="{% url 'goods:product' item.product.slug %}">
-                        <img src="{{ item.product.image.url }}" class="img-card" alt="{{ item.product.name}}">
-                    </a>
-                    {% endif %}
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" class="img-card" alt="{{ item.product.name}}">
+                        {% else %}
+                            <img src="{% static 'bookcamp/image/empty.jpg' %}" class="img-card" alt="{{ item.product.name}}">
+                        {% endif %}
+                        </a>
                     <div>
-                        <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name }}</a>
+                        <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
                         <div class="card-status">
                             {{ item.get_status }}
                         </div>
