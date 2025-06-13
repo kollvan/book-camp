@@ -10,6 +10,9 @@
   <section class="content-catalog">
         <div class="catalog">
             <div class="row">
+                {% if user.is_authenticated %}
+                {% get_inventory_data products user.id as data_from_inventory %}
+                {% endif %}
                 {% for product in products %}
                 <div class="card">
                     <a href="{% url 'goods:product' product.slug %}">
@@ -21,8 +24,9 @@
                     </a>
                     <div>
                         <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
-                        {% get_product_status product.pk as product_status %}
-                        {% if user.is_authenticated and product_status is not None %}
+                        {% if user.is_authenticated %}
+                        {%get_item data_from_inventory product.pk as product_status%}
+                        {% if product_status is not None %}
                         <div class="card-status">
                             {% if product_status == 3 %}
                                 Начато
@@ -34,6 +38,7 @@
                                 Прочитанно
                             {% endif %}
                         </div>
+                        {% endif %}
                         {% endif %}
                         <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
                         <p>Дата выхода: {{ product.year_of_publication }}</p>

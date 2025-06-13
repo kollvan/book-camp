@@ -1,4 +1,5 @@
 from django import template
+from django.db.models import Q
 from django.utils.http import urlencode
 
 from goods.models import Category, Tag, Author
@@ -30,9 +31,16 @@ def get_authors(category_slug):
     return Author.objects.filter(product__category__slug=category_slug)[:10]
 
 @register.simple_tag()
-def get_product_status(product_pk):
+def get_inventory_data(products, user_id):
+    allowed_id = {item['id'] for item in products.values('id')}
     try:
-        return Inventory.objects.get(product=product_pk).status
+        inventory_items = {
+            item.product_id : item.status for item in Inventory.objects.filter(Q(product__in=allowed_id) & Q(user=user_id))
+        }
+        return inventory_items
     except Inventory.DoesNotExist:
         return None
+@register.simple_tag()
+def get_item(collection:dict, key:str):
+    return collection.get(key, None)
 

@@ -50,9 +50,10 @@ class CatalogView(ListView):
         if not years.is_default():
             products = products.filter(year_of_publication__range=(years.year_from, years.year_to))
 
+
         if self.request.GET.get('ordering', None):
             products = products.order_by(self.request.GET.get('ordering', None))
-        return products
+        return products.select_related('author').prefetch_related('tags')
 
 
 

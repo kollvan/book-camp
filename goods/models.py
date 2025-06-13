@@ -58,7 +58,7 @@ class Product(models.Model):
         ordering = ['name',]
 
     def get_tags(self):
-        return Product.objects.get(pk=self.pk).tags.all()
+        return self.tags.all()
 
     def __str__(self):
         return f'{self.name} | Автор: {self.author.name}'
