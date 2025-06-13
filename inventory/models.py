@@ -21,8 +21,6 @@ class Inventory(models.Model):
     product = models.ForeignKey(to=Product, on_delete=models.DO_NOTHING, db_index=True, verbose_name='Книга')
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
 
-    def get_status(self):
-        return self.get_status_display()
     class Meta:
         db_table = 'inventory'
         verbose_name = 'Инвентарь'

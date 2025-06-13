@@ -9,7 +9,7 @@ class InventoryView(LoginRequiredMixin,ListView):
     template_name = 'inventory/inventory.html'
     extra_context = {'title':'Bookcamp Инвентарь - ',}
     context_object_name = 'inventory'
-    paginate_by = 20
+    paginate_by = 6
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] += context['view'].request.user.username
@@ -31,4 +31,4 @@ class InventoryView(LoginRequiredMixin,ListView):
             inventory = inventory.filter(product__category__slug=category)
         if ordering:
             inventory = inventory.order_by(order_fields[ordering])
-        return inventory
+        return inventory.select_related('product__author')

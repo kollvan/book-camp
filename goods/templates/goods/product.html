@@ -21,7 +21,7 @@
                 <span class="product-title">
                     {{ product.name }}
                 </span>
-                    {% get_product_status product.pk as product_status %}
+                    {% get_product_status product.pk user.pk as product_status %}
                     {% if user.is_authenticated and product_status is not None %}
                     <div class="card-status product-status">
                         {% if product_status == 3 %}
