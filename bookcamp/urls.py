@@ -28,6 +28,7 @@ urlpatterns = [
     path('user/', include('users.urls', namespace='users')),
     path('inventory/', include('inventory.urls', namespace='inventory')),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

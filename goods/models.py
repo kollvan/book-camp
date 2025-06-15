@@ -41,7 +41,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(max_length=150, verbose_name='Slug', db_index=True)
     image = models.ImageField(upload_to='image_books', blank=True, null=True, verbose_name='Изображение')
-    author = models.ForeignKey(to=Author, on_delete=models.SET_DEFAULT, default='Неизвестный автор')
+    author = models.ForeignKey(to=Author, on_delete=models.SET_DEFAULT, default=14)
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     quantity_page = models.PositiveSmallIntegerField(verbose_name='Количество страниц')
     year_of_publication = models.CharField(max_length=4, blank=True, null=True, verbose_name='Год публикации')
