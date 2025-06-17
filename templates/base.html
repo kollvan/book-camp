@@ -55,7 +55,11 @@
             <div class="dropdown">
                 {% if user.is_authenticated %}
                 <a href="{% url 'users:profile'%}" class="dropbtn">
-                    <img class="img-profile" src="{{ user.image.url }}" width="45" alt="">
+                    {% if user.image %}
+                    <img class="img-profile" src="{{ user.image.url }}" width="45" alt="Профиль">
+                    {% else %}
+                    <img class="img-profile" src="{% static 'bookcamp/image/logo.png'%}" width="45" alt="Профиль">
+                    {% endif %}
                 </a>
                 <ul class="dropdown-content">
                     <li><a href="{% url 'user:profile' %}">Профиль</a></li>

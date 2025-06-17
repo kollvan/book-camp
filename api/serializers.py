@@ -2,6 +2,7 @@ from rest_framework import serializers
 from slugify import slugify
 from goods.models import Product, Author, Category, Tag
 from inventory.models import Inventory
+from users.models import User
 
 
 class BaseSlugSerializer(serializers.ModelSerializer):
@@ -62,3 +63,8 @@ class InventorySerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['product'] = validated_data.pop('set_product')
         return super().create(validated_data)
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('pk','username','first_name', 'last_name', 'email', 'registration_date', 'image')
