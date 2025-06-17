@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from slugify import slugify
 from goods.models import Product, Author, Category, Tag
+from inventory.models import Inventory
 
 
 class BaseSlugSerializer(serializers.ModelSerializer):
@@ -49,3 +50,15 @@ class TagsSerializer(BaseSlugSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
+
+class InventorySerializer(serializers.ModelSerializer):
+    set_product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(), write_only=True)
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    class Meta:
+        model = Inventory
+        fields = '__all__'
+        depth = 2
+
+    def create(self, validated_data):
+        validated_data['product'] = validated_data.pop('set_product')
+        return super().create(validated_data)
