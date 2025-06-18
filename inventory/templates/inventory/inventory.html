@@ -56,7 +56,15 @@
                     <div>
                         <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
                         <div class="card-status">
-                            {{ item.get_status }}
+                            {% if item.status  == 3 %}
+                                Начато
+                            {% elif item.status  == 2 %}
+                                Отложенно
+                            {% elif item.status  == 1 %}
+                                Добавленно
+                            {% elif item.status  == 0 %}
+                                Прочитанно
+                            {% endif %}
                         </div>
                         <a class="card-author"
                            href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">

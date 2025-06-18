@@ -2,8 +2,8 @@ from rest_framework import viewsets, filters
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from api.filters_backends import IsOwnerFilterBackend
-from api.paginations import CatalogPagination
+from api.filters_backends import IsOwnerFilterBackend, ExtendedSearchFilter, InventoryFilterBackend
+from api.paginations import BaseAPIPagination
 from api.permissions import IsAdminOrReadOnly
 from api.serializers import CatalogSerializer, AuthorSerializer, CategorySerializer, TagsSerializer, \
     InventorySerializer, UserSerializer
@@ -17,14 +17,16 @@ from users.models import User
 class CatalogViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = CatalogSerializer
-    pagination_class = CatalogPagination
+    pagination_class = BaseAPIPagination
     permission_classes = (IsAdminOrReadOnly,)
-
+    filter_backends = (ExtendedSearchFilter, filters.OrderingFilter,)
+    search_fields = ['name', 'description', 'author__slug']
+    ordering_fields = ['name', 'quantity_page', 'year_of_publication']
 
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    pagination_class = CatalogPagination
+    pagination_class = BaseAPIPagination
     permission_classes = (IsAdminOrReadOnly,)
 
 
@@ -32,20 +34,20 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = (IsAdminOrReadOnly,)
-    pagination_class = CatalogPagination
+    pagination_class = BaseAPIPagination
 
 class TagsViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
-    pagination_class = CatalogPagination
+    pagination_class = BaseAPIPagination
     permission_classes = (IsAdminOrReadOnly,)
 
 class InventoryViewSet(viewsets.ModelViewSet):
     queryset = Inventory.objects.all()
     serializer_class = InventorySerializer
-    pagination_class = CatalogPagination
+    pagination_class = BaseAPIPagination
     permission_classes = (IsAuthenticated,)
-    filter_backends = (IsOwnerFilterBackend,)
+    filter_backends = (IsOwnerFilterBackend, InventoryFilterBackend,)
 
 
 class UserAPIView(RetrieveUpdateDestroyAPIView):

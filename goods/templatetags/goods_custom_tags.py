@@ -46,5 +46,8 @@ def get_item(collection:dict, key:str):
 
 @register.simple_tag()
 def get_product_status(product_id, user_id):
-    return Inventory.objects.get(Q(product_id=product_id)&Q(user_id=user_id)).status
+    try:
+        return Inventory.objects.get(Q(product_id=product_id)&Q(user=user_id)).status
+    except Inventory.DoesNotExist:
+        return None
 

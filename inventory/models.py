@@ -7,10 +7,10 @@ from users.models import User
 # Create your models here.
 class Inventory(models.Model):
     class Status(models.IntegerChoices):
-        STARTED = 3, 'Начатый'
-        POSTPONED = 2, 'Отложенный'
-        ADDED = 1, 'Добавленный'
-        COMPLETED = 0, 'Завершённый'
+        STARTED = 3, 'Начато'
+        POSTPONED = 2, 'Отложено'
+        ADDED = 1, 'Добавлено'
+        COMPLETED = 0, 'Завершено'
 
 
     date_added = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
