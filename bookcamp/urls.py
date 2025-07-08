@@ -27,7 +27,6 @@ urlpatterns = [
     path('books/', include('goods.urls', namespace='goods')),
     path('user/', include('users.urls', namespace='users')),
     path('inventory/', include('inventory.urls', namespace='inventory')),
-    path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),
 ]
 

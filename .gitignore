@@ -6,3 +6,4 @@ db.sqlite3
 media/
 TODO.txt
 fixtures/
+.dockerignore

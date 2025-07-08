@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework import routers
 
 from api.views import CatalogViewSet, AuthorViewSet, CategoryViewSet, TagsViewSet, InventoryViewSet, UserAPIView
@@ -12,5 +12,7 @@ urlpatterns = [
     path('category/', CategoryViewSet.as_view({'get':'list', 'post':'create'})),
     path('tags/', TagsViewSet.as_view({'get':'list', 'post':'create'})),
     path('user/', UserAPIView.as_view()),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]
