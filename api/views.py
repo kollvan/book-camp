@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from api.filters_backends import IsOwnerFilterBackend, ExtendedSearchFilter, InventoryFilterBackend
 from api.paginations import BaseAPIPagination
-from api.permissions import IsAdminOrReadOnly
+from api.permissions import IsStaffOrReadOnly
 from api.serializers import CatalogSerializer, AuthorSerializer, CategorySerializer, TagsSerializer, \
     InventorySerializer, UserSerializer
 from goods.models import Product, Author, Category, Tag
@@ -18,7 +18,7 @@ class CatalogViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = CatalogSerializer
     pagination_class = BaseAPIPagination
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsStaffOrReadOnly,)
     filter_backends = (ExtendedSearchFilter, filters.OrderingFilter,)
     search_fields = ['name', 'description', 'author__slug']
     ordering_fields = ['name', 'quantity_page', 'year_of_publication']
@@ -27,20 +27,20 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
     pagination_class = BaseAPIPagination
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsStaffOrReadOnly,)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsStaffOrReadOnly,)
     pagination_class = BaseAPIPagination
 
 class TagsViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagsSerializer
     pagination_class = BaseAPIPagination
-    permission_classes = (IsAdminOrReadOnly,)
+    permission_classes = (IsStaffOrReadOnly,)
 
 class InventoryViewSet(viewsets.ModelViewSet):
     queryset = Inventory.objects.all()
