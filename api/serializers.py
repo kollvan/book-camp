@@ -36,6 +36,7 @@ class CatalogSerializer(BaseSlugSerializer):
         validated_data['tags'] = validated_data.pop('set_tags')
 
 class AuthorSerializer(BaseSlugSerializer):
+
     class Meta:
         model = Author
         fields = '__all__'

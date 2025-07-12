@@ -20,7 +20,7 @@ class CatalogViewSet(viewsets.ModelViewSet):
     pagination_class = BaseAPIPagination
     permission_classes = (IsStaffOrReadOnly,)
     filter_backends = (ExtendedSearchFilter, filters.OrderingFilter,)
-    search_fields = ['name', 'description', 'author__slug']
+    search_fields = ['name', 'description']
     ordering_fields = ['name', 'quantity_page', 'year_of_publication']
 
 class AuthorViewSet(viewsets.ModelViewSet):
