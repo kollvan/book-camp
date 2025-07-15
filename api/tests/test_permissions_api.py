@@ -1,9 +1,8 @@
 from unittest import skip
 
 from django.core.paginator import UnorderedObjectListWarning
-from django.test import LiveServerTestCase
-from rest_framework.test import APIClient
 
+from api.tests.base import BaseApiTestCase
 from goods.models import Author, Product, Category, Tag
 from inventory.models import Inventory
 from users.models import User
@@ -11,21 +10,16 @@ from users.models import User
 import warnings
 warnings.filterwarnings("ignore", category=UnorderedObjectListWarning)
 
-class GETUserExistsNotStaffTest(LiveServerTestCase):
+class GETUserExistsNotStaffTest(BaseApiTestCase):
     '''TestCase with GET request for user who is not staff'''
     def setUp(self):
         self.author = Author.objects.create(name='author1', slug='author1')
         self.category = Category.objects.create(name='category1', slug='category1')
         self.tag = Tag.objects.create(name='tag1', slug='tag1')
-        self.product = Product.objects.create(name='product1', author=self.author, quantity_page=10, category=self.category)
+        self.product = Product.objects.create(name='product1', slug='product1', author=self.author, quantity_page=10, category=self.category)
         self.product.tags.add(self.tag)
-        self.user = User.objects.create_user(username='nikem', password='kalilinux')
-        self.live_server_url = 'http://localhost:8000/api/'
-        self.client = APIClient()
-        self.client.login(username='nikem', password='kalilinux')
+        super().setUp()
 
-    def tearDown(self):
-        self.client.logout()
 
     def test_get_user(self):
         '''Test to get your user data'''
@@ -49,6 +43,19 @@ class GETUserExistsNotStaffTest(LiveServerTestCase):
         '''Test to get model Author data'''
         response = self.client.get(self.live_server_url + 'category/')
         self.assertContains(response, 'category1')
+    def test_get_one_product(self):
+        '''Test to get separate entry in model Product'''
+        response = self.client.get(self.live_server_url + f'catalog/{self.product.pk}/')
+        self.assertContains(response, self.product.name)
+
+    def test_get_products(self):
+        '''Test to get all records in model Product'''
+        product2 = Product.objects.create(name='product2', author=self.author, category=self.category, quantity_page=15)
+        response = self.client.get(self.live_server_url + 'catalog/')
+        self.assertEqual(response.json()['count'], 2)
+        self.assertContains(response, text=product2.name)
+        self.assertContains(response, text=self.product.name)
+
     def test_get_inventory(self):
         '''Test to get model Inventory data'''
         Inventory.objects.create(product=self.product, user=self.user)
@@ -63,17 +70,9 @@ class GETUserExistsNotStaffTest(LiveServerTestCase):
         response = self.client.get(path=self.live_server_url + 'inventory/')
         self.assertNotContains(response, 'other_product')
 
-class POSTUserExistsNotStaffTest(LiveServerTestCase):
+class POSTUserExistsNotStaffTest(BaseApiTestCase):
     '''TestCase with POST request for user who is not staff'''
 
-    def setUp(self):
-        self.live_server_url = 'http://localhost:8000/api/'
-        self.user = User.objects.create_user(username='nikem', password='kalilinux')
-        self.client = APIClient()
-        self.client.login(username='nikem', password='kalilinux')
-
-    def tearDown(self):
-        self.client.logout()
     def test_add_authors(self):
         '''Test add new author'''
         data = {'name':'author1'}
@@ -137,17 +136,11 @@ class POSTUserExistsNotStaffTest(LiveServerTestCase):
         self.client.post(path=self.live_server_url + 'inventory/', data=data)
         self.assertFalse(Inventory.objects.filter(user=user, product=product.pk))
 
-
-class PostUserExistsStaffTest(LiveServerTestCase):
+class PostUserExistsStaffTest(BaseApiTestCase):
     def setUp(self):
-        self.live_server_url = 'http://localhost:8000/api/'
-        self.user = User.objects.create_user(username='nikem', password='kalilinux', is_staff=True)
-        self.client = APIClient()
-        self.client.login(username='nikem', password='kalilinux')
-
-    def tearDown(self):
-        self.client.logout()
-
+        super().setUp()
+        self.user.is_staff = True
+        self.user.save()
     def test_add_author(self):
         data = {
             'name':'author1'
