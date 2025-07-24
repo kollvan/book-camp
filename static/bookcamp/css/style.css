@@ -193,8 +193,14 @@ section{
 .row{
     display: grid;
     grid-template-columns: repeat(3, 3fr);
-    gap: 1em;
+    gap: 2em 1em;
     padding: 2em 0 0.5em;
+}
+
+span.select{
+    text-decoration: underline wavy;
+    color: rgb(184, 192, 108);
+    font-style: italic;
 }
 
 .card{

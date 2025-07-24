@@ -1,18 +1,16 @@
-
+from django.contrib.postgres.search import SearchVector
 from django.views.generic import ListView, DetailView
 
 from goods.models import Product
-from goods.utls import RangeYear, get_current_year
+from goods.utls import RangeYear, get_current_year, search
 
 
 # Create your views here.
 class CatalogView(ListView):
     template_name = 'goods/catalog.html'
-
     context_object_name = 'products'
-
+    model = Product
     paginate_by = 15
-
     extra_context = {
         'title': 'BookCamp - Каталог',
     }
@@ -30,15 +28,17 @@ class CatalogView(ListView):
         return context
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
-        if category_slug == 'all':
-            products = Product.objects.all()
+        if query := self.request.GET.get('q', None):
+            products = search(query)
+        elif category_slug == 'all':
+            products = super().get_queryset()
         else:
-            products = Product.objects.filter(category__slug=category_slug)
-        tags = self.request.GET.getlist('tags', None)
-        if tags:
+            products = super().get_queryset().filter(category__slug=category_slug)
+
+        if tags := self.request.GET.getlist('tags', None):
             products = products.filter(tags__slug__in=tags).distinct()
-        authors = self.request.GET.getlist('authors', None)
-        if authors:
+
+        if authors := self.request.GET.getlist('authors', None):
             products = products.filter(author__slug__in=authors)
         current_year = get_current_year()
 

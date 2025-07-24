@@ -2,7 +2,6 @@ from unittest import skip
 
 from api.tests.base import BaseApiTestCase
 from goods.models import Author, Category, Product
-from users.models import User
 
 class LatinSearchCatalogTest(BaseApiTestCase):
     def setUp(self):

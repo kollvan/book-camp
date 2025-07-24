@@ -23,7 +23,15 @@
                         {% endif %}
                     </a>
                     <div>
-                        <a class="card-title" href="{% url 'goods:product' product.slug %}">{{ product.name|truncatewords:3 }}</a>
+                        <a class="card-title" href="{% url 'goods:product' product.slug %}">
+                            {% autoescape off %}
+                            {% if product.headline %}
+                                {{ product.headline|truncatewords:3 }}
+                            {% else %}
+                                {{ product.name|truncatewords:3 }}
+                            {% endif %}
+                            {% endautoescape %}
+                        </a>
                         {% if user.is_authenticated %}
                         {%get_item data_from_inventory product.pk as product_status%}
                         {% if product_status is not None %}
@@ -42,7 +50,14 @@
                         {% endif %}
                         <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
                         <p>Дата выхода: {{ product.year_of_publication }}</p>
-                        <p>{{ product.description|truncatewords:10 }}</p>
+                        <p>
+                            {% autoescape off %}
+                            {% if product.bodyline %}
+                                {{ product.bodyline|truncatewords:20 }}
+                            {% else %}
+                                {{ product.description|truncatewords:10 }}
+                            {% endif %}
+                            {% endautoescape %}</p>
                         <p>
                             Тэги:
                         </p>
