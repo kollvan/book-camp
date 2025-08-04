@@ -19,7 +19,7 @@ class RegisterUserForm(UserCreationForm):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     username = forms.CharField()
-    email = forms.CharField(required=False)
+    email = forms.CharField()
     password1 = forms.CharField()
     password2 = forms.CharField()
 
