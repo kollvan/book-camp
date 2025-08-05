@@ -12,7 +12,7 @@
 <section>
         <div class="inventory-search-container">
             <div>
-                <select class="inventory-search" form="filter-form" name="ordering" id="id_ordering">
+                <select class="inventory-search" name="ordering" id="id_ordering">
                     <option value="">-- Сортировка --</option>
                     <option {% if selected_ordering == 'name' %} selected {% endif %} value="name">По названию</option>
                     <option {% if selected_status %}disabled
@@ -24,7 +24,7 @@
                 </select>
             </div>
             <div>
-                <select class="inventory-search" form="filter-form" name="status" id="id_status">
+                <select class="inventory-search" name="status" id="id_status">
                     <option value="">-- Выберите статус --</option>
                     <option {% if selected_status == '3'%}selected{% endif %} value="3">Начато</option>
                     <option {% if selected_status == '2'%}selected{% endif %} value="2">Отложенно</option>
@@ -34,7 +34,7 @@
             </div>
             <div>
                 {% get_available_categories as categories %}
-                <select class="inventory-search" form="filter-form" name="category" id="id_category">
+                <select class="inventory-search" name="category" id="id_category">
                     <option value="">-- Выберите категорию --</option>
                     {% for cat in categories %}
                     <option {% if selected_category == cat.slug%}selected{% endif %} value="{{ cat.slug }}">{{ cat.name }}</option>
@@ -78,7 +78,7 @@
             {% include 'includes/pagination.html'%}
         </div>
         <div class="filter">
-            <form onsubmit="submitForm(event)" id="filter-form" type="get" action="#">
+            <form id="filter-form" type="get" action="#">
                 <div class="container-search">
                     <input placeholder="..." name="q" type="text">
                     <button class="button" type="submit">Поиск</button>
@@ -131,7 +131,9 @@
                 </div>
             </form>
         </div>
-
     </section>
+{% endblock %}
+{% block scripts%}
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-inventory.js'%}"></script>
 {% endblock %}
 
