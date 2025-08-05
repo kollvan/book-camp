@@ -14,7 +14,7 @@
                 {% get_inventory_data products user.id as data_from_inventory %}
                 {% endif %}
                 {% for product in products %}
-                <div class="card">
+                <div id="id_{{product.slug}}" class="card">
                     <a href="{% url 'goods:product' product.slug %}">
                         {% if product.image %}
                             <img src="{{ product.image.url }}" class="img-card" alt="{{ product.name}}">
@@ -34,19 +34,21 @@
                         </a>
                         {% if user.is_authenticated %}
                         {%get_item data_from_inventory product.pk as product_status%}
-                        {% if product_status is not None %}
-                        <div class="card-status">
-                            {% if product_status == 3 %}
-                                Начато
-                            {% elif product_status == 2 %}
-                                Отложенно
-                            {% elif product_status == 1 %}
-                                Добавленно
-                            {% elif product_status == 0 %}
-                                Прочитанно
+                            {% if product_status is not None %}
+                            <div class="card-status">
+                                {% if product_status == 3 %}
+                                    Начато
+                                {% elif product_status == 2 %}
+                                    Отложенно
+                                {% elif product_status == 1 %}
+                                    Добавленно
+                                {% elif product_status == 0 %}
+                                    Прочитанно
+                                {% endif %}
+                            </div>
+                            {% else %}
+                            <div class="card-status invisible"></div>
                             {% endif %}
-                        </div>
-                        {% endif %}
                         {% endif %}
                         <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
                         <p>Дата выхода: {{ product.year_of_publication }}</p>
@@ -66,6 +68,15 @@
                             <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                             {% endfor %}
                         </ul>
+                        <div class="card-bottom">
+                            <div class="card-rank">
+                                5.0
+                            </div>
+                            {% if user.is_authenticated %}
+                                <button class="card-btn {% if product_status is not None %}remove{% endif %}"
+                                        id="id_{{product.slug}}-{{product.pk}}"></button>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -146,6 +157,7 @@
 
                     </details>
                     <button class="button" type="submit">Сохранить</button>
+                    <button class="button" type="reset">Сбросить</button>
                 </div>
             </form>
         </div>
@@ -155,4 +167,7 @@
     <footer>
         <p>&copy;Bookcamp </p>
     </footer>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
 {% endblock %}

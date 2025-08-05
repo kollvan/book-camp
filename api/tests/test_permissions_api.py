@@ -122,6 +122,7 @@ class POSTUserExistsNotStaffTest(BaseApiTestCase):
         response = self.client.post(path=self.live_server_url + 'inventory/', data=data)
         self.assertEqual(response.status_code, 201)
         self.assertTrue(Inventory.objects.filter(user=self.user, product=product.pk))
+
     def test_add_inventory_only_self(self):
         '''Test add new record in Inventory model for other user'''
         author = Author.objects.create(name='author1', slug='author1')

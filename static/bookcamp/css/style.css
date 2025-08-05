@@ -243,6 +243,10 @@ span.select{
     text-align: center;
     margin-bottom:0.5em;
 }
+.invisible{
+    display: none;
+}
+
 .completed{
     border-color: green;
     color: aquamarine;
@@ -250,6 +254,46 @@ span.select{
 .started{
     border-color: yellow;
     color: yellow;
+}
+
+.card-bottom{
+    display: flex;
+    gap: 2em;
+    margin-top: 0.7em;
+    justify-content: space-around;
+}
+.card-btn{
+    /* Основные стили */
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Псевдоэлемент для создания плюса */
+.card-btn::before {
+    content: "+";
+    display: block;
+}
+.card-btn:active{
+    box-shadow: 6px 6px 8px 0px #3d3c3c inset;
+}
+.card-btn.remove:before{
+    content: "-";
+    display: block;
+}
+.card-rank{
+    background-color: rgb(226, 226, 222);
+    align-content: center;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255);
+    color:black;
 }
 .postponed{
     border-color: blue;

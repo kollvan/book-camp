@@ -6,11 +6,12 @@ from api.views import CatalogViewSet, AuthorViewSet, CategoryViewSet, TagsViewSe
 router = routers.SimpleRouter()
 router.register(r'catalog', CatalogViewSet)
 router.register(r'authors', AuthorViewSet)
-router.register(r'inventory', InventoryViewSet)
 
 urlpatterns = [
     path('category/', CategoryViewSet.as_view({'get':'list', 'post':'create'})),
     path('tags/', TagsViewSet.as_view({'get':'list', 'post':'create'})),
+    path('inventory/', InventoryViewSet.as_view({'get':'list', 'post':'create'})),
+    path('inventory/<slug:product_slug>/', InventoryViewSet.as_view({'delete':'destroy', 'patch':'partial_update'})),
     path('user/', UserAPIView.as_view()),
     path('', include(router.urls)),
     path('auth/', include('djoser.urls')),

@@ -16,6 +16,7 @@ class InventoryFilterBackend(filters.BaseFilterBackend):
             return queryset.filter(status=cur_status)
         return queryset
 
+
 class ExtendedSearchFilter(filters.SearchFilter):
     replace_fields={
             'authorName':'author__name',

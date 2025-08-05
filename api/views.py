@@ -48,6 +48,11 @@ class InventoryViewSet(viewsets.ModelViewSet):
     pagination_class = BaseAPIPagination
     permission_classes = (IsAuthenticated,)
     filter_backends = (IsOwnerFilterBackend, InventoryFilterBackend,)
+    def get_object(self):
+        slug = self.request.parser_context.get('kwargs')['product_slug']
+        user = self.request.user.pk
+        return Inventory.objects.get(user=user, product__slug=slug)
+
 
 
 class UserAPIView(RetrieveUpdateDestroyAPIView):
