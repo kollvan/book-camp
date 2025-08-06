@@ -32,6 +32,9 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}
     readonly_fields = ['datetime_added', 'show_image',]
 
+    # def save_model(self, request, obj, form, change):
+    #     print(form.cleaned_data['image'])
+    #     super().save_model(request, obj, form, change)
 
     @admin.display(description='Image', ordering='name')
     def show_image(self, product):
