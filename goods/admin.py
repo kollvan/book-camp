@@ -15,10 +15,21 @@ class TagAdmin(admin.ModelAdmin):
     fields = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
+class ProductsAuthor(admin.TabularInline):
+    verbose_name = 'Книга'
+    verbose_name_plural = 'Книги'
+    model = Product
+    fields = ['name', 'slug', 'year_of_publication', 'datetime_added']
+    search_fields = ['name', 'year_of_publication']
+    readonly_fields = ['datetime_added',]
+    extra = 0
+
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     fields = ['name', 'slug']
     prepopulated_fields = {'slug':('name',)}
+    inlines = [ProductsAuthor,]
+
 
 
 

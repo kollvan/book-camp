@@ -56,15 +56,12 @@
                     <div>
                         <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
                         <div class="card-status">
-                            {% if item.status  == 3 %}
-                                Начато
-                            {% elif item.status  == 2 %}
-                                Отложенно
-                            {% elif item.status  == 1 %}
-                                Добавленно
-                            {% elif item.status  == 0 %}
-                                Прочитанно
-                            {% endif %}
+                            <select class="current_status" name="product_status" id="{{item.product.slug}}-status" >
+                                <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
+                                <option value="2" {% if item.status == 2 %} selected {% endif %}>Отложенно</option>
+                                <option value="1" {% if item.status == 1 %} selected {% endif %}>Добавленно</option>
+                                <option value="0" {% if item.status == 0 %} selected {% endif %}>Прочитанно</option>
+                            </select>
                         </div>
                         <a class="card-author"
                            href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">
@@ -133,7 +130,6 @@
         </div>
     </section>
 {% endblock %}
-{% block scripts%}
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-inventory.js'%}"></script>
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
 {% endblock %}
-
