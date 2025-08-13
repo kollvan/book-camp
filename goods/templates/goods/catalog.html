@@ -15,62 +15,70 @@
                 {% endif %}
                 {% for product in products %}
                 <div id="id_{{product.slug}}" class="card">
-                    <a href="{% url 'goods:product' product.slug %}">
-                        {% if product.image %}
-                            <img src="{{ product.image.url }}" class="img-card" alt="{{ product.name}}">
-                        {% else %}
-                            <img src="{% static 'bookcamp/image/empty.jpg' %}" class="img-card" alt="{{ product.name}}">
-                        {% endif %}
-                    </a>
                     <div>
-                        <a class="card-title" href="{% url 'goods:product' product.slug %}">
-                            {% autoescape off %}
-                            {% if product.headline %}
-                                {{ product.headline|truncatewords:3 }}
-                            {% else %}
-                                {{ product.name|truncatewords:3 }}
-                            {% endif %}
-                            {% endautoescape %}
-                        </a>
-                        {% if user.is_authenticated %}
-                        {%get_item data_from_inventory product.pk as product_status%}
-                            <div class="card-status {% if product_status is None %}invisible{% endif %}">
-                                <select {% if product_status is None %} disabled {% endif %}
-                                        class="current_status" name="product_status" id="{{product.slug}}-status" >
-                                    <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
-                                    <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
-                                    <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
-                                    <option value="0" {% if product_status == 0 %} selected {% endif %}>Прочитанно</option>
-                                </select>
-                            </div>
-                        {% endif %}
-                        <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
-                        <p>Дата выхода: {{ product.year_of_publication }}</p>
-                        <p>
-                            {% autoescape off %}
-                            {% if product.bodyline %}
-                                {{ product.bodyline|truncatewords:20 }}
-                            {% else %}
-                                {{ product.description|truncatewords:10 }}
-                            {% endif %}
-                            {% endautoescape %}</p>
-                        <p>
-                            Тэги:
-                        </p>
-                        <ul class="tag-list">
-                            {% for tag in product.get_tags %}
-                            <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
-                            {% endfor %}
-                        </ul>
-                        <div class="card-bottom">
-                            <div class="card-rank">
-                                5.0
-                            </div>
-                            {% if user.is_authenticated %}
-                                <button class="card-btn {% if product_status is not None %}remove{% endif %}"
-                                        id="id_{{product.slug}}-{{product.pk}}"></button>
-                            {% endif %}
+                        <div class="card-img">
+                            <a href="{% url 'goods:product' product.slug %}">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name}}">
+                                {% else %}
+                                    <img src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ product.name}}">
+                                {% endif %}
+                            </a>
                         </div>
+                        <div class="card-main">
+                            <div>
+                                <a class="card-title" href="{% url 'goods:product' product.slug %}">
+                                    {% autoescape off %}
+                                    {% if product.headline %}
+                                        {{ product.headline|truncatewords:3 }}
+                                    {% else %}
+                                        {{ product.name|truncatewords:3 }}
+                                    {% endif %}
+                                    {% endautoescape %}
+                                </a>
+                                {% if user.is_authenticated %}
+                                {%get_item data_from_inventory product.pk as product_status%}
+                                    <div class="card-status {% if product_status is None %}invisible{% endif %}">
+                                        <select {% if product_status is None %} disabled {% endif %}
+                                                class="current_status" name="product_status" id="{{product.slug}}-status" >
+                                            <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
+                                            <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
+                                            <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
+                                            <option value="0" {% if product_status == 0 %} selected {% endif %}>Прочитанно</option>
+                                        </select>
+                                    </div>
+                                {% endif %}
+                                <a class="card-author" href="?{% append_params authors=product.author.slug %}">Автор: {{ product.author }}</a>
+                                <p>Дата выхода: {{ product.year_of_publication }}</p>
+                                <p>
+                                    {% autoescape off %}
+                                    {% if product.bodyline %}
+                                        {{ product.bodyline|truncatewords:20 }}
+                                    {% else %}
+                                        {{ product.description|truncatewords:10 }}
+                                    {% endif %}
+                                    {% endautoescape %}</p>
+                            </div>
+                            <div>
+                                <p>
+                                    Тэги:
+                                </p>
+                                <ul class="tag-list">
+                                    {% for tag in product.get_tags %}
+                                    <li class="tag"><a href="?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="card-rank">
+                            5.0
+                        </div>
+                        {% if user.is_authenticated %}
+                            <button class="card-btn {% if product_status is not None %}remove{% endif %}"
+                                id="id_{{product.slug}}-{{product.pk}}"></button>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -78,7 +86,7 @@
             {% include 'includes/pagination.html' %}
         </div>
         <div class="filter">
-            <form onsubmit="submitForm(event)" type="get" action="{% url 'goods:catalog' category_slug %}">
+            <form type="get" action="{% url 'goods:catalog' category_slug %}">
                 <div class="container-search">
                     <input placeholder="..." name="q" type="text">
                     <button class="button" type="submit">Поиск</button>

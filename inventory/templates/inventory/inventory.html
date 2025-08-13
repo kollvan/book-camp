@@ -45,35 +45,47 @@
         <div class="catalog">
             <div class="row">
                 {% for item in inventory %}
-                <div class="card">
-                    <a href="{% url 'goods:product' item.product.slug %}">
-                        {% if item.product.image %}
-                            <img src="{{ item.product.image.url }}" class="img-card" alt="{{ item.product.name}}">
-                        {% else %}
-                            <img src="{% static 'bookcamp/image/empty.jpg' %}" class="img-card" alt="{{ item.product.name}}">
-                        {% endif %}
-                        </a>
+                <div class="card" id="{{id_item.product.slug}}">
                     <div>
-                        <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
-                        <div class="card-status">
-                            <select class="current_status" name="product_status" id="{{item.product.slug}}-status" >
-                                <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
-                                <option value="2" {% if item.status == 2 %} selected {% endif %}>Отложенно</option>
-                                <option value="1" {% if item.status == 1 %} selected {% endif %}>Добавленно</option>
-                                <option value="0" {% if item.status == 0 %} selected {% endif %}>Прочитанно</option>
-                            </select>
+                        <div class="card-img">
+                            <a href="{% url 'goods:product' item.product.slug %}">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name}}">
+                                {% else %}
+                                    <img src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ item.product.name}}">
+                                {% endif %}
+                            </a>
                         </div>
-                        <a class="card-author"
-                           href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">
-                            Автор: {{ item.product.author }}
-                        </a>
-                        <p>Дата выхода: {{ item.product.year_of_publication}}</p>
+                        <div class="card-main">
+                            <div>
+                                <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
+                                <div class="card-status">
+                                    <select class="current_status" name="product_status" id="{{item.product.slug}}-status" >
+                                        <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
+                                        <option value="2" {% if item.status == 2 %} selected {% endif %}>Отложенно</option>
+                                        <option value="1" {% if item.status == 1 %} selected {% endif %}>Добавленно</option>
+                                        <option value="0" {% if item.status == 0 %} selected {% endif %}>Прочитанно</option>
+                                    </select>
+                                </div>
+                                <a class="card-author"
+                                   href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">
+                                    Автор: {{ item.product.author }}
+                                </a>
+                                <p>Дата выхода: {{ item.product.year_of_publication}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="card-rank">
+                            5.0
+                        </div>
+                            <button class="card-btn remove" id="id_{{item.product.slug}}-{{item.product.pk}}"></button>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-            {% include 'includes/pagination.html'%}
         </div>
+            {% include 'includes/pagination.html'%}
         <div class="filter">
             <form id="filter-form" type="get" action="#">
                 <div class="container-search">
@@ -124,12 +136,13 @@
                         </ul>
                     </details>
                     <!---->
-                    <button class="button" type="submit">Сохранить</button>
+                    <button class="button" type="submit">Применить</button>
+                    <button class="button" type="reset">Сбросить</button>
                 </div>
             </form>
         </div>
     </section>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-inventory.js'%}"></script>
 {% endblock %}

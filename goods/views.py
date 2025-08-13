@@ -10,7 +10,7 @@ class CatalogView(ListView):
     template_name = 'goods/catalog.html'
     context_object_name = 'products'
     model = Product
-    paginate_by = 15
+    paginate_by = 12
     extra_context = {
         'title': 'BookCamp - Каталог',
     }
