@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', async function(){
             const buttonId = this.id.match(/^id_(.+)-(\d+)$/);
             try{
-                const response_ok = sendRequestDeleteToServer(buttonId[1]);
+                const response_ok = sendRequestToServer('DELETE', buttonId[1]);
                 if(response_ok){
                     let card_good = this.closest('.card');
                     card_good.remove();
@@ -61,21 +61,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-async function sendRequestDeleteToServer(slug) {
-    url = window.location.protocol + '//' + window.location.host + '/api/inventory/' + slug + '/';
-    const baseOptions = {
-      method: 'DELETE',
-      headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken'),
-        },
-    };
-    const response = await fetch(url, baseOptions);
-    return response.ok;
-}
-function getCookie(name) {
-    let matches = document.cookie.match(new RegExp(
-    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
-    ));
-    return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+

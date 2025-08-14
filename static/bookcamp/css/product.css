@@ -1,7 +1,7 @@
 .container-image{
     grid-column-start: 2;
     grid-column-end: 6;
-    margin-block: 3em;
+    margin-top: 3em;
 }
 .container-data{
     grid-column-start: 6;
@@ -9,21 +9,98 @@
 }
 
 .product-title{
-    display: inline;
-    color: white;
     font-size: 1.5em;
+    margin-block: 0.5em;
+
 }
 
 .product-status{
-    display: inline;
-    padding-inline: 0.5em;
+    padding: 0.3em;
+    margin-bottom: 0px;
 }
 
 .container-title{
     margin-bottom: 2em;
+    display: flex;
+    align-items: center;
+    gap: 1em;
 }
 
 .product-image{
     border-radius: 5px;
     box-shadow: 15px 16px 10px 1px #d3cece81;
+}
+
+.product-review{
+    margin-top: 2em;
+    border-top: 1px solid white;
+    margin-bottom: 1em;
+}
+.product-review form{
+    display: grid;
+    gap: 1em;
+    margin-bottom: 1em;
+}
+.product-review textarea{
+    resize: none;
+    height: 5em;
+    border-radius: 2px;
+}
+.product-review button{
+    border: 2px solid;
+    background-color: rgb(206, 72, 72);
+}
+.review-container{
+    background-color: grey;
+    border-radius: 2px;
+}
+.review-title{
+    background-color: black;
+    border: 1px solid white;
+    padding: 0.5em 1em 0.5em;
+}
+.review-content{
+    padding: 0.7em;
+}
+.list-reviews{
+    grid-row: 2;
+    grid-column-start: 6;
+    grid-column-end: 12;
+}
+.list-reviews summary{
+    font-size: 1.3em;
+    cursor: pointer;
+}
+.list-reviews details{
+    margin-bottom: 2em;
+}
+.btn-show-more{
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid white;
+    padding-block: 0.5em;
+    border-radius: 10px;
+    background-color: white;
+}
+.btn-show-more:hover{
+    background-color: blue;
+}
+.change-status{
+    display: flex;
+    gap: 1em;
+    padding-block: 1em;
+}
+.change-status p{
+    margin-block: 0.5em;
+}
+.select-status{
+    background-color: rgb(182, 179, 179);
+    padding-inline: 1em;
+    border-radius: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden; 
+}
+.select-status:hover{
+    border: 2px solid white;
 }

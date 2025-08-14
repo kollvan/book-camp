@@ -393,6 +393,9 @@ input:checked + label{
     color: grey;
 }
 
+.invisible{
+    display: none;
+}
 
 .button:hover{
     background-color: rgb(199, 58, 58);

@@ -10,25 +10,31 @@
             {% csrf_token %}
             <h1>Редактирование профиля</h1>
             <div class="inputs">
+                {{ form.non_field_errors }}
                 <div class="input-field image-field">
                     <label for="id_image">Изменить изображение профиля:</label>
                     <input id="id_image" name="image" type="file">
+                    {{ form.image.errors}}
                 </div>
                 <div class="input-field">
                     <label for="id_username">Логин:</label>
                     <input id="id_username" name="username" type="text" value="{{ user.username}}">
+                    {{form.username.errors}}
                 </div>
                 <div class="input-field">
                     <label for="id_email">E-mail:</label>
                     <input id="id_email" placeholder="example@gmail.com" name="email" type="email" value="{{ user.email }}">
+                    {{ form.email.errors }}
                 </div>
                 <div class="input-field">
                     <label for="id_first_name">Имя:</label>
                     <input id="id_first_name" value="{{user.first_name}}" name="first_name" type="text">
+                    {{ form.first_name.errors }}
                 </div>
                 <div class="input-field">
                     <label for="id_last_name">Фамилия:</label>
                     <input id="id_last_name" value="{{ user.last_name }}" name="last_name" type="text">
+                    {{ form.last_name.errors }}
                 </div>
             </div>
             <button type="submit">Сохранить изменения</button>

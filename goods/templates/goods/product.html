@@ -21,18 +21,19 @@
                 <span class="product-title">
                     {{ product.name }}
                 </span>
-                    {% get_product_status product.pk user.pk as product_status %}
-                    {% if user.is_authenticated and product_status is not None %}
-                    <div class="card-status {% if product_status is None %}invisible{% endif %}">
-                        <select {% if product_status is None %} disabled {% endif %}
-                                class="current_status" name="product_status" id="{{product.slug}}-status" >
-                            <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
-                            <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
-                            <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
-                            <option value="0" {% if product_status == 0 %} selected {% endif %}>Прочитанно</option>
-                        </select>
+                {% get_product_status product.pk user.pk as product_status %}
+                {% if user.is_authenticated%}
+                    {% if product_status is not None%}
+                    <div class="card-status product-status">
+                        {% if product_status == 3 %} Начато {% endif %}
+                        {% if product_status == 2 %} Отложенно {% endif %}
+                        {% if product_status == 1 %} Добавленно {% endif %}
+                        {% if product_status == 0 %} Прочитанно {% endif %}
                     </div>
                     {% endif %}
+                    <button class="card-btn {% if product_status is not None%} remove {% endif %}"
+                            id="id_{{product.slug}}-{{product.pk}}"></button>
+                {% endif %}
             </div>
             <a class="card-author" href="{% url 'goods:catalog' 'all' %}?authors={{product.author.slug}}">Автор: {{product.author}}</a>
             <p>Дата выхода: {{product.year_of_publication}}</p>
@@ -46,6 +47,18 @@
                 <li class="tag"><a href="{% url 'goods:catalog' 'all' %}?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                 {% endfor %}
             </ul>
+            {% if user.is_authenticated and product_status is not None %}
+            <div class="change-status ">
+                <p>Изменить текущий статус: </p>
+                <select class="select-status"
+                        name="product_status" id="{{product.slug}}-status">
+                    <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
+                    <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
+                    <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
+                    <option value="0" {% if product_status == 0 %} selected {% endif %}>Прочитанно</option>
+                </select>
+            </div>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -56,5 +69,7 @@
     </footer>
 {% endblock%}
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/generic.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/select-status.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
 {% endblock %}
