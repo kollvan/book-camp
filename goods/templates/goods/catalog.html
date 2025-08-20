@@ -96,7 +96,7 @@
                         <summary class="inscription">
                             Теги:
                         </summary>
-                        <div class="tags-filter">
+                        <div class="tags-filter filter-scroll">
                             {% get_all_tags as all_tags%}
                             {% for tag in all_tags%}
                             <div class="tag">
@@ -147,7 +147,7 @@
                             Авторы:
                         </summary>
                         {% get_authors category_slug as authors%}
-                        <ul>
+                        <ul class="filter-scroll">
                             {% for author in authors %}
                             <li class="filter-list">
                                 <input value="{{author.slug}}" {% if author.slug in selected_authors %}checked{% endif %}

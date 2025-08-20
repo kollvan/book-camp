@@ -1,8 +1,7 @@
-from django.contrib.postgres.search import SearchVector
 from django.views.generic import ListView, DetailView
 
 from goods.models import Product
-from goods.utls import RangeYear, get_current_year, search
+from goods.utls import RangeYear, get_current_year, search, FilterParams, FilterQueryset
 
 
 # Create your views here.
@@ -28,6 +27,8 @@ class CatalogView(ListView):
         return context
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
+        # self.extra_context.update(selected_authors=self.request.GET.getlist('authors', None))
+
         if query := self.request.GET.get('q', None):
             products = search(query)
         elif category_slug == 'all':
@@ -35,24 +36,20 @@ class CatalogView(ListView):
         else:
             products = super().get_queryset().filter(category__slug=category_slug)
 
-        if tags := self.request.GET.getlist('tags', None):
-            products = products.filter(tags__slug__in=tags).distinct()
-
-        if authors := self.request.GET.getlist('authors', None):
-            products = products.filter(author__slug__in=authors)
-        current_year = get_current_year()
-
         years = RangeYear(
             self.request.GET.get('year_from', '0'),
-            self.request.GET.get('year_to', current_year)
+            self.request.GET.get('year_to', get_current_year())
         )
 
-        if not years.is_default():
-            products = products.filter(year_of_publication__range=(years.year_from, years.year_to))
+        params = FilterParams(
+            tags=self.request.GET.getlist('tags', None),
+            authors=self.request.GET.getlist('authors', None),
+            years=years,
+            ordering=self.request.GET.get('ordering', None)
+        )
+        queryset_filter = FilterQueryset(products, params)
+        products = queryset_filter.get_filter_queryset()
 
-
-        if self.request.GET.get('ordering', None):
-            products = products.order_by(self.request.GET.get('ordering', None))
         return products.select_related('author').prefetch_related('tags')
 
 

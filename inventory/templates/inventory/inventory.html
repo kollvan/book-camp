@@ -98,7 +98,7 @@
                             Теги:
                         </summary>
                         {% get_available_tags as tags %}
-                        <div class="tags-filter">
+                        <div class="tags-filter filter-scroll">
                         {% for tag in tags%}
                             <div class="tag">
                                 <input type="checkbox" value="{{ tag.slug }}" name="tags" id="id_{{tag.slug}}">
@@ -125,7 +125,7 @@
                         <summary class="inscription">
                             Авторы:
                         </summary>
-                        <ul>
+                        <ul class="filter-scroll">
                             {% get_available_authors as authors%}
                             {% for author in authors%}
                             <li class="filter-list">
