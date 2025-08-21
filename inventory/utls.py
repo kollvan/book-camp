@@ -13,7 +13,7 @@ class InventoryFilterParams(FilterParams):
 class InventoryFilters(Filters):
     filter_field_tags = 'product__tags__slug__in'
     filter_field_author = 'product__author__slug__in'
-    filter_years_of_publication = 'product__year_of_publication__range'
+    filter_field_years_of_publication = 'product__year_of_publication__range'
 
 
 class FilterQuerysetForInventory(FilterQueryset):

@@ -101,7 +101,8 @@
                         <div class="tags-filter filter-scroll">
                         {% for tag in tags%}
                             <div class="tag">
-                                <input type="checkbox" value="{{ tag.slug }}" name="tags" id="id_{{tag.slug}}">
+                                <input type="checkbox" {% if tag.slug in selected_tags %}checked{% endif %}
+                                       value="{{ tag.slug }}" name="tags" id="id_{{tag.slug}}">
                                 <label for="id_{{tag.slug}}">{{tag.name}}</label>
                             </div>
                         {% endfor %}
@@ -114,11 +115,13 @@
                         <label for="id_year_publication1">
                             от
                         </label>
-                        <input id="id_year_publication1" name="year_from" value="2020" type="number">
+                        <input id="id_year_publication1" name="year_from"
+                               value="{% if year_from %}{{year_from}}{% else %}2020{% endif %}" type="number">
                         <label for="id_year_publication2">
                             до
                         </label>
-                        <input id="id_year_publication2" name="year_to" value="2025" type="number">
+                        <input id="id_year_publication2" name="year_to"
+                               value="{% if year_to %}{{year_to}}{% else %}2025{% endif %}" type="number">
                     </details>
                     <!---->
                     <details open class="filter-container">
@@ -129,7 +132,9 @@
                             {% get_available_authors as authors%}
                             {% for author in authors%}
                             <li class="filter-list">
-                                <input value="{{author.slug}}" type="checkbox" name="authors" id="id_{{author.slug}}">
+                                <input value="{{author.slug}}" type="checkbox"
+                                       {% if author.slug in selected_authors %}checked{% endif %}
+                                       name="authors" id="id_{{author.slug}}">
                                 <label for="id_{{author.slug}}">{{author.name}}</label>
                             </li>
                             {% endfor %}

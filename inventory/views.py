@@ -20,6 +20,11 @@ class InventoryView(LoginRequiredMixin,ListView):
             'selected_status':context['view'].request.GET.get('status', None),
             'selected_category':context['view'].request.GET.get('category', None),
             'selected_ordering':context['view'].request.GET.get('ordering', None),
+            'selected_tags':context['view'].request.GET.get('tags', None),
+            'selected_authors':context['view'].request.GET.get('authors', None),
+            'year_to':context['view'].request.GET.get('year_to', None),
+            'year_from':context['view'].request.GET.get('year_from', None),
+
         }
         context.update(extr_context)
         return context

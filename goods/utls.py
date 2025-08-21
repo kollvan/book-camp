@@ -14,7 +14,7 @@ def get_current_year() -> str:
 
 class RangeYear(NamedTuple):
     year_from: str = '0'
-    year_to: str = '2025'
+    year_to: str = get_current_year()
 
     def is_default(self) -> bool:
         return self.year_from == '0' and self.year_to == get_current_year()
@@ -46,7 +46,7 @@ class FilterParams:
 class Filters:
     filter_field_tags = 'tags__slug__in'
     filter_field_author = 'author__slug__in'
-    filter_years_of_publication = 'year_of_publication__range'
+    filter_field_years_of_publication = 'year_of_publication__range'
 
 
 class FilterQueryset:
@@ -78,7 +78,7 @@ class FilterQueryset:
     def filter_years(self) -> None:
         if self.params.years and not self.params.years.is_default():
             self.queryset = self.queryset.filter(
-                **{self.filters.filter_years_of_publication: (self.params.years.year_from, self.params.years.year_to)}
+                **{self.filters.filter_field_years_of_publication: (self.params.years.year_from, self.params.years.year_to)}
             )
 
     def filter_ordering(self) -> None:

@@ -16,13 +16,6 @@ class LoginUser(LoginView):
     extra_context = {
         'title': 'Авторизация',
     }
-    #Может пригодиться
-    # def form_invalid(self, form):
-    #     messages.success(
-    #         self.request,
-    #         '''Проверьте свою почту, мы отправили Вам ссылку,
-    #         которую можно использовать для входа на сайт.''')
-    #     return super().form_invalid(form)
 
 
 class RegisterUser(CreateView):
