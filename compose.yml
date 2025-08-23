@@ -1,0 +1,57 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: psgr
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASS}
+      - POSTGRES_DB=${POSTGRES_DB_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgres/data
+    
+    networks:
+      - bcnet
+
+  bookcamp:
+    build: ./book-camp
+    
+    image: bookcamp_site
+    links:
+      - "postgres:dbps"
+    command: "gunicorn -c gunicorn.py --keyfile private_key.pem --certfile certificate.pem bookcamp.wsgi"
+    volumes:
+      - ./book-camp:/app/site/book-camp
+    container_name: bc_site
+    networks:
+      - bcnet
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    networks:
+      - bcnet
+    expose:
+      - 8080
+    ports:
+      - "80:8080"
+    volumes:
+      - ./book-camp/static:/app/site/book-camp/static
+      - ./book-camp/media:/app/site/book-camp/media
+      - ./book-camp/logs:/app/site/book-camp/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - bookcamp
+            
+
+
+networks:
+  bcnet:
+    driver: bridge
+
+volumes:
+  postgres_data:
