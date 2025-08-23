@@ -4,8 +4,10 @@ django-extensions==3.2.3
 djangorestframework==3.16.0
 dotenv==0.9.9
 pillow==11.1.0
-psycopg2==2.9.10
+psycopg2-binary==2.9.10
 python-slugify==8.0.4
 gunicorn==23.0.0
+gevent==25.5.1
 djoser==2.3.1
 django-admin-confirm==1.0.1
+redis==6.4.0

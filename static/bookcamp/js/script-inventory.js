@@ -24,24 +24,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
+        const fieldNames = new Set();
 
-        const urlParams = new URLSearchParams(window.location.search);
-
-        const formData = new FormData(this);
-        Array.from(this.elements).forEach(element => {
-            if (element.type === 'checkbox') {
-                if(element.checked) urlParams.append(element.name, element.value);
+        for (let i = 0; i < form.elements.length; i++) {
+            const element = form.elements[i];
+            if (element.name) {
+                fieldNames.add(element.name);
             }
-            else{
-                urlParams.set(element.name, element.value)
+        }
+        const searchParams = new URLSearchParams(window.location.search);
+        for (let [key, value] of searchParams.entries()) {
+            if(!fieldNames.has(key))
+            {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
             }
-        });
-
-        const newUrl = window.location.pathname + '?' + urlParams.toString();
-
-        window.location.href = newUrl;
+        }
+        form.submit()
     });
+
 });
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.card-btn');

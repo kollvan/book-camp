@@ -27,8 +27,8 @@ def get_all_tags():
 @register.simple_tag()
 def get_authors(category_slug):
     if category_slug == 'all':
-        return Author.objects.all()[:10]
-    return Author.objects.filter(product__category__slug=category_slug)[:10]
+        return Author.objects.all()
+    return Author.objects.filter(product__category__slug=category_slug)
 
 @register.simple_tag()
 def get_inventory_data(products, user_id):

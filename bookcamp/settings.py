@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('DJANGO_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS').split(sep=' ')
 
 
 # Application definition
@@ -55,10 +55,10 @@ INSTALLED_APPS = [
     'inventory',
     'api',
 ]
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+if DEBUG:
+    INTERNAL_IPS = [
+        "127.0.0.1",
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,9 +90,10 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS= [
-    BASE_DIR / 'static/',
-]
+if DEBUG:
+    STATICFILES_DIRS= [
+        BASE_DIR / 'static/',
+    ]
 
 WSGI_APPLICATION = 'bookcamp.wsgi.application'
 
@@ -147,7 +148,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

@@ -68,7 +68,7 @@
                                     </select>
                                 </div>
                                 <a class="card-author"
-                                   href="{% url 'goods:catalog' 'all'%}?authors={{item.product.author.slug}}">
+                                   href="?{% append_params authors=item.product.author.slug %}">
                                     Автор: {{ item.product.author }}
                                 </a>
                                 <p>Дата выхода: {{ item.product.year_of_publication}}</p>
@@ -87,7 +87,7 @@
         </div>
             {% include 'includes/pagination.html'%}
         <div class="filter">
-            <form id="filter-form" type="get" action="#">
+            <form id="filter-form" type="get" action="{% url 'inventory:collection' %}" >
                 <div class="container-search">
                     <input placeholder="..." name="q" type="text">
                     <button class="button" type="submit">Поиск</button>
@@ -140,7 +140,6 @@
                             {% endfor %}
                         </ul>
                     </details>
-                    <!---->
                     <button class="button" type="submit">Применить</button>
                     <button class="button" type="reset">Сбросить</button>
                 </div>

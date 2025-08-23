@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.cache import cache_page
 
+from bookcamp import settings
+
 
 # Create your views here.
 
