@@ -16,8 +16,8 @@ class Inventory(models.Model):
 
     date_added = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
     status = models.IntegerField(choices=Status, default=Status.ADDED, db_index=True, verbose_name='Состояние')
-    rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.00,
-                               validators=[MaxValueValidator(10)],
+    rank = models.IntegerField(default=0,
+                               validators=[MaxValueValidator(5)],
                                verbose_name='Оценка')
 
 

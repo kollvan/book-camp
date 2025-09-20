@@ -1,0 +1,122 @@
+.card{
+    font-size: 0.9em;
+    border: 1px solid grey;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content:  space-between;
+    box-shadow: 8px 3px 18px 3px #424248;
+    border-radius: 5px;
+}
+.card-img{
+    text-align: center;
+    padding-bottom: 1em;
+}
+/**/
+.card-img img{
+    height: 250px;
+    width: 180px;
+}
+
+.card-bottom{
+    display: flex;
+    gap: 2em;
+    justify-content: space-around;
+    background-color: rgb(218, 214, 214);
+}
+.card-author{
+    text-decoration: none;
+    background-color: rgba(128, 128, 128, 0.885);
+    border-bottom: 1px solid white;
+    color:black;
+    padding-inline: 0.2em;
+    border-radius: 2px;
+}
+.card-title{
+    text-decoration: none;
+    color: white;
+    display: block;
+    padding-bottom: 0.5em;
+    font-size: 1.1em;
+}
+.card .tag-list{
+    max-height: 3em;
+    overflow: hidden;
+}
+
+.card-status{
+    border: 1px solid;
+    background-color: grey;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom:0.5em;
+}
+.current_status{
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+}
+
+
+.card-btn{
+    width: 1em;
+    height: 1em;
+    border-radius: 25%;
+    margin: 1px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-btn::before {
+    content: "+";
+    display: block;
+}
+.card-btn:active{
+    box-shadow: 6px 6px 8px 0px #3d3c3c inset;
+}
+.card-btn.remove:before{
+    content: "-";
+    display: block;
+}
+.card-rank{
+    display: flex;
+    align-items: center;
+    margin-left: 0.5em;
+    gap: 1em;
+    flex-direction: row-reverse;
+}
+
+.card-rank:not(:checked) > input{
+    display: none;
+}
+.card-rank:not(:checked) > label:before{
+    content: '★';
+    transition: all 0.1s ease;
+    font-size: 1.3em;
+}
+.card-rank > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px rgb(148, 82, 16);
+}
+
+.card-rank:not(:checked) > label:hover,
+.card-rank:not(:checked) > label:hover ~ label {
+	color: gold;
+    text-shadow: 1px 1px black;
+}
+.card-rank > input:checked + label{
+    background-color: inherit;
+}
+
+.card-rank > input:checked ~ label:hover{
+	color: rgba(255, 217, 0, 0.908);
+}
+
+.card p{
+    margin: 0.5em;
+}

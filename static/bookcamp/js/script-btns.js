@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const response_ok = await sendRequestToServer(service_method, buttonId[1], data={'set_product':buttonId[2]});
 
                 if(response_ok){
-                    console.log('id_'+buttonId[1]);
                     card = document.querySelector('#id_'+buttonId[1]);
                     div = card.querySelector('.card-status');
                     if(service_method == 'POST'){

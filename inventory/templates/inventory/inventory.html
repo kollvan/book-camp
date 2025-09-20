@@ -6,6 +6,7 @@
 {% block extends_style %}
 <link rel="stylesheet" href="{% static 'bookcamp/css/inventory.css'%}">
 <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css'%}">
+<link rel="stylesheet" href="{% static 'bookcamp/css/card.css'%}">
 {% endblock %}
 
 {% block section %}
@@ -59,6 +60,7 @@
                         <div class="card-main">
                             <div>
                                 <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
+
                                 <div class="card-status">
                                     <select class="current_status" name="product_status" id="{{item.product.slug}}-status" >
                                         <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
@@ -75,12 +77,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-bottom">
-                        <div class="card-rank">
-                            5.0
-                        </div>
+                    <div>
+                        <p>Ваша оценка:</p>
+                        <div class="card-bottom">
+                            {% include 'includes/goods_rank.html'%}
                             <button class="card-btn remove" id="id_{{item.product.slug}}-{{item.product.pk}}"></button>
+                        </div>
                     </div>
+
                 </div>
                 {% endfor %}
             </div>
