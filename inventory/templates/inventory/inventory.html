@@ -51,18 +51,22 @@
                         <div class="card-img">
                             <a href="{% url 'goods:product' item.product.slug %}">
                                 {% if item.product.image %}
-                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name}}">
+                                    <img title="{{item.product.name}}"
+                                            src="{{ item.product.image.url }}"  alt="{{ item.product.name}}">
                                 {% else %}
-                                    <img src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ item.product.name}}">
+                                    <img title="{{item.product.name}}"
+                                            src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ item.product.name}}">
                                 {% endif %}
                             </a>
                         </div>
                         <div class="card-main">
                             <div>
-                                <a class="card-title" href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
+                                <a class="card-title" title="{{item.product.name}}"
+                                   href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
 
                                 <div class="card-status">
-                                    <select class="current_status" name="product_status" id="{{item.product.slug}}-status" >
+                                    <select title="Изменить статус" class="current_status"
+                                            name="product_status" id="{{item.product.slug}}-status" >
                                         <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
                                         <option value="2" {% if item.status == 2 %} selected {% endif %}>Отложенно</option>
                                         <option value="1" {% if item.status == 1 %} selected {% endif %}>Добавленно</option>
@@ -80,8 +84,9 @@
                     <div>
                         <p>Ваша оценка:</p>
                         <div class="card-bottom">
-                            {% include 'includes/goods_rank.html'%}
-                            <button class="card-btn remove" id="id_{{item.product.slug}}-{{item.product.pk}}"></button>
+                            {% include 'includes/own_rank.html'%}
+                            <button class="card-btn remove" title="Удалить из инвентаря"
+                                    id="id_{{item.product.slug}}-{{item.product.pk}}"></button>
                         </div>
                     </div>
 

@@ -25,6 +25,7 @@ class Inventory(models.Model):
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
 
 
+
     class Meta:
         db_table = 'inventory'
         verbose_name = 'Инвентарь'

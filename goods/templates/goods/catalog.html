@@ -5,12 +5,14 @@
 {% block extends_style %}
     <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/card.css' %}">
+    <link rel="stylesheet" href="{% static 'bookcamp/css/card-catalog.css'%}">
 {% endblock %}
 
 {% block section %}
   <section class="content-catalog">
         <div class="catalog">
             <div class="row">
+                {% get_avg_ranks products as avg_ranks%}
                 {% if user.is_authenticated %}
                 {% get_inventory_data products user.id as data_from_inventory %}
                 {% endif %}
@@ -20,15 +22,18 @@
                         <div class="card-img">
                             <a href="{% url 'goods:product' product.slug %}">
                                 {% if product.image %}
-                                    <img src="{{ product.image.url }}" alt="{{ product.name}}">
+                                    <img title="{{product.name}}"
+                                            src="{{ product.image.url }}" alt="{{ product.name}}">
                                 {% else %}
-                                    <img src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ product.name}}">
+                                    <img title="{{product.name}}"
+                                            src="{% static 'bookcamp/image/empty.jpg' %}" alt="{{ product.name}}">
                                 {% endif %}
                             </a>
                         </div>
                         <div class="card-main">
                             <div>
-                                <a class="card-title" href="{% url 'goods:product' product.slug %}">
+                                <a class="card-title" title="{{product.name}}"
+                                   href="{% url 'goods:product' product.slug %}">
                                     {% autoescape off %}
                                     {% if product.headline %}
                                         {{ product.headline|truncatewords:3 }}
@@ -41,6 +46,7 @@
                                 {%get_item data_from_inventory product.pk as product_status%}
                                     <div class="card-status {% if product_status is None %}invisible{% endif %}">
                                         <select {% if product_status is None %} disabled {% endif %}
+                                                title="Выбрать статус"
                                                 class="current_status" name="product_status" id="{{product.slug}}-status" >
                                             <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
                                             <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
@@ -72,12 +78,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-bottom margin-top">
-                        <div class="card-rank">
-                            5.0
+                    <div class="card-bottom margin-top {% if not user.is_authenticated %}display-card-not-authenticated{% endif %}">
+
+                        {% get_item avg_ranks product.pk 0.00 as record %}
+                        <div class="card-rank-catalog"
+                             title="Рейтинг: {{record|floatformat:2}}">
+                            {{ record|floatformat:2 }}
                         </div>
                         {% if user.is_authenticated %}
                             <button class="card-btn {% if product_status is not None %}remove{% endif %}"
+                                    title="{% if product_status is not None %}Удалить из инвентаря
+                                    {% else %}Добавить в инвентарь
+                                    {% endif %}"
                                 id="id_{{product.slug}}-{{product.pk}}"></button>
                         {% endif %}
                     </div>

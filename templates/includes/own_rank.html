@@ -1,4 +1,5 @@
-<div id="ranks_{{ item.product.slug }}" class="card-rank">
+<div id="ranks_{{ item.product.slug }}" title="Ваша оценка"
+     class="card-rank">
     <input name="group_{{item.product.slug}}" id="rank_5-{{item.pk}}" class="value-rank"
            {%if item.rank == 5 %} checked {% endif %} type="radio" value="5">
     <label for="rank_5-{{item.pk}}"></label>

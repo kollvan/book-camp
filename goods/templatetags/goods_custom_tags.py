@@ -1,5 +1,7 @@
+from typing import Any
+
 from django import template
-from django.db.models import Q
+from django.db.models import Q, Avg, QuerySet
 from django.utils.http import urlencode
 
 from goods.models import Category, Tag, Author
@@ -40,9 +42,24 @@ def get_inventory_data(products, user_id):
         return inventory_items
     except Inventory.DoesNotExist:
         return None
+
 @register.simple_tag()
-def get_item(collection:dict, key:str):
-    return collection.get(key, None)
+def get_avg_ranks(products):
+    qs = Inventory.objects.filter(Q(product__pk__in=products) & ~Q(rank=0) ).values('product__pk').annotate(Avg('rank'))
+    dict_inventory = {
+        item['product__pk'] : item['rank__avg'] for item in qs
+    }
+    return dict_inventory
+
+@register.simple_tag()
+def get_from_queryset(queryset:QuerySet, value:Any, field:str='product__pk'):
+    try:
+        return queryset.get(**{field:value})
+    except Inventory.DoesNotExist:
+        return None
+@register.simple_tag()
+def get_item(collection:dict, key:str, default=None):
+    return collection.get(key, default)
 
 @register.simple_tag()
 def get_product_status(product_id, user_id):
