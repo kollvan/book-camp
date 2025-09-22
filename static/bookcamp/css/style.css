@@ -94,6 +94,7 @@ section{
     display: grid;
     color: white;
     grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
     padding-inline: 5em;
     align-items: start;
 }

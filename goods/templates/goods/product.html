@@ -2,8 +2,9 @@
 {% load goods_custom_tags %}
 {% load static %}
 {% block extends_style %}
-    <link rel="stylesheet" href="{% static 'bookcamp/css/product.css' %}">
+
     <link rel="stylesheet" href="{% static 'bookcamp/css/card.css' %}">
+    <link rel="stylesheet" href="{% static 'bookcamp/css/product.css' %}">
 {% endblock %}
 {% block section %}
 <section class="content">
@@ -22,8 +23,9 @@
                 <span class="product-title">
                     {{ product.name }}
                 </span>
-                {% get_product_status product.pk user.pk as product_status %}
                 {% if user.is_authenticated%}
+                    {% get_user_data product.pk user.pk as user_inventory_data %}
+                    {% get_item user_inventory_data 'status' as product_status %}
                     {% if product_status is not None%}
                     <div class="card-status product-status">
                         {% if product_status == 3 %} Начато {% endif %}
@@ -40,6 +42,9 @@
             <p>Дата выхода: {{product.year_of_publication}}</p>
             <p>{{ product.description}}</p>
             <p>Количество страниц: {{product.quantity_page}}</p>
+            <div class="card-rank-product">
+                Рейтинг: {% get_avg_rank product.pk %}
+            </div>
             <p>
                 Тэги:
             </p>
@@ -48,20 +53,15 @@
                 <li class="tag"><a href="{% url 'goods:catalog' 'all' %}?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                 {% endfor %}
             </ul>
-            {% if user.is_authenticated and product_status is not None %}
-            <div class="change-status ">
-                <p>Изменить текущий статус: </p>
-                <select class="select-status"
-                        name="product_status" id="{{product.slug}}-status">
-                    <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
-                    <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
-                    <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
-                    <option value="0" {% if product_status == 0 %} selected {% endif %}>Прочитанно</option>
-                </select>
-            </div>
+            {% if user.is_authenticated and product_status is None %}
+                <button class="btn-user-data btn-add" id="id_{{product.pk}}">Добавить</button>
             {% endif %}
         </div>
     </div>
+    {% if user.is_authenticated and product_status is not None%}
+        {% get_item user_inventory_data 'rank' as user_rank %}
+        {% include 'includes/user_data_product.html'%}
+    {% endif %}
 </section>
 {% endblock %}
 {% block footer %}

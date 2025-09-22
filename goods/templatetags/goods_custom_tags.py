@@ -33,6 +33,18 @@ def get_authors(category_slug):
     return Author.objects.filter(product__category__slug=category_slug)
 
 @register.simple_tag()
+def get_user_data(product_pk, user_pk):
+    try:
+        elem = Inventory.objects.get(Q(product__pk=product_pk) & Q(user__pk=user_pk))
+        result = {
+            'rank':elem.rank,
+            'status':elem.status,
+        }
+        return result
+    except Inventory.DoesNotExist:
+        return None
+
+@register.simple_tag()
 def get_inventory_data(products, user_id):
     allowed_id = {item['id'] for item in products.values('id')}
     try:
@@ -52,19 +64,14 @@ def get_avg_ranks(products):
     return dict_inventory
 
 @register.simple_tag()
-def get_from_queryset(queryset:QuerySet, value:Any, field:str='product__pk'):
-    try:
-        return queryset.get(**{field:value})
-    except Inventory.DoesNotExist:
-        return None
+def get_avg_rank(product_pk):
+    qs = Inventory.objects.filter(product__pk=product_pk)
+    value = qs.values('product__pk').annotate(Avg('rank')).values('rank__avg').get()
+    return value['rank__avg']
+
 @register.simple_tag()
 def get_item(collection:dict, key:str, default=None):
     return collection.get(key, default)
 
-@register.simple_tag()
-def get_product_status(product_id, user_id):
-    try:
-        return Inventory.objects.get(Q(product_id=product_id)&Q(user=user_id)).status
-    except Inventory.DoesNotExist:
-        return None
+
 

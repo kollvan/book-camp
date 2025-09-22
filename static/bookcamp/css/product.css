@@ -14,11 +14,6 @@
 
 }
 
-.product-status{
-    padding: 0.3em;
-    margin-bottom: 0px;
-}
-
 .container-title{
     margin-bottom: 2em;
     display: flex;
@@ -103,4 +98,73 @@
 }
 .select-status:hover{
     border: 2px solid white;
+}
+.user-data{
+    margin-block: 2em;
+    border-block: 3px solid white;
+    font-size: 1.2em;
+    grid-column: 2/12;
+    grid-row: 2;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+.for-product{
+    display: flex;
+    align-items: center;
+}
+.for-product > div
+{
+    color: white;
+}
+.btn-user-data{
+    padding: 0.5em 1em;
+    border: 2px solid white;
+    background-color: #000000;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.btn-user-data:hover{
+    box-shadow: 3px 3px 1px 1px #a5a0a0;
+    cursor: pointer;
+}
+.btn-user-data:active{
+    box-shadow: 2px 2px 10px 0px #eae8e8 inset;
+}
+.btn-add{
+    margin-top: 1em;
+}
+.btn-remove::before{
+    content: '';
+    display: flex;
+    width: 24px;
+    height: 24px;
+    background-image: url('../image/delete_24.svg');
+}
+.btn-add::before{
+    content: '';
+    display: flex;
+    width: 24px;
+    height: 24px;
+    background-image: url('../image/add_24.svg');
+}
+.card-rank-product{
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    padding: 0.2em 0.5em;
+    font-weight: 500;
+    font-family: 'Merienda', 'Times New Roman', Times, serif;
+    font-size: 1.2em;
+}
+.product-status{
+    padding: 0.3em;
+    margin-bottom: 0px;
+    background-color: inherit;
+    border: 3px solid white;
+    font-size: 1.2em;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
 }
