@@ -25,8 +25,8 @@
                 </span>
                 {% if user.is_authenticated%}
                     {% get_user_data product.pk user.pk as user_inventory_data %}
+                    {% if user_inventory_data is not None%}
                     {% get_item user_inventory_data 'status' as product_status %}
-                    {% if product_status is not None%}
                     <div class="card-status product-status">
                         {% if product_status == 3 %} Начато {% endif %}
                         {% if product_status == 2 %} Отложенно {% endif %}

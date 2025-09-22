@@ -57,18 +57,23 @@ def get_inventory_data(products, user_id):
 
 @register.simple_tag()
 def get_avg_ranks(products):
-    qs = Inventory.objects.filter(Q(product__pk__in=products) & ~Q(rank=0) ).values('product__pk').annotate(Avg('rank'))
-    dict_inventory = {
-        item['product__pk'] : item['rank__avg'] for item in qs
-    }
-    return dict_inventory
+    try:
+        qs = Inventory.objects.filter(Q(product__pk__in=products) & ~Q(rank=0) ).values('product__pk').annotate(Avg('rank'))
+        dict_inventory = {
+            item['product__pk'] : item['rank__avg'] for item in qs
+        }
+        return dict_inventory
+    except Inventory.DoesNotExist:
+        return {}
 
 @register.simple_tag()
 def get_avg_rank(product_pk):
-    qs = Inventory.objects.filter(product__pk=product_pk)
-    value = qs.values('product__pk').annotate(Avg('rank')).values('rank__avg').get()
-    return value['rank__avg']
-
+    try:
+        qs = Inventory.objects.filter(product__pk=product_pk)
+        value = qs.values('product__pk').annotate(Avg('rank')).values('rank__avg').get()
+        return value['rank__avg']
+    except Inventory.DoesNotExist:
+        return 0.00
 @register.simple_tag()
 def get_item(collection:dict, key:str, default=None):
     return collection.get(key, default)
