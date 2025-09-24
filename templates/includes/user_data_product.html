@@ -2,7 +2,7 @@
         <div class="change-status ">
             <p>Изменить текущий статус: </p>
             <select class="select-status"
-                    name="product_status" id="{{product.slug}}-status">
+                    name="product_status" id="{{product_slug}}-status">
                 <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
                 <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
                 <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
@@ -13,23 +13,23 @@
             <span>
                 Ваша оценка:
             </span>
-            <div id="ranks_{{product.slug}}" class="card-rank">
+            <div id="ranks_{{product_slug}}" class="card-rank">
                 <input name="group_rank" {%if rank == 1 %} checked {% endif %}
-                       class="value-rank" id="rank_5-{{product.slug}}" type="radio" value="5">
-                <label for="rank_5-{{product.slug}}"></label>
+                       class="value-rank" id="rank_5-{{product_slug}}" type="radio" value="5">
+                <label for="rank_5-{{product_slug}}"></label>
                 <input name="group_rank" {%if rank == 1 %} checked {% endif %}
-                       class="value-rank" id="rank_4-{{product.slug}}" type="radio" value="4">
-                <label for="rank_4-{{product.slug}}"></label>
+                       class="value-rank" id="rank_4-{{product_slug}}" type="radio" value="4">
+                <label for="rank_4-{{product_slug}}"></label>
                 <input name="group_rank" {%if rank == 1 %} checked {% endif %}
-                       class="value-rank" id="rank_3-{{product.slug}}" type="radio" value="3">
-                <label for="rank_3-{{product.slug}}"></label>
+                       class="value-rank" id="rank_3-{{product_slug}}" type="radio" value="3">
+                <label for="rank_3-{{product_slug}}"></label>
                 <input name="group_rank" {%if rank == 1 %} checked {% endif %}
-                       class="value-rank" id="rank_2-{{product.slug}}" type="radio" value="2">
-                <label for="rank_2-{{product.slug}}"></label>
+                       class="value-rank" id="rank_2-{{product_slug}}" type="radio" value="2">
+                <label for="rank_2-{{product_slug}}"></label>
                 <input name="group_rank" {%if rank == 1 %} checked {% endif %}
-                       class="value-rank" id="rank_1-{{product.slug}}" type="radio" value="1">
-                <label for="rank_1-{{product.slug}}"></label>
+                       class="value-rank" id="rank_1-{{product_slug}}" type="radio" value="1">
+                <label for="rank_1-{{product_slug}}"></label>
             </div>
         </div>
-        <button class="btn-user-data btn-remove" id="id_{{product.slug}}">Удалить</button>
+        <button class="btn-user-data btn-remove" id="id_{{product_slug}}">Удалить</button>
     </div>

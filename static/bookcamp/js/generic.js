@@ -17,13 +17,25 @@ async function sendRequestToServer(service_method, slug = null, data = null) {
     {
         baseOptions.body = JSON.stringify(data);
     }
-    console.log(data)
-    const response = await fetch(url, baseOptions);
-    return response.ok;
+    const response = await fetch(url, baseOptions)
+    return response;
 }
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+async function sendRequestForWidgets(pk, service){
+    url = window.location.protocol + '//' + window.location.host + service + pk + '/';
+    const baseOptions = {
+      method: 'GET',
+      headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+    };
+    const html_response = await fetch(url, baseOptions)
+    return html_response
 }

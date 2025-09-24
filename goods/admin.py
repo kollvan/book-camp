@@ -22,6 +22,7 @@ class ProductsAuthor(admin.TabularInline):
     fields = ['name', 'slug', 'year_of_publication', 'datetime_added']
     search_fields = ['name', 'year_of_publication']
     readonly_fields = ['datetime_added',]
+    filter_vertical = ['tags',]
     extra = 0
 
 @admin.register(Author)
@@ -42,10 +43,8 @@ class ProductAdmin(admin.ModelAdmin):
     ]
     prepopulated_fields = {'slug':('name',)}
     readonly_fields = ['datetime_added', 'show_image',]
+    filter_horizontal = ['tags',]
 
-    # def save_model(self, request, obj, form, change):
-    #     print(form.cleaned_data['image'])
-    #     super().save_model(request, obj, form, change)
 
     @admin.display(description='Image', ordering='name')
     def show_image(self, product):

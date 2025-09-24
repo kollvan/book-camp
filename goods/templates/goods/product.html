@@ -2,7 +2,6 @@
 {% load goods_custom_tags %}
 {% load static %}
 {% block extends_style %}
-
     <link rel="stylesheet" href="{% static 'bookcamp/css/card.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/product.css' %}">
 {% endblock %}
@@ -35,7 +34,7 @@
                     </div>
                     {% endif %}
                     <button class="card-btn {% if product_status is not None%} remove {% endif %}"
-                            id="id_{{product.slug}}-{{product.pk}}"></button>
+                            id="{{product.slug}}_{{product.pk}}"></button>
                 {% endif %}
             </div>
             <a class="card-author" href="{% url 'goods:catalog' 'all' %}?authors={{product.author.slug}}">Автор: {{product.author}}</a>
@@ -54,13 +53,15 @@
                 {% endfor %}
             </ul>
             {% if user.is_authenticated and product_status is None %}
-                <button class="btn-user-data btn-add" id="id_{{product.pk}}">Добавить</button>
+                <button class="btn-user-data btn-add" id="id_{{product.slug}}_{{product.pk}}">Добавить</button>
             {% endif %}
         </div>
     </div>
     {% if user.is_authenticated and product_status is not None%}
         {% get_item user_inventory_data 'rank' as user_rank %}
+        {% with product.slug as product_slug %}
         {% include 'includes/user_data_product.html'%}
+        {% endwith %}
     {% endif %}
 </section>
 {% endblock %}
@@ -71,6 +72,7 @@
 {% endblock%}
 {% block scripts %}
     <script type="text/javascript" src="{% static 'bookcamp/js/generic.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/select-status.js'%}"></script>
+    <!--<script type="text/javascript" src="{% static 'bookcamp/js/select-status.js'%}"></script>-->
     <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
 {% endblock %}

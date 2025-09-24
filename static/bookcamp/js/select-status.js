@@ -4,7 +4,7 @@ const selects = document.querySelectorAll('.current_status');
         select.addEventListener('change', async function() {
         try{
             const response_ok = sendRequestToServer('PATCH', this.id.replace(/-status$/, ""), {'status':this.value})
-            console.log(this.value)
+
         }
         catch(error){
             console.log(error)

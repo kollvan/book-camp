@@ -1,4 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.http import JsonResponse, HttpRequest, Http404, HttpResponseNotFound, HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.views import View
 from django.views.generic import ListView
 
 from goods.utls import get_current_year, RangeYear
@@ -55,3 +60,19 @@ class InventoryView(LoginRequiredMixin,ListView):
         queryset_filter = FilterQuerysetForInventory(inventory, params)
         inventory = queryset_filter.get_filter_queryset()
         return inventory.select_related('product__author').prefetch_related('product__tags')
+
+class UserData(View):
+    def get(self, request:HttpRequest, *args, **kwargs):
+        if request.user.is_authenticated:
+            get_object_or_404(Inventory, user=request.user, product__slug=self.kwargs['product_slug'])
+            print(request.user, self.kwargs['product_slug'], sep='\n')
+
+            context = {
+                'product_status': 1,
+                'rank': 0,
+                'product_slug': self.kwargs['product_slug'],
+            }
+            html_response = render_to_string('../templates/includes/user_data_product.html', context)
+            return JsonResponse({'user_data' : html_response})
+
+        return HttpResponseBadRequest()
