@@ -30,14 +30,14 @@ class InventoryTest(BaseApiTestCase):
         self.assertContains(response, product2.slug)
     def test_patch_inventory(self):
         data = {
-            'rank':'3.56',
+            'rank':'3',
         }
         response = self.client.patch(path=self.live_server_url + f'inventory/{self.product.slug}/', data=data)
-        self.assertContains(response, f'"rank":"{data['rank']}"')
+        self.assertContains(response, f'"rank":{data['rank']}')
 
     def test_patch_inventory_for_status(self):
         data={
-            'status' : '3',
+            'status': '3',
         }
         response = self.client.patch(path=self.live_server_url + f'inventory/{self.product.slug}/', data=data)
-        self.assertContains(response, f'"status":"{data['status']}"')
+        self.assertContains(response, f'"status":{data['status']}')

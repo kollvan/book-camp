@@ -65,7 +65,6 @@ class UserData(View):
     def get(self, request:HttpRequest, *args, **kwargs):
         if request.user.is_authenticated:
             get_object_or_404(Inventory, user=request.user, product__slug=self.kwargs['product_slug'])
-            print(request.user, self.kwargs['product_slug'], sep='\n')
 
             context = {
                 'product_status': 1,

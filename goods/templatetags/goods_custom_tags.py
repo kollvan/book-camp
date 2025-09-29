@@ -71,7 +71,7 @@ def get_avg_rank(product_pk):
     try:
         qs = Inventory.objects.filter(product__pk=product_pk)
         value = qs.values('product__pk').annotate(Avg('rank')).values('rank__avg').get()
-        return value['rank__avg']
+        return round(value['rank__avg'], 2)
     except Inventory.DoesNotExist:
         return 0.00
 @register.simple_tag()

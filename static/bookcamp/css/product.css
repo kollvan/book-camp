@@ -93,9 +93,6 @@
     background-color: rgb(182, 179, 179);
     padding-inline: 1em;
     border-radius: 5px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden; 
 }
 .select-status:hover{
     border: 2px solid white;

@@ -14,22 +14,23 @@
                 Ваша оценка:
             </span>
             <div id="ranks_{{product_slug}}" class="card-rank">
-                <input name="group_rank" {%if rank == 1 %} checked {% endif %}
+                <input name="group_rank" {%if user_rank == 5 %} checked {% endif %}
                        class="value-rank" id="rank_5-{{product_slug}}" type="radio" value="5">
                 <label for="rank_5-{{product_slug}}"></label>
-                <input name="group_rank" {%if rank == 1 %} checked {% endif %}
+                <input name="group_rank" {%if user_rank == 4 %} checked {% endif %}
                        class="value-rank" id="rank_4-{{product_slug}}" type="radio" value="4">
                 <label for="rank_4-{{product_slug}}"></label>
-                <input name="group_rank" {%if rank == 1 %} checked {% endif %}
+                <input name="group_rank" {%if user_rank == 3 %} checked {% endif %}
                        class="value-rank" id="rank_3-{{product_slug}}" type="radio" value="3">
                 <label for="rank_3-{{product_slug}}"></label>
-                <input name="group_rank" {%if rank == 1 %} checked {% endif %}
+                <input name="group_rank" {%if user_rank == 2 %} checked {% endif %}
                        class="value-rank" id="rank_2-{{product_slug}}" type="radio" value="2">
                 <label for="rank_2-{{product_slug}}"></label>
-                <input name="group_rank" {%if rank == 1 %} checked {% endif %}
+                <input name="group_rank" {%if user_rank == 1 %} checked {% endif %}
                        class="value-rank" id="rank_1-{{product_slug}}" type="radio" value="1">
                 <label for="rank_1-{{product_slug}}"></label>
             </div>
         </div>
-        <button class="btn-user-data btn-remove" id="id_{{product_slug}}">Удалить</button>
+        <button class="btn-user-data btn-remove" title="Удалить из инвентаря"
+                id="id_{{product_slug}}">Удалить</button>
     </div>

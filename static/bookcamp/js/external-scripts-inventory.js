@@ -5,12 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
             data = {
                 'rank': e.target.value,
             }
+            response = sendRequestToServer('PATCH', div_card.id.split('_')[1], data);
+        }
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('change', async function(e){
+        if(e.target.name === 'product_status'){
             try{
-                response_ok = sendRequestToServer('PATCH', div_card.id.split('_')[1], data)
+                const response_ok = sendRequestToServer('PATCH', e.target.id.replace(/-status$/, ""),
+                {'status': e.target.value})
+
             }
             catch(error){
                 console.log(error)
             }
         }
+
     });
 });
+

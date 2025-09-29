@@ -27,7 +27,7 @@ class GETUserExistsNotStaffTest(BaseApiTestCase):
         self.assertContains(response, 'nikem')
     def test_get_only_self_user(self):
         '''Test to get only your user data'''
-        User.objects.create_user(username='other_user', password='123')
+        User.objects.create_user(username='other_user', email='thisispochta@dmail.com', password='123')
         response = self.client.get(self.live_server_url + 'user/')
         self.assertNotContains(response, 'other_user')
     def test_get_tag(self):
@@ -63,7 +63,7 @@ class GETUserExistsNotStaffTest(BaseApiTestCase):
         self.assertContains(response, 'product1')
     def test_get_only_self_inventory(self):
         Inventory.objects.create(product=self.product, user=self.user)
-        other_user = User.objects.create_user(username='user2', password='1234')
+        other_user = User.objects.create_user(username='user2', email='mypochta21@dmail.com', password='1234')
         other_product = Product.objects.create(name='other_product',
                                                author=self.author, quantity_page=10, category=self.category)
         Inventory.objects.create(product=other_product, user=other_user)
@@ -127,9 +127,9 @@ class POSTUserExistsNotStaffTest(BaseApiTestCase):
         '''Test add new record in Inventory model for other user'''
         author = Author.objects.create(name='author1', slug='author1')
         category = Category.objects.create(name='category1', slug='category1')
-        product = Product.objects.create(name='product1', author=author, quantity_page=10,
+        product = Product.objects.create(name='product1', author=author,  quantity_page=10,
                                               category=category)
-        user = User.objects.create_user(username='other_user', password='1234')
+        user = User.objects.create_user(username='other_user', email='mypochta21@dmail.com', password='1234')
         data = {
             'set_product': product.pk,
             'user': user.pk

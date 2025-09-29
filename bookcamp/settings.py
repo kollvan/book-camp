@@ -95,6 +95,7 @@ if DEBUG:
         BASE_DIR / 'static/',
     ]
 
+
 WSGI_APPLICATION = 'bookcamp.wsgi.application'
 
 # Database
@@ -186,10 +187,12 @@ SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
 EMAIL_USE_TLS = True
 
-if not DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-else:
+if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 
 REDIS_USERNAME = os.getenv('REDIS_USERNAME')
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')

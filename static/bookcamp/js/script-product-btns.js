@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if(e.target.classList.contains('btn-remove')){
-                console.log('huiii')
                 product_info = e.target.id.match(/^id_(.+).*$/)
                 response = sendRequestToServer('DELETE', slug=product_info[1])
                 response.then(value =>{
@@ -64,5 +63,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(error)
             }
         }
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('change', async function(e){
+        if(e.target.name === 'product_status'){
+            div = document.querySelector('.product-status')
+            div.textContent = e.target.options[e.target.selectedIndex].textContent;
+        }
+
     });
 });

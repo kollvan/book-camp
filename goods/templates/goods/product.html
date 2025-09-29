@@ -42,7 +42,8 @@
             <p>{{ product.description}}</p>
             <p>Количество страниц: {{product.quantity_page}}</p>
             <div class="card-rank-product">
-                Рейтинг: {% get_avg_rank product.pk %}
+                {% get_avg_rank product.pk as avg_rank %}
+                Рейтинг: {{ avg_rank }}
             </div>
             <p>
                 Тэги:
@@ -53,7 +54,8 @@
                 {% endfor %}
             </ul>
             {% if user.is_authenticated and product_status is None %}
-                <button class="btn-user-data btn-add" id="id_{{product.slug}}_{{product.pk}}">Добавить</button>
+                <button class="btn-user-data btn-add" title="Добавить в инвентарь"
+                        id="id_{{product.slug}}_{{product.pk}}">Добавить</button>
             {% endif %}
         </div>
     </div>
@@ -72,7 +74,6 @@
 {% endblock%}
 {% block scripts %}
     <script type="text/javascript" src="{% static 'bookcamp/js/generic.js'%}"></script>
-    <!--<script type="text/javascript" src="{% static 'bookcamp/js/select-status.js'%}"></script>-->
     <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
     <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
 {% endblock %}
