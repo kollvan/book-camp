@@ -34,8 +34,9 @@ class FunctionalTestCase(StaticLiveServerTestCase):
                                                author=self.author1, category=self.category1, quantity_page=2025)
         self.product2 = Product.objects.create(name='css profil', slug='css-profil', description='Script PYTHON',
                                                author=self.author2, category=self.category2, quantity_page=241)
-    def create_user(self):
-        self.username='test_user'
-        self.password='234polnd'
-        self.email='mypochta@damil.com'
+
+    def create_user(self, username: str = 'test_user', password: str = '234polnd', email='mypochta@damil.com'):
+        self.username = username
+        self.password = password
+        self.email = email
         self.user = User.objects.create(username=self.username, email=self.email, password=self.password)
