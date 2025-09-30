@@ -13,7 +13,7 @@
             <span>
                 Ваша оценка:
             </span>
-            <div id="ranks_{{product_slug}}" class="card-rank">
+            <div id="ranks_{{product_slug}}" name="product_rank" class="card-rank">
                 <input name="group_rank" {%if user_rank == 5 %} checked {% endif %}
                        class="value-rank" id="rank_5-{{product_slug}}" type="radio" value="5">
                 <label for="rank_5-{{product_slug}}"></label>

@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
-from django.http import JsonResponse, HttpRequest, Http404, HttpResponseNotFound, HttpResponseBadRequest
+from django.http import JsonResponse, HttpRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views import View
@@ -74,4 +73,4 @@ class UserData(View):
             html_response = render_to_string('../templates/includes/user_data_product.html', context)
             return JsonResponse({'user_data' : html_response})
 
-        return HttpResponseBadRequest()
+        return HttpResponseForbidden()
