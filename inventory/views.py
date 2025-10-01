@@ -30,7 +30,6 @@ class InventoryView(LoginRequiredMixin,ListView):
             'year_from':context['view'].request.GET.get('year_from', None),
 
         }
-        print(extr_context)
         context.update(extr_context)
         return context
     def get_queryset(self):

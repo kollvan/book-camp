@@ -7,7 +7,7 @@ from users.models import User
 class BaseInventoryTestCase(LiveServerTestCase):
 
     def setUp(self):
-        self.live_server_url = 'http://127.0.0.1:8000/inventory/collection/'
+        self.full_live_server_url = f'{self.live_server_url}/inventory/collection/'
         self.client = Client()
 
     def create_and_login_user(self, username: str = 'kali', email: str = 'meandpochta@dmail.com'):
