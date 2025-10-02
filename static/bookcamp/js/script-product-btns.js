@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     div.remove()
                     button_add = document.createElement('button')
                     button_add.classList.add('btn-user-data', 'btn-add')
-                    button_add.id = 'id_' + document.querySelector('.card-btn').id
+                    button_add.id = 'id_' + document.querySelector('.product-title').id
                     button_add.textContent = 'Добавить'
                     tag_list = document.querySelector('.tag-list')
                     tag_list.after(button_add)

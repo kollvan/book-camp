@@ -19,7 +19,7 @@
     <div class="container-data">
         <div>
             <div class="container-title">
-                <span class="product-title">
+                <span class="product-title" id="{{product.slug}}_{{product.pk}}">
                     {{ product.name }}
                 </span>
                 {% if user.is_authenticated%}
@@ -33,8 +33,6 @@
                         {% if product_status == 0 %} Прочитанно {% endif %}
                     </div>
                     {% endif %}
-                    <button class="card-btn {% if product_status is not None%} remove {% endif %}"
-                            id="{{product.slug}}_{{product.pk}}"></button>
                 {% endif %}
             </div>
             <a class="card-author" href="{% url 'goods:catalog' 'all' %}?authors={{product.author.slug}}">Автор: {{product.author}}</a>
