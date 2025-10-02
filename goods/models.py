@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=25, unique=True, verbose_name='Название')
@@ -12,6 +13,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=25, unique=True, verbose_name='Название')
@@ -34,8 +36,10 @@ class Author(models.Model):
         db_table = 'author'
         verbose_name = 'Автор'
         verbose_name_plural = 'Авторы'
+
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
@@ -55,7 +59,7 @@ class Product(models.Model):
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
 
-        ordering = ['name',]
+        ordering = ['name', ]
 
     def get_tags(self):
         return self.tags.all()

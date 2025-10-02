@@ -16,6 +16,7 @@ class TestDisplayUserDataWithAddedGood(BaseProductTestCase):
         self.assertTemplateUsed(response, 'includes/user_data_product.html')
 
 
+
 class TestDisplayUserDataWithoutAuthenticated(BaseProductTestCase):
 
     def test_not_displayed_user_data(self):

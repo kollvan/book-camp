@@ -35,10 +35,12 @@ class LogoutUser(View):
 
 class ProfileUser(LoginRequiredMixin, TemplateView):
     template_name = 'users/profile.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Bookcamp Profile - {self.request.user.username}'
         return context
+
 
 class EditUser(LoginRequiredMixin, UpdateView):
     model = get_user_model()
