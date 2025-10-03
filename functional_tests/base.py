@@ -1,9 +1,4 @@
-from functools import wraps
-from typing import Callable
-
-from django.contrib.auth import login
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.http import HttpRequest
 
 from selenium import webdriver
 from selenium.webdriver import ActionChains

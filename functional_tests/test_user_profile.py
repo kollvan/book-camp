@@ -1,10 +1,7 @@
 import re
-from time import sleep
 
 from django.core import mail
-from django.middleware.csrf import _get_new_csrf_string
 from selenium.webdriver import Keys
-from selenium.webdriver.support.select import Select
 
 from functional_tests.base import FunctionalTestCase
 from selenium.webdriver.support import expected_conditions as EC

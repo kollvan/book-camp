@@ -7,3 +7,4 @@ media/
 TODO.txt
 fixtures/
 .dockerignore
+/db.json
