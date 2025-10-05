@@ -9,8 +9,7 @@
     <section class="content">
         <div class="profile-container">
             <img class="profile-img"
-                 src="{% if user.image %}{{user.image.url}}{% else %}
-                 {% static 'bookcamp/image/default_profile_image.jpg'%}{% endif %}"
+                 src="{% if user.image %}{{user.image.url}}{% else %}{% static 'bookcamp/image/default_profile_image.jpg'%}{% endif %}"
                  alt="Аватар пользователя">
             <div class="profile-content">
                 <div>
