@@ -14,7 +14,7 @@ class LoginUser(LoginView):
     form_class = LoginUserForm
     template_name = 'users/login.html'
     extra_context = {
-        'title': 'Авторизация',
+        'title': 'Вход в акаунт',
     }
 
 
@@ -47,7 +47,7 @@ class EditUser(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
     template_name = 'users/edit_profile.html'
     extra_context = {
-        'title':'Редактировать профиль',
+        'title': 'Редактировать профиль',
     }
 
     def get_object(self, queryset=None):
