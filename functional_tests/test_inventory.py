@@ -49,6 +49,7 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
 
     def test_append_good_from_product_and_remove_it(self):
         STATUSES = [('3', 'Начато'), ('2', 'Отложенно'), ('1', 'Добавленно'), ('0', 'Прочитанно')]
+        CHOICES_STATUS = ('0', 'Прочитанно')
 
         self.browser.get(self.live_server_url + '/books/catalog/all')
 
@@ -66,23 +67,26 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         for i, status in enumerate(select_status.options):
             assert status.text == STATUSES[i][1], f'Value {status.text} != {STATUSES[i][1]}'
 
-        select_status.select_by_value(STATUSES[-1][0])
+        select_status.select_by_value(CHOICES_STATUS[0])
+        OPTION_LOCATOR = ('xpath', f'//option[@value={CHOICES_STATUS[0]}]')
+        self.wait.until(EC.element_attribute_to_include(OPTION_LOCATOR, 'selected'))
+
         DIV_STATUS_LOCATOR = ('xpath', '//div[contains(@class, "card-status")]')
-        assert self.wait.until(EC.visibility_of_element_located(DIV_STATUS_LOCATOR)).text == STATUSES[-1][1]
+        assert self.wait.until(EC.visibility_of_element_located(DIV_STATUS_LOCATOR)).text == CHOICES_STATUS[1]
 
         RANK_LOCATOR = ('xpath', f'//label[@for="rank_3-{self.product1.slug}"]')
         self.wait.until(EC.element_to_be_clickable(RANK_LOCATOR)).click()
-
         self.browser.refresh()
 
         RANK_LOCATOR_BUTTON = ('id', f'rank_3-{self.product1.slug}')
         assert self.wait.until(EC.presence_of_element_located(RANK_LOCATOR_BUTTON)).get_attribute('checked')
-
         self.wait.until(EC.visibility_of_element_located(SELECT_STATUS_LOCATOR))
 
         SELECT_OPTION_LOCATOR = ('xpath', '//option[@selected]')
+        text = self.wait.until(EC.visibility_of_element_located(SELECT_OPTION_LOCATOR)).text
 
-        assert self.wait.until(EC.presence_of_element_located(SELECT_OPTION_LOCATOR)).text == STATUSES[-1][1]
+
+        assert text == CHOICES_STATUS[1], f'Value {text} != {CHOICES_STATUS[1]}'
 
         REMOVE_BUTTON = ('xpath', '//button[contains(@class, "btn-remove")]')
         self.browser.find_element(*REMOVE_BUTTON).click()

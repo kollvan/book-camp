@@ -1,0 +1,75 @@
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    display: none;
+}
+input[type="number"]:invalid + span:after {
+	content: '✖';
+	color: rgb(41, 28, 28);
+
+}
+input[type="number"]:invalid + span:hover{
+    color: blue;
+}
+
+.scroll-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 0.1em;
+}
+
+.scroll-buttons > div {
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-up,
+.button-down {
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+.button-up::after {
+    /*content: "↑";*/
+    /*content: "\25b2";*/
+    content: "\25b3";
+    border-bottom: 0.5px solid black;
+    padding-bottom: 0.1px;
+    border-right: 0.5px solid transparent;
+}
+.button-down::after {
+    /*content: "↓";*/
+    content: "\25bd";
+    /*content: "\25bc";*/
+}
+.button-down:active::after,
+.button-up:active::after{
+    color: rgb(145, 35, 15);
+    border-right: 0.5px solid black;
+    border-bottom: 0.5px solid black;
+}
+.choice-number{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 0.5em;
+    padding-block: 0.2em;
+}
+.choice-number > div{
+    display: flex;
+    gap: 0.2em;
+}
+.select-number{
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid #000000;
+    border-radius: 5px;
+    font-size: 1em;
+    padding-left: 0.3em;
+    box-shadow: 0px -1px 2px 0px #6e6868 inset;
+    align-items: center;
+    font-family: 'Merienda', 'Times New Roman', Times, serif;
+}

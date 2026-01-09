@@ -251,6 +251,7 @@ input:checked + label{
     grid-row-end: 3;
     border: 4px double black;
     min-width: 300px;
+
 }
 
 .container-search{

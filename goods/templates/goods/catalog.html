@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/card.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/card-catalog.css'%}">
+    <link rel="stylesheet" href="{% static 'bookcamp/css/filters-style.css'%}">
 {% endblock %}
 
 {% block section %}
@@ -124,16 +125,41 @@
                         <summary class="inscription">
                             Год издания:
                         </summary>
-                        <label for="id_year_publication1">
+                        <div class="choice-number">
+                            <label for="from-year-publication">
                             от
-                        </label>
-                        <input id="id_year_publication1" name="year_from"
-                               value="{% if year_from %}{{ year_from }}{% else %}2000{% endif %}" type="number">
-                        <label for="id_year_publication2">
-                            до
-                        </label>
-                        <input id="id_year_publication2" name="year_to"
-                               value="{% if year_to %}{{ year_to }}{% else %}2025{% endif %}" type="number">
+                            </label>
+                            <div class="choice-number">
+                                <div class="scroll-buttons">
+                                    <div>
+                                        <button id="button-from-up" class="button-up" type="button"></button>
+                                    </div>
+                                    <div>
+                                        <button type="button" id="button-from-down" class="button-down"></button>
+                                    </div>
+                                </div>
+                                <input class="select-number" id="from-year-publication" name="year_from"
+                                       min="0" max="3000"
+                                    value="{% if year_from %}{{ year_from }}{% else %}2000{% endif %}" type="number">
+                                <span></span>
+                            </div>
+                            <label for="to-year-publication">
+                                до
+                            </label>
+                            <div class="choice-number">
+                                <div class="scroll-buttons">
+                                    <div>
+                                        <button id="button-to-up" class="button-up" type="button"></button>
+                                    </div>
+                                    <div>
+                                        <button type="button" id="button-to-down" class="button-down"></button>
+                                    </div>
+                                </div>
+                                <input id="to-year-publication" name="year_to" min="0" max="3000" class="select-number"
+                                value="{% if year_to %}{{ year_to }}{% else %}2025{% endif %}" type="number">
+                                <span></span>
+                            </div>
+                        </div>
                     </details>
                     <details open="true" class="filter-container">
                         <summary class="inscription">
@@ -185,6 +211,7 @@
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript" src="{% static 'bookcamp/js/generic.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/generic-filter-functional.js' %}"></script>
     <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
     <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
 {% endblock %}

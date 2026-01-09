@@ -2,10 +2,12 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
+from bookcamp import settings
 from goods.models import Category, Product, Author
 from users.models import User
 
@@ -13,7 +15,11 @@ from users.models import User
 class FunctionalTestCase(StaticLiveServerTestCase):
 
     def setUp(self):
-        self.browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        options = Options()
+        if not settings.DEBUG:
+            options.add_argument('--headless')
+
+        self.browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         self.wait = WebDriverWait(self.browser, 10, 1)
         self.action = ActionChains(self.browser)
 

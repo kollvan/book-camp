@@ -7,7 +7,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASS}
       - POSTGRES_DB=${POSTGRES_DB_NAME}
     volumes:
-      - postgres_data:/var/lib/postgres/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - bcnet
     healthcheck:
@@ -62,7 +62,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-redis
-    image: cont_redis
+    image: cache_redis
     container_name: redis-server
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
