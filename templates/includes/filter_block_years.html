@@ -1,0 +1,38 @@
+<summary class="inscription">
+    Год издания:
+</summary>
+<div class="choice-number">
+    <label for="from-year-publication">
+    от
+    </label>
+    <div class="choice-number">
+        <div class="scroll-buttons">
+            <div>
+                <button id="button-from-up" class="button-up" type="button"></button>
+            </div>
+            <div>
+                <button type="button" id="button-from-down" class="button-down"></button>
+            </div>
+        </div>
+        <input class="select-number" id="from-year-publication" name="year_from"
+               min="0" max="3000"
+            value="{% if year_from %}{{ year_from }}{% else %}2000{% endif %}" type="number">
+        <span></span>
+    </div>
+    <label for="to-year-publication">
+        до
+    </label>
+    <div class="choice-number">
+        <div class="scroll-buttons">
+            <div>
+                <button id="button-to-up" class="button-up" type="button"></button>
+            </div>
+            <div>
+                <button type="button" id="button-to-down" class="button-down"></button>
+            </div>
+        </div>
+        <input id="to-year-publication" name="year_to" min="0" max="3000" class="select-number"
+        value="{% if year_to %}{{ year_to }}{% else %}2025{% endif %}" type="number">
+        <span></span>
+    </div>
+</div>
