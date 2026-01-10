@@ -10,9 +10,9 @@ function delay_remove(elem, delay){
      const popupMenu = document.querySelector('#popup-message.fade-out')
     if(popupMenu){
         popupMenu.classList.add('hidden');
-        delay_remove(popupMenu, 2000);
+        delay_remove(popupMenu, 3000);
     }
- }, 1000);
+ }, 3000);
 
 document.addEventListener('DOMContentLoaded', function(){
     const closeBtn = document.querySelector('.close-btn')

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, PasswordResetDoneView
+from django.contrib.auth.views import LoginView, PasswordResetDoneView, PasswordResetCompleteView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -62,3 +62,8 @@ class ExtendPasswordResetDoneView(PasswordResetDoneView):
     def get(self, request, *args, **kwargs):
         messages.info(request, MessageResponse.PASSWORD_RESET_DONE)
         return redirect('main:index')
+
+class ExtendPasswordResetCompleteView(PasswordResetCompleteView):
+    def get(self, request, *args, **kwargs):
+        messages.success(request, MessageResponse.PASSWORD_RESET_COMPLETE)
+        return redirect('user:login')
