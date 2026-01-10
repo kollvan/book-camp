@@ -1,12 +1,14 @@
+from django.contrib import messages
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetDoneView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, UpdateView, TemplateView
 
 from users.forms import LoginUserForm, RegisterUserForm, ProfileForm
+from users.messages import MessageResponse
 
 
 # Create your views here.
@@ -55,3 +57,8 @@ class EditUser(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('user:profile')
+
+class ExtendPasswordResetDoneView(PasswordResetDoneView):
+    def get(self, request, *args, **kwargs):
+        messages.info(request, MessageResponse.PASSWORD_RESET_DONE)
+        return redirect('main:index')

@@ -1,0 +1,89 @@
+.pop-up-message{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 350px;
+    border: 5px groove white ;
+    background-color: rgba(221, 232, 221, 0.945);
+    text-shadow: 3px 5px 10px #000000;
+    text-align: center;
+    border-radius: 10px 0px 10px 10px;
+    font-size: 1.2em;
+    font-style: italic;
+    color: black;
+    box-shadow: 5px 5px 10px 1px #918d8d;
+}
+.center-message{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.success-message{
+    background: linear-gradient(120deg, #6de55d 1%, #bdbdbd 40%);
+}
+.error-message{
+    background: linear-gradient(120deg, #e55d5d 1%, #bdbdbd 40%);
+}
+.info-message{
+    background: linear-gradient(120deg, aqua 1%, #bdbdbd 30%);
+}
+.popup-content{
+    padding: 0.5em;
+    font-weight: 500;
+}
+.popup-title{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px 0 0 0;
+    height: 100%;
+    padding: 0.2em;
+    text-align: left;
+}
+.fade-out{
+    transition: opacity 3s ease;
+    opacity: 1;
+}
+.fade-out.hidden {
+    opacity: 0;
+}
+.pop-up-message a{
+    color: white;
+    text-decoration: none;
+}
+
+
+
+.close-btn {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.close-btn::before,
+.close-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 2px;
+    background: #333;
+}
+
+.close-btn::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.close-btn::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.close-btn:hover::before,
+.close-btn:hover::after {
+    background: #ff0000;
+    height: 3px;
+}
