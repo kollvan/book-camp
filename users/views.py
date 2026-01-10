@@ -19,6 +19,14 @@ class LoginUser(LoginView):
         'title': 'Вход в акаунт',
     }
 
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            messages.error(request, MessageResponse.INCORRECT_PASSWORD_OR_LOGIN)
+            return self.form_invalid(form)
+
 
 class RegisterUser(CreateView):
     form_class = RegisterUserForm
@@ -27,6 +35,11 @@ class RegisterUser(CreateView):
         'title': 'Регистрация'
     }
     success_url = reverse_lazy('user:login')
+
+    def form_valid(self, form):
+        messages.success(self.request, MessageResponse.USER_SUCCESS_CREATE)
+        return super().form_valid(form)
+
 
 
 class LogoutUser(View):
@@ -58,10 +71,12 @@ class EditUser(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('user:profile')
 
+
 class ExtendPasswordResetDoneView(PasswordResetDoneView):
     def get(self, request, *args, **kwargs):
         messages.info(request, MessageResponse.PASSWORD_RESET_DONE)
         return redirect('main:index')
+
 
 class ExtendPasswordResetCompleteView(PasswordResetCompleteView):
     def get(self, request, *args, **kwargs):
