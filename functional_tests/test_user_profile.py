@@ -57,7 +57,8 @@ class TestUserNotAuthenticated(FunctionalTestCase):
         email_input.send_keys(self.email)
         email_input.send_keys(Keys.ENTER)
 
-        self.wait.until(EC.title_contains('отправлено'))
+        POPUP_WINDOW_LOCATOR = ('xpath', '//div[@id="popup-message"]')
+        self.wait.until(EC.visibility_of_element_located(POPUP_WINDOW_LOCATOR))
 
         message = mail.outbox[0]
         link = re.search(r'https?://.*/accounts/password-reset/.*/', message.body)
@@ -73,7 +74,7 @@ class TestUserNotAuthenticated(FunctionalTestCase):
         new_password2_input.send_keys(NEW_PASSWORD)
         new_password2_input.send_keys(Keys.ENTER)
 
-        assert self.wait.until(EC.title_is('Восстановление пароля завершено'))
+        self.wait.until(EC.visibility_of_element_located(POPUP_WINDOW_LOCATOR))
         self.browser.find_element(*LOG_IN_BATTON_LOCATOR).click()
 
         INPUT_USERNAME_LOCATOR = ('xpath', '//input[@name="username"]')

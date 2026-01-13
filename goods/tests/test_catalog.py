@@ -37,6 +37,23 @@ class TestCatalogWithoutAuthenticatedUser(BaseCatalogTestCase):
         self.assertContains(response, self.product1.name)
         self.assertNotContains(response, self.product2.name)
 
+    def test_search_by_name(self):
+        response = self.client.get(f'{self.full_live_server_url}/all/?q=networks')
+        self.assertContains(response, self.product1.name)
+        self.assertNotContains(response, self.product2.name)
+
+    def test_search_by_description(self):
+        self.product2.description = '''
+        a mathematical graph in which most nodes are not neighbors, but have neighbors in common
+        '''
+        self.product2.save()
+        self.product1.description = '''
+        an academic field that studies complex networks
+        '''
+        self.product1.save()
+        response = self.client.get(f'{self.full_live_server_url}/all/?q=complex')
+        self.assertContains(response, self.product1.name)
+        self.assertNotContains(response, self.product2.name)
 
 
 

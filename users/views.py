@@ -65,6 +65,10 @@ class EditUser(LoginRequiredMixin, UpdateView):
         'title': 'Редактировать профиль',
     }
 
+    def form_valid(self, form):
+        messages.success(self.request, MessageResponse.PROFILE_SUCCESSFULLY_SAVED)
+        return super().form_valid(form)
+
     def get_object(self, queryset=None):
         return self.request.user
 
