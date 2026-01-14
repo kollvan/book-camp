@@ -9,3 +9,5 @@ TODO.txt
 fixtures/
 .dockerignore
 /db.json
+.coverage
+htmlcov/
