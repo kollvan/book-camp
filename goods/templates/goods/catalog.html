@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load cache %}
 {% load goods_custom_tags %}
 
 {% block extends_style %}
@@ -111,7 +112,7 @@
                             Теги:
                         </summary>
                         <div class="tags-filter filter-scroll">
-                            {% get_all_tags as all_tags%}
+                            {% get_all_tags category_slug as all_tags%}
                             {% for tag in all_tags%}
                             <div class="tag">
                                 <input type="checkbox" {% if tag.slug in selected_tags %}checked{% endif %}
@@ -158,7 +159,6 @@
                             </li>
                             {% endfor %}
                         </ul>
-
                     </details>
                     <button class="button" id="filter-submit" type="submit">Применить</button>
                     <button class="button" type="reset">Сбросить</button>

@@ -11,3 +11,4 @@ fixtures/
 /db.json
 .coverage
 htmlcov/
+cache/

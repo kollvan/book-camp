@@ -1,4 +1,5 @@
 {% load static %}
+{% load cache %}
 {% load goods_custom_tags %}
 <!DOCTYPE html>
 <html lang="en">
@@ -20,13 +21,15 @@
                 <a href="{% url 'main:index' %}" class="dropbtn">
                     <img class="nav-bar-logo" src="{% static 'bookcamp/image/logo.png'%}" alt="Logo">
                 </a>
-                {% get_categories as categories %}
-                <ul class="dropdown-content">
-                    <li><a href="{% url 'goods:catalog' 'all'%}">Все</a></li>
-                {% for category in categories %}
-                    <li><a href="{% url 'goods:catalog' category.slug%}">{{category.name}}</a></li>
-                {% endfor %}
-                </ul>
+                {% cache 60 dropdown_category %}
+                    {% get_categories as categories %}
+                    <ul class="dropdown-content">
+                        <li><a href="{% url 'goods:catalog' 'all'%}">Все</a></li>
+                    {% for category in categories %}
+                        <li><a href="{% url 'goods:catalog' category.slug%}">{{category.name}}</a></li>
+                    {% endfor %}
+                    </ul>
+                {% endcache %}
             </div>
             <div class="nav-elements">
                 <li>

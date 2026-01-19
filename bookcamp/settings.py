@@ -189,7 +189,6 @@ EMAIL_USE_TLS = True
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -200,6 +199,7 @@ REDIS_HOST = os.getenv('REDIS_HOST')
 REDIS_PORT = os.getenv('REDIS_PORT')
 
 if not DEBUG:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
     CACHES = {
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -209,6 +209,7 @@ if not DEBUG:
 else:
     CACHES = {
         'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        },
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': BASE_DIR / 'cache',
+        }
     }

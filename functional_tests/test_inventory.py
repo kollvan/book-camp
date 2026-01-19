@@ -12,7 +12,7 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         self.create_user()
         self.client.force_login(self.user)
         self.browser.get(self.live_server_url)
-
+        self.browser.set_window_size(1920, 1080)
         self.browser.add_cookie({
             'name': 'sessionid',
             'value': self.client.session.session_key,
@@ -83,10 +83,7 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         self.wait.until(EC.visibility_of_element_located(SELECT_STATUS_LOCATOR))
 
         SELECT_OPTION_LOCATOR = ('xpath', '//option[@selected]')
-        text = self.wait.until(EC.visibility_of_element_located(SELECT_OPTION_LOCATOR)).text
-
-
-        assert text == CHOICES_STATUS[1], f'Value {text} != {CHOICES_STATUS[1]}'
+        self.wait.until(EC.text_to_be_present_in_element_value(SELECT_OPTION_LOCATOR, '0'))
 
         REMOVE_BUTTON = ('xpath', '//button[contains(@class, "btn-remove")]')
         self.browser.find_element(*REMOVE_BUTTON).click()
