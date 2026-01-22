@@ -63,6 +63,47 @@
         {% include 'includes/user_data_product.html'%}
         {% endwith %}
     {% endif %}
+    <div class="list-reviews">
+        {% if user.is_authenticated and product_status is not None%}
+        <div class="product-review">
+            <p>Оставить отзыв:</p>
+            <form action="#" method="post">
+                {% csrf_token %}
+                <textarea name="review" placeholder="Отзыв" id="{{product.slug}}_review"></textarea>
+                <input type="hidden" value="{{product.slug}}">
+                <div>
+                    <button type="submit">Сохранить</button>
+                    <button type="reset">Сбросить</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+        <details  open>
+            <summary>Отзывы: </summary>
+            {% if reviews %}
+                <div class="review-container">
+                    <p class="review-title
+                    {% if review.rank >= 3 %}
+                    good-review
+                    {% elif review.rank <= 3 %}
+                     bad-review
+                    {% endif %}">
+                        {{review.user.username}}
+                    </p>
+                    <p class="review-content">
+                        {{ review.comment }}
+                    </p>
+                    <div class="card-rank-product rank-review">Рейтинг: {{review.rank}}</div>
+                </div>
+            {% else %}
+            <div class="empty-list">
+                <p>
+                    Пока отзывов нет
+                </p>
+            </div>
+            {% endif %}
+        </details>
+    </div>
 </section>
 {% endblock %}
 {% block footer %}

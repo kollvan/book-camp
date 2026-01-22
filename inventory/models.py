@@ -19,7 +19,7 @@ class Inventory(models.Model):
                                default=0,
                                validators=[MaxValueValidator(5)],
                                verbose_name='Оценка')
-
+    review = models.TextField(max_length=700, blank=True, null=True, verbose_name='Отзыв')
     product = models.ForeignKey(to=Product, on_delete=models.DO_NOTHING, db_index=True, verbose_name='Книга')
     user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Пользователь')
 
