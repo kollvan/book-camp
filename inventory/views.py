@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views import View
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView
 
 from goods.utls import get_current_year, RangeYear
 from inventory.models import Inventory
@@ -73,3 +73,4 @@ class UserData(View):
             return JsonResponse({'user_data' : html_response})
 
         return HttpResponseForbidden()
+

@@ -3,7 +3,7 @@ from typing import Any, Hashable, Callable
 
 from django import template
 from django.core.cache import cache
-from django.db.models import Q, Avg, QuerySet
+from django.db.models import Q, Avg, QuerySet, Count
 from django.template import Context
 from django.utils.http import urlencode
 
@@ -62,17 +62,32 @@ def get_authors(category_slug: str) -> QuerySet:
 
 
 @register.simple_tag()
-def get_user_data(product_pk: int, user_pk: int) -> dict[str:int] | None:
+def get_user_data(product_pk: int, user_pk: int) -> QuerySet | None:
     try:
         elem = Inventory.objects.get(Q(product__pk=product_pk) & Q(user__pk=user_pk))
-        result = {
-            'rank': elem.rank,
-            'status': elem.status,
-        }
-        return result
+        return elem
     except Inventory.DoesNotExist:
         return None
 
+
+@register.simple_tag()
+def get_all_reviews(product_pk: int, limit: int = 5) -> QuerySet | None:
+    try:
+        queryset = Inventory.objects.filter(
+            ~Q(review=None) & Q(product__pk=product_pk)
+        ).values('rank', 'user__username', 'review')[:limit]
+        return queryset
+    except Inventory.DoesNotExist:
+        return None
+@register.simple_tag()
+def reviews_greater_than(product_pk: int, quantity: int):
+    try:
+        is_greater = Inventory.objects.filter(
+            ~Q(review=None) & Q(product__pk=product_pk)
+        ).annotate(total=Count('id')).filter(total__gt=quantity).exists()
+        return is_greater
+    except Inventory.DoesNotExist:
+        return False
 
 @register.simple_tag()
 def get_inventory_data(products: QuerySet, user_id: int) -> dict[int:int] | None:
@@ -103,8 +118,8 @@ def get_avg_ranks(products: list[int] | QuerySet) -> dict:
 @register.simple_tag()
 def get_avg_rank(product_pk: int) -> float:
     try:
-        qs = Inventory.objects.filter(product__pk=product_pk)
-        value = qs.values('product__pk').annotate(Avg('rank')).values('rank__avg').get()
+        qs = Inventory.objects.filter(Q(product__pk=product_pk) & ~Q(rank=0))
+        value = qs.annotate(Avg('rank')).values('rank__avg').get()
         return round(value['rank__avg'], 2)
     except Inventory.DoesNotExist:
         return 0.00

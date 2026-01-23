@@ -183,6 +183,9 @@
     height: 5em;
     border-radius: 2px;
 }
+.product-review textarea[disabled]{
+    color: grey;
+}
 .product-review button{
     border: 2px solid;
     background-color: rgb(206, 72, 72);
@@ -232,6 +235,7 @@
     margin-bottom: 2em;
 }
 .btn-show-more{
+    margin-top: 1em;
     text-align: center;
     font-size: 1.2em;
     border: 2px solid rgb(255, 255, 255);

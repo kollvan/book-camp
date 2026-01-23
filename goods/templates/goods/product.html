@@ -25,12 +25,11 @@
                 {% if user.is_authenticated%}
                     {% get_user_data product.pk user.pk as user_inventory_data %}
                     {% if user_inventory_data is not None%}
-                    {% get_item user_inventory_data 'status' as product_status %}
                     <div class="card-status product-status">
-                        {% if product_status == 3 %} Начато {% endif %}
-                        {% if product_status == 2 %} Отложенно {% endif %}
-                        {% if product_status == 1 %} Добавленно {% endif %}
-                        {% if product_status == 0 %} Прочитанно {% endif %}
+                        {% if user_inventory_data.status == 3 %} Начато {% endif %}
+                        {% if user_inventory_data.status == 2 %} Отложенно {% endif %}
+                        {% if user_inventory_data.status == 1 %} Добавленно {% endif %}
+                        {% if user_inventory_data.status == 0 %} Прочитанно {% endif %}
                     </div>
                     {% endif %}
                 {% endif %}
@@ -51,50 +50,69 @@
                 <li class="tag"><a href="{% url 'goods:catalog' 'all' %}?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                 {% endfor %}
             </ul>
-            {% if user.is_authenticated and product_status is None %}
+            {% if user.is_authenticated and user_inventory_data is None %}
                 <button class="btn-user-data btn-add" title="Добавить в инвентарь"
                         id="id_{{product.slug}}_{{product.pk}}">Добавить</button>
             {% endif %}
         </div>
     </div>
-    {% if user.is_authenticated and product_status is not None%}
-        {% get_item user_inventory_data 'rank' as user_rank %}
-        {% with product.slug as product_slug %}
+    {% if user.is_authenticated and user_inventory_data is not None%}
+        {% with user_rank=user_inventory_data.rank product_slug=product.slug %}
         {% include 'includes/user_data_product.html'%}
         {% endwith %}
     {% endif %}
     <div class="list-reviews">
-        {% if user.is_authenticated and product_status is not None%}
+        {% if user.is_authenticated and user_inventory_data is not None%}
         <div class="product-review">
             <p>Оставить отзыв:</p>
-            <form action="#" method="post">
+            <form id="form-review" data-product-slug="{{product.slug}}">
                 {% csrf_token %}
-                <textarea name="review" placeholder="Отзыв" id="{{product.slug}}_review"></textarea>
-                <input type="hidden" value="{{product.slug}}">
+                <textarea name="review"
+                          placeholder="Отзыв"
+                          id="{{product.slug}}_review"
+                          {% if user_inventory_data.review %}disabled{% endif %}
+                >{% if user_inventory_data.review %}{{user_inventory_data.review}}{% endif %}</textarea>
                 <div>
-                    <button type="submit">Сохранить</button>
-                    <button type="reset">Сбросить</button>
+                    {% if user_inventory_data.review %}
+                        <button type="button" data-product-slug="{{product.slug}}" id="button-change-review">Изменить</button>
+                    {% else %}
+                        <button type="submit" id="button-submit-review">Сохранить</button>
+                        <button type="reset" id="button-reset-review">Сбросить</button>
+                    {% endif %}
                 </div>
             </form>
         </div>
         {% endif %}
-        <details  open>
+        {% get_all_reviews product.pk as reviews %}
+        <details open>
             <summary>Отзывы: </summary>
             {% if reviews %}
-                <div class="review-container">
-                    <p class="review-title
-                    {% if review.rank >= 3 %}
-                    good-review
-                    {% elif review.rank <= 3 %}
-                     bad-review
-                    {% endif %}">
-                        {{review.user.username}}
-                    </p>
-                    <p class="review-content">
-                        {{ review.comment }}
-                    </p>
-                    <div class="card-rank-product rank-review">Рейтинг: {{review.rank}}</div>
-                </div>
+                {% for review in reviews %}
+                    <div class="review-container">
+                        <p class="review-title
+                        {% if review.rank >= 3 %}
+                        good-review
+                        {% elif review.rank > 0 %}
+                         bad-review
+                        {% endif %}">
+                            {{review.user__username}}
+                        </p>
+                        <p class="review-content">
+                            {{ review.review }}
+                        </p>
+                        <div class="card-rank-product rank-review">Рейтинг: {{review.rank}}</div>
+                    </div>
+                {% endfor %}
+                {% reviews_greater_than product.pk 5 as is_greater %}
+                {% if is_greater %}
+                    <div class="bottom-list-reviews">
+                        <div class="btn-show-more">
+                            <a href="#">
+                                Показать ещё
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             {% else %}
             <div class="empty-list">
                 <p>

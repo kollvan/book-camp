@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
             response = sendRequestToServer('PATCH', div_card.id.split('_')[1], data);
         }
     });
-});
-document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('change', async function(e){
         if(e.target.name === 'product_status'){
             try{
@@ -21,7 +19,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(error)
             }
         }
+    });
+    document.getElementById('form-review').addEventListener('submit', async function(e){
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const slug = form.dataset.productSlug;
+        url = window.location.protocol + '//' + window.location.host + '/api/inventory/' + slug + '/';
+        console.log(url)
+        const data = Object.fromEntries(formData.entries());
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify(data)
+        });
 
+        if (response.ok) {
+            alert('Данные обновлены!');
+            submit_button = document.getElementById('button-submit-review')
+            reset_button = document.getElementById('button-reset-review')
+
+            change_button = document.createElement('button')
+            change_button.textContent = 'Изменить'
+            change_button.type = 'button'
+            change_button.id = 'button-change-review'
+            change_button.dataset.productSlug = form.dataset.productSlug
+
+            submit_button.parentElement.appendChild(change_button)
+            submit_button.remove()
+            reset_button.remove()
+
+            document.getElementById(form.dataset.productSlug + '_review').disabled = true
+        }
+    });
+    document.getElementById('button-change-review').addEventListener('click', async function(e){
+        const button_change = e.target;
+        const div = button_change.parentElement;
+        const textarea = document.getElementById(button_change.dataset.productSlug + '_review')
+        textarea.removeAttribute('disabled')
+
+        save_button = document.createElement('button')
+        save_button.textContent = 'Сохранить'
+        save_button.type = 'submit'
+        save_button.id = 'button-submit-review'
+        div.appendChild(save_button)
+        reset_button = document.createElement('button')
+        reset_button.textContent = 'Сбросить'
+        reset_button.type = 'reset'
+        reset_button.id = 'button-reset-review'
+        div.appendChild(reset_button)
+        button_change.remove()
     });
 });
 
