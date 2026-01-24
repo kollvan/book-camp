@@ -63,27 +63,11 @@
     {% endif %}
     <div class="list-reviews">
         {% if user.is_authenticated and user_inventory_data is not None%}
-        <div class="product-review">
-            <p>Оставить отзыв:</p>
-            <form id="form-review" data-product-slug="{{product.slug}}">
-                {% csrf_token %}
-                <textarea name="review"
-                          placeholder="Отзыв"
-                          id="{{product.slug}}_review"
-                          {% if user_inventory_data.review %}disabled{% endif %}
-                >{% if user_inventory_data.review %}{{user_inventory_data.review}}{% endif %}</textarea>
-                <div>
-                    {% if user_inventory_data.review %}
-                        <button type="button" data-product-slug="{{product.slug}}" id="button-change-review">Изменить</button>
-                    {% else %}
-                        <button type="submit" id="button-submit-review">Сохранить</button>
-                        <button type="reset" id="button-reset-review">Сбросить</button>
-                    {% endif %}
-                </div>
-            </form>
-        </div>
+            {% with product_slug=product.slug %}
+            {% include 'includes/user_review.html' %}
+            {% endwith %}
         {% endif %}
-        {% get_all_reviews product.pk as reviews %}
+        {% get_all_reviews product.pk limit=2 as reviews %}
         <details open>
             <summary>Отзывы: </summary>
             {% if reviews %}
@@ -103,11 +87,11 @@
                         <div class="card-rank-product rank-review">Рейтинг: {{review.rank}}</div>
                     </div>
                 {% endfor %}
-                {% reviews_greater_than product.pk 5 as is_greater %}
+                {% reviews_greater_than product.pk 2 as is_greater %}
                 {% if is_greater %}
                     <div class="bottom-list-reviews">
                         <div class="btn-show-more">
-                            <a href="#">
+                            <a id="link-show-more" data-reviews-url="{% url 'inventory:widget_reviews' product.slug %}?page=2">
                                 Показать ещё
                             </a>
                         </div>

@@ -16,7 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     const html_data = await html_response.json()
                     content.insertAdjacentHTML('beforeEnd', html_data.user_data);
 
-                    createProductStatus()
+                    createProductStatus();
+
+                    document.querySelector('.list-reviews').querySelector('details').insertAdjacentHTML(
+                        'beforebegin',
+                        html_data.review_data
+                    );
                 });
 
             }
@@ -35,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     button_add.textContent = 'Добавить'
                     tag_list = document.querySelector('.tag-list')
                     tag_list.after(button_add)
+                    document.querySelector('.product-review').remove()
                 });
 
             }

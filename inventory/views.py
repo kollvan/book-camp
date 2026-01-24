@@ -2,8 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
+from django.utils.http import urlencode
 from django.views import View
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView
 
 from goods.utls import get_current_year, RangeYear
 from inventory.models import Inventory
@@ -59,7 +60,7 @@ class InventoryView(LoginRequiredMixin,ListView):
         inventory = queryset_filter.get_filter_queryset()
         return inventory.select_related('product__author').prefetch_related('product__tags')
 
-class UserData(View):
+class UserDataView(View):
     def get(self, request:HttpRequest, *args, **kwargs):
         if request.user.is_authenticated:
             get_object_or_404(Inventory, user=request.user, product__slug=self.kwargs['product_slug'])
@@ -69,8 +70,30 @@ class UserData(View):
                 'rank': 0,
                 'product_slug': self.kwargs['product_slug'],
             }
-            html_response = render_to_string('../templates/includes/user_data_product.html', context)
-            return JsonResponse({'user_data' : html_response})
+            return JsonResponse({
+                'user_data': render_to_string('../templates/includes/user_data_product.html', context),
+                'review_data': render_to_string('../templates/includes/user_review.html', context),
+            })
 
         return HttpResponseForbidden()
 
+
+class ProductReviewsView(View):
+    def get(self, request:HttpRequest, *args, **kwargs):
+        PAGE_SIZE = 2
+        params = request.GET.copy().dict()
+        page = int(params.get('page', 1))
+        offset = (page - 1) * PAGE_SIZE
+
+        count = Inventory.objects.filter(
+            product__slug=self.kwargs['product_slug']
+        ).count()
+        queryset = Inventory.objects.filter(
+            product__slug=self.kwargs['product_slug']
+        ).values('user__username', 'rank', 'review')[offset: offset + PAGE_SIZE]
+
+        params['page'] = str(page + 1)
+        return JsonResponse({
+            'reviews': list(queryset),
+            'next': request.path + f'?{urlencode(params)}' if count > offset + PAGE_SIZE else '',
+        })

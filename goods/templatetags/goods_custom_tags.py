@@ -71,23 +71,26 @@ def get_user_data(product_pk: int, user_pk: int) -> QuerySet | None:
 
 
 @register.simple_tag()
-def get_all_reviews(product_pk: int, limit: int = 5) -> QuerySet | None:
+def get_all_reviews(product_pk: int, user_pk: int | None = None, limit: int = 5) -> QuerySet | None:
     try:
-        queryset = Inventory.objects.filter(
-            ~Q(review=None) & Q(product__pk=product_pk)
-        ).values('rank', 'user__username', 'review')[:limit]
-        return queryset
+        queryset = Inventory.objects.filter(~Q(review=None) & Q(product__pk=product_pk))
+        if user_pk:
+            queryset.filter(~Q(user=user_pk))
+        return queryset.values('rank', 'user__username', 'review')[:limit]
     except Inventory.DoesNotExist:
         return None
+
+
 @register.simple_tag()
-def reviews_greater_than(product_pk: int, quantity: int):
+def reviews_greater_than(product_pk: int, quantity: int = 5):
     try:
-        is_greater = Inventory.objects.filter(
+        count = Inventory.objects.filter(
             ~Q(review=None) & Q(product__pk=product_pk)
-        ).annotate(total=Count('id')).filter(total__gt=quantity).exists()
-        return is_greater
+        ).aggregate(Count('id'))
+        return count['id__count'] > quantity
     except Inventory.DoesNotExist:
         return False
+
 
 @register.simple_tag()
 def get_inventory_data(products: QuerySet, user_id: int) -> dict[int:int] | None:
@@ -118,10 +121,11 @@ def get_avg_ranks(products: list[int] | QuerySet) -> dict:
 @register.simple_tag()
 def get_avg_rank(product_pk: int) -> float:
     try:
-        qs = Inventory.objects.filter(Q(product__pk=product_pk) & ~Q(rank=0))
-        value = qs.annotate(Avg('rank')).values('rank__avg').get()
-        return round(value['rank__avg'], 2)
-    except Inventory.DoesNotExist:
+        value = Inventory.objects.filter(
+            Q(product__pk=product_pk) & ~Q(rank=0)
+        ).aggregate(Avg('rank'))
+        return round(value['rank__avg'], 2) if value['rank_avg'] else 0.00
+    except Exception as e:
         return 0.00
 
 

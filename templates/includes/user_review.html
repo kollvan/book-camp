@@ -1,0 +1,19 @@
+<div class="product-review">
+    <p>Оставить отзыв:</p>
+    <form id="form-review" data-product-slug="{{product_slug}}">
+        {% csrf_token %}
+        <textarea name="review"
+                  placeholder="Отзыв"
+                  id="{{product_slug}}_review"
+                  {% if user_inventory_data.review %}disabled{% endif %}
+        >{% if user_inventory_data.review %}{{user_inventory_data.review}}{% endif %}</textarea>
+        <div>
+            {% if user_inventory_data.review %}
+                <button type="button" data-product-slug="{{product_slug}}" id="button-change-review">Изменить</button>
+            {% else %}
+                <button type="submit" id="button-submit-review">Сохранить</button>
+                <button type="reset" id="button-reset-review">Сбросить</button>
+            {% endif %}
+        </div>
+    </form>
+</div>
