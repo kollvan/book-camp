@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         'beforebegin',
                         html_data.review_data
                     );
+                    document.getElementById('form-review').addEventListener('submit', handleFormSubmit)
+                    document.getElementById('button-change-review').addEventListener('click', handleButtonChangeReview)
                 });
 
             }

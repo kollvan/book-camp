@@ -23,6 +23,8 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
             'name': 'csrftoken',
             'value': _get_new_csrf_string()
         })
+        self.STATUSES = [('3', 'Начато'), ('2', 'Отложенно'), ('1', 'Добавленно'), ('0', 'Прочитанно')]
+        self.CHOICES_STATUS = ('0', 'Прочитанно')
 
     def test_append_good_in_inventory_from_catalog_and_go_to_page_of_product(self):
         self.browser.get(self.live_server_url + '/books/catalog/all/')
@@ -48,8 +50,6 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         assert self.product1.name in self.wait.until(EC.visibility_of_element_located(PRODUCT_TITLE)).text
 
     def test_append_good_from_product_and_remove_it(self):
-        STATUSES = [('3', 'Начато'), ('2', 'Отложенно'), ('1', 'Добавленно'), ('0', 'Прочитанно')]
-        CHOICES_STATUS = ('0', 'Прочитанно')
 
         self.browser.get(self.live_server_url + '/books/catalog/all')
 
@@ -65,14 +65,14 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         select_status = Select(self.wait.until(EC.element_to_be_clickable(SELECT_STATUS_LOCATOR)))
 
         for i, status in enumerate(select_status.options):
-            assert status.text == STATUSES[i][1], f'Value {status.text} != {STATUSES[i][1]}'
+            assert status.text == self.STATUSES[i][1], f'Value {status.text} != {self.STATUSES[i][1]}'
 
-        select_status.select_by_value(CHOICES_STATUS[0])
-        OPTION_LOCATOR = ('xpath', f'//option[@value={CHOICES_STATUS[0]}]')
+        select_status.select_by_value(self.CHOICES_STATUS[0])
+        OPTION_LOCATOR = ('xpath', f'//option[@value={self.CHOICES_STATUS[0]}]')
         self.wait.until(EC.element_attribute_to_include(OPTION_LOCATOR, 'selected'))
 
         DIV_STATUS_LOCATOR = ('xpath', '//div[contains(@class, "card-status")]')
-        assert self.wait.until(EC.visibility_of_element_located(DIV_STATUS_LOCATOR)).text == CHOICES_STATUS[1]
+        assert self.wait.until(EC.text_to_be_present_in_element(DIV_STATUS_LOCATOR, self.CHOICES_STATUS[1]))
 
         RANK_LOCATOR = ('xpath', f'//label[@for="rank_3-{self.product1.slug}"]')
         self.wait.until(EC.element_to_be_clickable(RANK_LOCATOR)).click()
@@ -82,8 +82,8 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         assert self.wait.until(EC.presence_of_element_located(RANK_LOCATOR_BUTTON)).get_attribute('checked')
         self.wait.until(EC.visibility_of_element_located(SELECT_STATUS_LOCATOR))
 
-        SELECT_OPTION_LOCATOR = ('xpath', '//option[@selected]')
-        self.wait.until(EC.text_to_be_present_in_element_value(SELECT_OPTION_LOCATOR, '0'))
+        SELECT_OPTION_LOCATOR = ('xpath', f'//select[@class="select-status"]//option[@value={self.CHOICES_STATUS[0]}]')
+        self.wait.until(EC.element_attribute_to_include(SELECT_OPTION_LOCATOR, 'selected'))
 
         REMOVE_BUTTON = ('xpath', '//button[contains(@class, "btn-remove")]')
         self.browser.find_element(*REMOVE_BUTTON).click()

@@ -57,7 +57,7 @@
         </div>
     </div>
     {% if user.is_authenticated and user_inventory_data is not None%}
-        {% with user_rank=user_inventory_data.rank product_slug=product.slug %}
+        {% with product_status=user_inventory_data.status user_rank=user_inventory_data.rank product_slug=product.slug %}
         {% include 'includes/user_data_product.html'%}
         {% endwith %}
     {% endif %}
@@ -116,6 +116,6 @@
 {% endblock%}
 {% block scripts %}
     <script type="text/javascript" src="{% static 'bookcamp/js/generic.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
     <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
+    <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
 {% endblock %}

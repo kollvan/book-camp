@@ -124,7 +124,7 @@ def get_avg_rank(product_pk: int) -> float:
         value = Inventory.objects.filter(
             Q(product__pk=product_pk) & ~Q(rank=0)
         ).aggregate(Avg('rank'))
-        return round(value['rank__avg'], 2) if value['rank_avg'] else 0.00
+        return round(value['rank__avg'], 2) if value['rank__avg'] else 0.00
     except Exception as e:
         return 0.00
 

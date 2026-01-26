@@ -62,22 +62,26 @@ class InventoryView(LoginRequiredMixin,ListView):
         inventory = queryset_filter.get_filter_queryset()
         return inventory.select_related('product__author').prefetch_related('product__tags')
 
-class UserDataView(View):
+
+class UserDataView(LoginRequiredMixin, View):
+    def handle_no_permission(self):
+        return JsonResponse({
+            'msg': 'Access denied',
+        }, status=403)
+
     def get(self, request:HttpRequest, *args, **kwargs):
-        if request.user.is_authenticated:
-            get_object_or_404(Inventory, user=request.user, product__slug=self.kwargs['product_slug'])
+        get_object_or_404(Inventory, user=request.user, product__slug=self.kwargs['product_slug'])
 
-            context = {
-                'product_status': 1,
-                'rank': 0,
-                'product_slug': self.kwargs['product_slug'],
-            }
-            return JsonResponse({
-                'user_data': render_to_string('../templates/includes/user_data_product.html', context),
-                'review_data': render_to_string('../templates/includes/user_review.html', context),
-            })
-
-        return HttpResponseForbidden()
+        context = {
+            'product_status': 1,
+            'rank': 0,
+            'product_slug': self.kwargs['product_slug'],
+        }
+        return JsonResponse({
+            'msg': 'Ok',
+            'user_data': render_to_string('../templates/includes/user_data_product.html', context),
+            'review_data': render_to_string('../templates/includes/user_review.html', context),
+        })
 
 
 class ProductReviewsView(View):
