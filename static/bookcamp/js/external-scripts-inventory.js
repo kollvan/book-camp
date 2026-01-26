@@ -75,28 +75,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.getElementById('link-show-more').addEventListener('click', async function(e){
         const link = e.target
-        console.log(link.dataset.reviewsUrl)
-        const response = await fetch(window.location.protocol + '//' + window.location.host + link.dataset.reviewsUrl, {
+        const bottomListReviews = document.querySelector('.bottom-list-reviews')
+        bottomListReviews.classList.add('invisible')
+        const url = window.location.protocol + '//' + window.location.host + link.dataset.reviewsUrl
+        const options = {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        dataReviews = await response.json()
-        const bottomListReview = document.querySelector('.bottom-list-reviews')
+        bottomListReviews.before(createLoader())
+        const promise = await fetch(url, options).then(
+        response => {
+            if (!response.ok)
+                throw new Error(`HTTP error! status: ${response.status}`);
+            return response.json();
+        }).finally(() => {
+            document.querySelector('.loader').parentElement?.remove();
+            bottomListReviews.classList.remove('invisible');
+        });
+
+
+        dataReviews = await promise
         dataReviews.reviews.forEach((review)=>{
             newContainer = createReviewContainer(
                 review.user__username,
                 review.rank,
                 review.review
             )
-            bottomListReview.before(newContainer)
+            bottomListReviews.before(newContainer)
         });
         if (!dataReviews.next)
-            bottomListReview.remove();
+            bottomListReviews.remove();
         else
             link.dataset.reviewsUrl = dataReviews.next;
     })
@@ -125,4 +135,16 @@ function createReviewContainer(username, rank, review){
 
     return div;
 };
+
+function createLoader(){
+    const div = document.createElement('div')
+    div.classList.add('container-loader')
+    const textSpan = document.createElement('span')
+    textSpan.textContent = 'Loading'
+    div.appendChild(textSpan)
+    const span = document.createElement('span')
+    span.classList.add('loader', 'small')
+    div.appendChild(span)
+    return div;
+}
 

@@ -88,6 +88,7 @@
                     </div>
                 {% endfor %}
                 {% reviews_greater_than product.pk 2 as is_greater %}
+
                 {% if is_greater %}
                     <div class="bottom-list-reviews">
                         <div class="btn-show-more">

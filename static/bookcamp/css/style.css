@@ -313,6 +313,50 @@ input:checked + label{
 .button:hover{
     background-color: rgb(199, 58, 58);
 }
+.loader {
+    --size: 6px;
+    --multiplier: 5px;
+    width: var(--size);
+    height: var(--size);
+    position: relative;
+    border-radius: 50%;
+    background: #fff;
+    animation: wave 1s ease-in infinite;
+}
+.container-loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1em;
+    font-size: 1.2em;
+}
+.container-loader span{
+    margin: 0 0.5em;
+}
+.loader.small{
+    --size: 5px;
+    --multiplier: 4px;
+    animation-duration: 0.7s;
+}
+.invisible{
+    display: none;
+}
+@keyframes wave {
+ 0% {  box-shadow:
+  0 0 0 0px rgba(255, 255,255, 1),
+  0 0 0 calc(var(--multiplier) * 1) rgba(255, 255,255, 0.2),
+  0 0 0 calc(var(--multiplier) * 2) rgba(255, 255,255, 0.6),
+  0 0 0 calc(var(--multiplier) * 3) rgba(255, 255,255, 0.4),
+  0 0 0 calc(var(--multiplier) * 4) rgba(255, 255,255, 0.2)
+  }
+  100% {  box-shadow:
+    0 0 0 calc(var(--multiplier) * 4) rgba(255, 255,255, 0),
+    0 0 0 calc(var(--multiplier) * 3) rgba(255, 255,255, 0.2),
+    0 0 0 calc(var(--multiplier) * 2) rgba(255, 255,255, 0.4),
+    0 0 0 calc(var(--multiplier) * 1) rgba(255, 255,255, 0.6),
+    0 0 0 0px rgba(255, 255,255, 1)
+  }
+}
 
 @media (min-width: 2000px){
     body{

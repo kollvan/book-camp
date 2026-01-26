@@ -1,3 +1,5 @@
+from time import sleep
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpRequest, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
@@ -84,7 +86,6 @@ class ProductReviewsView(View):
         params = request.GET.copy().dict()
         page = int(params.get('page', 1))
         offset = (page - 1) * PAGE_SIZE
-
         count = Inventory.objects.filter(
             product__slug=self.kwargs['product_slug']
         ).count()
