@@ -1,9 +1,14 @@
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, override_settings
 from django.test.client import Client
 
 from users.models import User
 
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+})
 class BaseInventoryTestCase(LiveServerTestCase):
 
     def setUp(self):
