@@ -1,3 +1,5 @@
+import re
+
 from goods.models import Author, Category, Product
 from inventory.models import Inventory
 from inventory.tests.base import BaseInventoryTestCase
@@ -39,8 +41,20 @@ class TestUserData(BaseInventoryTestCase):
         response = self.client.get(f'{self.full_live_server_url}/{self.product.slug}/')
         self.assertNotContains(response, 'btn-add')
 
+    def test_displayed_review(self):
+        """Displayed review area with correct text."""
+        review_msg = 'review_test'
+        Inventory.objects.create(user=self.user, product=self.product, review=review_msg)
+        response = self.client.get(f'{self.full_live_server_url}/{self.product.slug}/')
+        html_page = response.content.decode('utf-8')
+        self.assertEqual(response.status_code, 200)
+        self.assertRegex(
+            html_page,
+            rf'<textarea[^>]*>[\s]*{review_msg}[\s]*</textarea>'
+        )
+
     def test_getting_user_data(self):
-        """Check received user_data."""
+        """Check received user_data by API inventory widgets."""
         Inventory.objects.create(user=self.user, product=self.product)
         response = self.client.get(f'{self.live_server_url}/inventory/widgets/user_data/{self.product.slug}/')
 
@@ -49,6 +63,14 @@ class TestUserData(BaseInventoryTestCase):
         self.assertIn('name="product_status"', user_data)
         self.assertIn('name="product_rank"', user_data)
         self.assertIn('btn-remove', user_data)
+
+    def test_getting_review_data(self):
+        """Check received review_data by API inventory widgets."""
+        Inventory.objects.create(user=self.user, product=self.product, review='review_test')
+        response = self.client.get(f'{self.live_server_url}/inventory/widgets/user_data/{self.product.slug}/')
+        review = response.json()['review_data']
+        self.assertIn('name="review"', review)
+
 
     def test_getting_user_data_with_error_404(self):
         """Check received user_data for incorrect good slug."""

@@ -14,6 +14,7 @@ class TestDisplayUserDataWithAddedGood(BaseProductTestCase):
         """Checking the use of the user_data template(widget) when adding good."""
         response = self.client.get(self.full_live_server_url)
         self.assertTemplateUsed(response, 'includes/user_data_product.html')
+        self.assertTemplateUsed(response, 'includes/user_review.html')
 
 
 
