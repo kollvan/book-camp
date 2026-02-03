@@ -39,7 +39,7 @@
             <p>{{ product.description}}</p>
             <p>Количество страниц: {{product.quantity_page}}</p>
             <div class="card-rank-product">
-                {% get_avg_rank product.pk as avg_rank %}
+                {% get_avg_rank product.slug as avg_rank %}
                 Рейтинг: {{ avg_rank }}
             </div>
             <p>

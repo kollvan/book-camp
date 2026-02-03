@@ -1,32 +1,15 @@
-from functools import wraps
-from typing import Any, Hashable, Callable
+from typing import Any, Hashable
 
 from django import template
-from django.core.cache import cache
 from django.db.models import Q, Avg, QuerySet, Count
 from django.template import Context
 from django.utils.http import urlencode
 
+from common.custom_tags.generic import cache_custom_tag
 from goods.models import Category, Tag, Author
 from inventory.models import Inventory
 
 register = template.Library()
-
-
-def cache_custom_tag(cache_key: Any, cache_time: int = 60) -> Callable:
-    def func_decorator(func: Callable) -> Callable:
-        @wraps(func)
-        def wrapper(category_slug: str, *args, **kwargs) -> QuerySet:
-            queryset = cache.get_or_set(
-                f'{cache_key}_{category_slug}',
-                func(category_slug, *args, **kwargs),
-                cache_time
-            )
-            return queryset
-
-        return wrapper
-
-    return func_decorator
 
 
 @register.simple_tag(takes_context=True)
@@ -119,10 +102,11 @@ def get_avg_ranks(products: list[int] | QuerySet) -> dict:
 
 
 @register.simple_tag()
-def get_avg_rank(product_pk: int) -> float:
+@cache_custom_tag('product_avg')
+def get_avg_rank(product_slug: int) -> float:
     try:
         value = Inventory.objects.filter(
-            Q(product__pk=product_pk) & ~Q(rank=0)
+            Q(product__slug=product_slug) & ~Q(rank=0)
         ).aggregate(Avg('rank'))
         return round(value['rank__avg'], 2) if value['rank__avg'] else 0.00
     except Exception as e:
