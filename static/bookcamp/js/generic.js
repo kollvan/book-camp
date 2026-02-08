@@ -1,6 +1,4 @@
-
-async function sendRequestToServer(service_method, slug = null, data = null) {
-    url = window.location.protocol + '//' + window.location.host + '/api/inventory/';
+export async function sendRequestToServer(url, service_method='POST', slug = null, data = null) {
     const baseOptions = {
       method: service_method,
       headers: {
@@ -8,18 +6,14 @@ async function sendRequestToServer(service_method, slug = null, data = null) {
             'X-CSRFToken': getCookie('csrftoken'),
         },
     };
-    if (service_method != 'POST')
-    {
-        url += slug + '/';
-    }
-
-    if (service_method != 'DELETE')
-    {
+    if (slug)
+        url += `${slug}/`;
+    if (data)
         baseOptions.body = JSON.stringify(data);
-    }
-    const response = await fetch(url, baseOptions)
-    return response;
+
+    return fetch(url, baseOptions);
 }
+
 function getCookie(name) {
     let matches = document.cookie.match(new RegExp(
     "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -27,8 +21,9 @@ function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-async function sendRequestForWidgets(pk, service){
-    url = window.location.protocol + '//' + window.location.host + service + pk + '/';
+export async function sendRequestForWidgets(pk, service){
+    const url = window.location.origin + service + pk + '/';
+
     const baseOptions = {
       method: 'GET',
       headers: {

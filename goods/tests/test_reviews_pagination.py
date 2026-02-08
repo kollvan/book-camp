@@ -1,3 +1,4 @@
+from goods import constans
 from goods.tests.base import BaseProductTestCase
 from inventory.models import Inventory
 from users.models import User
@@ -6,6 +7,7 @@ from users.models import User
 class TestReviewsPagination(BaseProductTestCase):
     def setUp(self):
         super().setUp()
+        constans.REVIEWS_PAGE_SIZE = 2
         self.user_profiles = [f'user{i}' for i in range(6)]
         for username in self.user_profiles:
             user = User.objects.create(username=username, email=f'{username}@gmail.com', password=username)

@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import ListView
 
 from common.mixin.generic import SelectRelatedMixin
+from goods import constans
 from goods.utls import get_current_year, RangeYear
 from inventory.models import Inventory
 from inventory.utls import FilterQuerysetForInventory, InventoryFilterParams
@@ -89,7 +90,7 @@ class UserDataView(LoginRequiredMixin, View):
 
 class ProductReviewsView(View):
     def get(self, request: HttpRequest, *args, **kwargs):
-        PAGE_SIZE = 2
+        PAGE_SIZE = constans.REVIEWS_PAGE_SIZE
         params = request.GET.copy().dict()
         page = int(params.get('page', 1))
         offset = (page - 1) * PAGE_SIZE

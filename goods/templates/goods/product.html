@@ -18,14 +18,14 @@
     </div>
     <div class="container-data">
         <div>
-            <div class="container-title">
+            <div class="container-title" data-product-title>
                 <span class="product-title" id="{{product.slug}}_{{product.pk}}">
                     {{ product.name }}
                 </span>
                 {% if user.is_authenticated%}
                     {% get_user_data product.pk user.pk as user_inventory_data %}
                     {% if user_inventory_data is not None%}
-                    <div class="card-status product-status">
+                    <div data-product-title-status class="card-status product-status">
                         {% if user_inventory_data.status == 3 %} Начато {% endif %}
                         {% if user_inventory_data.status == 2 %} Отложенно {% endif %}
                         {% if user_inventory_data.status == 1 %} Добавленно {% endif %}
@@ -45,29 +45,30 @@
             <p>
                 Тэги:
             </p>
-            <ul class="tag-list">
+            <ul data-tag-list class="tag-list">
                 {% for tag in product.tags.all %}
                 <li class="tag"><a href="{% url 'goods:catalog' 'all' %}?{% append_params tags=tag.slug %}">{{ tag.name }}</a></li>
                 {% endfor %}
             </ul>
             {% if user.is_authenticated and user_inventory_data is None %}
-                <button class="btn-user-data btn-add" title="Добавить в инвентарь"
+                <button class="btn-user-data btn-add" data-product-id="{{product.pk}}" data-product-slug="{{product.slug}}"
+                        data-button-add title="Добавить в инвентарь"
                         id="id_{{product.slug}}_{{product.pk}}">Добавить</button>
             {% endif %}
         </div>
     </div>
     {% if user.is_authenticated and user_inventory_data is not None%}
-        {% with product_status=user_inventory_data.status user_rank=user_inventory_data.rank product_slug=product.slug %}
+        {% with product_status=user_inventory_data.status user_rank=user_inventory_data.rank product_slug=product.slug product_id=product.pk%}
         {% include 'includes/user_data_product.html'%}
         {% endwith %}
     {% endif %}
-    <div class="list-reviews">
+    <div data-list-reviews class="list-reviews">
         {% if user.is_authenticated and user_inventory_data is not None%}
             {% with product_slug=product.slug %}
             {% include 'includes/user_review.html' %}
             {% endwith %}
         {% endif %}
-        {% get_all_reviews product.pk limit=2 as reviews %}
+        {% get_all_reviews product.pk limit=reviews_page_size as reviews %}
         <details open>
             <summary>Отзывы: </summary>
             {% if reviews %}
@@ -87,10 +88,10 @@
                         <div class="card-rank-product rank-review">Рейтинг: {{review.rank}}</div>
                     </div>
                 {% endfor %}
-                {% reviews_greater_than product.pk 2 as is_greater %}
+                {% reviews_greater_than product.pk reviews_page_size as is_greater %}
 
                 {% if is_greater %}
-                    <div class="bottom-list-reviews">
+                    <div data-more-reviews class="bottom-list-reviews">
                         <div class="btn-show-more">
                             <a id="link-show-more" data-reviews-url="{% url 'inventory:widget_reviews' product.slug %}?page=2">
                                 Показать ещё
@@ -115,7 +116,7 @@
     </footer>
 {% endblock%}
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'bookcamp/js/generic.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/generic.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/script-product-btns.js'%}"></script>
 {% endblock %}

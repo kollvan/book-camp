@@ -48,8 +48,8 @@
                                 {%get_item data_from_inventory product.pk as product_status%}
                                     <div class="card-status {% if product_status is None %}invisible{% endif %}">
                                         <select {% if product_status is None %} disabled {% endif %}
-                                                title="Выбрать статус"
-                                                class="current-status" name="product_status" id="{{product.slug}}-status" >
+                                                title="Выбрать статус" data-card-id="{{product.pk}}"
+                                                class="current-status" data-product-slug="{{product.slug}}" name="product_status" id="{{product.slug}}-status" >
                                             <option value="3" {% if product_status == 3 %} selected {% endif %}>Начато</option>
                                             <option value="2" {% if product_status == 2 %} selected {% endif %}>Отложенно</option>
                                             <option value="1" {% if product_status == 1 %} selected {% endif %}>Добавленно</option>
@@ -88,11 +88,14 @@
                             {{ record|floatformat:2 }}
                         </div>
                         {% if user.is_authenticated %}
-                            <button class="card-btn {% if product_status is not None %}remove{% endif %}"
-                                    title="{% if product_status is not None %}Удалить из инвентаря
-                                    {% else %}Добавить в инвентарь
-                                    {% endif %}"
-                                id="id_{{product.slug}}-{{product.pk}}"></button>
+                            <button id="id_{{product.slug}}-{{product.pk}}" data-product-slug="{{product.slug}}"
+                                    data-product-id="{{product.id}}"
+                                    {% if product_status is not None%}
+                                    data-mini-button-remove class="card-btn remove" title="Удалить из инвентаря"
+                                    {% else %}
+                                    data-mini-button-add class="card-btn" title="Добавить в инвентарь"
+                                    {% endif %}
+                            ></button>
                         {% endif %}
                     </div>
                 </div>
@@ -173,8 +176,8 @@
     </footer>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'bookcamp/js/generic.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/generic-filter-functional.js' %}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/generic.js' %}"></script>
+    <script type="module" src="{% static 'bookcamp/js/generic-filter-functional.js' %}"></script>
+    <script type="module" src="{% static 'bookcamp/js/script-btns.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
 {% endblock %}

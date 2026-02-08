@@ -1,3 +1,6 @@
+import { sendRequestToServer } from "./generic.js";
+import { PopupWindow } from "./popup-window.js";
+
 document.addEventListener('DOMContentLoaded', function() {
     const selectElements = document.querySelectorAll('.inventory-search');
     const handleSelectChange = function() {
@@ -49,23 +52,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+document.addEventListener('click', async (event) => {
+    const url = window.location.origin.toString() + '/api/inventory/';
+    if (event.target.hasAttribute('data-btn-remove')){
 
-document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.card-btn');
-    buttons.forEach(button =>{
-        button.addEventListener('click', async function(){
-            const buttonId = this.id.match(/^id_(.+)-(\d+)$/);
-            try{
-                const response_ok = sendRequestToServer('DELETE', buttonId[1]);
-                if(response_ok){
-                    let card_good = this.closest('.card');
-                    card_good.remove();
-                }
-            }catch(error){
-                console.log(error)
-            }
-        });
-    });
+        const promise = sendRequestToServer(url, 'DELETE', event.target.dataset.productSlug)
+
+        promise
+        .then((successData)=>{
+            console.log(successData)
+            if (!successData.ok)
+                throw Error('Something went wrong.')
+            event.target.closest('.card').remove()})
+        .catch((errorData)=>{
+            const popup = new PopupWindow()
+            popup.initState.messageLevel = 0
+            popup.initState.divClassElement.push('center-message')
+            const popupElement = popup.createElement(errorData)
+            document.body.append(popupElement)
+            setTimeout(popup.getHandlerDisappearance(), 2000, popupElement)})
+    }
 });
 
 

@@ -1,29 +1,43 @@
-const handleFormSubmit = async function(e){
+import { Loader } from './loader.js'
+import { sendRequestToServer } from './generic.js'
+
+const buttonReviewChange = async function(e){
+    const button_change = e.target;
+    const div = button_change.parentElement;
+    const textarea = document.getElementById(button_change.dataset.productSlug + '_review')
+    textarea.removeAttribute('disabled')
+
+    const save_button = document.createElement('button')
+    save_button.textContent = 'Сохранить'
+    save_button.type = 'submit'
+    save_button.id = 'button-submit-review'
+    div.appendChild(save_button)
+    const reset_button = document.createElement('button')
+    reset_button.textContent = 'Сбросить'
+    reset_button.type = 'reset'
+    reset_button.id = 'button-reset-review'
+    div.appendChild(reset_button)
+    button_change.remove()
+};
+const reviewFormSubmit = async function(e){
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const slug = form.dataset.productSlug;
-    url = window.location.protocol + '//' + window.location.host + '/api/inventory/' + slug + '/';
-    console.log(url)
     const data = Object.fromEntries(formData.entries());
-    const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken'),
-        },
-        body: JSON.stringify(data)
-    });
+    const url = window.location.origin + '/api/inventory/';
+    const response = await sendRequestToServer(url, 'PATCH', form.dataset.productSlug, data)
 
     if (response.ok) {
-        submit_button = document.getElementById('button-submit-review')
-        reset_button = document.getElementById('button-reset-review')
+        console.log(response)
+        const submit_button = document.getElementById('button-submit-review')
+        const reset_button = document.getElementById('button-reset-review')
 
-        change_button = document.createElement('button')
+        const change_button = document.createElement('button')
         change_button.textContent = 'Изменить'
         change_button.type = 'button'
         change_button.id = 'button-change-review'
         change_button.dataset.productSlug = form.dataset.productSlug
+
 
         submit_button.parentElement.appendChild(change_button)
         submit_button.remove()
@@ -32,91 +46,81 @@ const handleFormSubmit = async function(e){
         document.getElementById(form.dataset.productSlug + '_review').disabled = true
     }
 };
-const handleButtonChangeReview = async function(e){
-    const button_change = e.target;
-    const div = button_change.parentElement;
-    const textarea = document.getElementById(button_change.dataset.productSlug + '_review')
-    textarea.removeAttribute('disabled')
-
-    save_button = document.createElement('button')
-    save_button.textContent = 'Сохранить'
-    save_button.type = 'submit'
-    save_button.id = 'button-submit-review'
-    div.appendChild(save_button)
-    reset_button = document.createElement('button')
-    reset_button.textContent = 'Сбросить'
-    reset_button.type = 'reset'
-    reset_button.id = 'button-reset-review'
-    div.appendChild(reset_button)
-    button_change.remove()
-};
-const handleShowMore = async function(e){
+const showMoreClick = async function(e){
     const link = e.target
-    const bottomListReviews = document.querySelector('.bottom-list-reviews')
+    const url = window.location.origin + link.dataset.reviewsUrl;
+
+    const bottomListReviews = document.querySelector('[data-more-reviews]')
     bottomListReviews.classList.add('invisible')
-    const url = window.location.protocol + '//' + window.location.host + link.dataset.reviewsUrl
-    const options = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    }
-    bottomListReviews.before(createLoader())
-    const promise = await fetch(url, options).then(
-    response => {
-        if (!response.ok)
+
+    bottomListReviews.before(Loader.createLoader())
+
+    const promise = sendRequestToServer(url, 'GET')
+    promise.then(async (successData) => {
+        if (!successData.ok)
             throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
-    }).finally(() => {
-        document.querySelector('.loader').parentElement?.remove();
+        const dataReviews = await successData.json();
+        dataReviews.reviews.forEach((review)=>{
+            const newContainer = createReviewContainer(
+                review.user__username,
+                review.rank,
+                review.review
+            )
+            bottomListReviews.before(newContainer)
+        });
+        if (!dataReviews.next)
+            bottomListReviews.remove();
+        else
+            link.dataset.reviewsUrl = dataReviews.next;
+    }).finally( async () => {
+        document.querySelector('[data-loader]')?.remove();
         bottomListReviews.classList.remove('invisible');
     });
-    dataReviews = await promise
-    dataReviews.reviews.forEach((review)=>{
-        newContainer = createReviewContainer(
-            review.user__username,
-            review.rank,
-            review.review
-        )
-        bottomListReviews.before(newContainer)
-    });
-    if (!dataReviews.next)
-        bottomListReviews.remove();
-    else
-        link.dataset.reviewsUrl = dataReviews.next;
 };
 
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('change', function(e) {
-        if (e.target.type === 'radio' && e.target.classList.contains('value-rank')) {
-            div_card = e.target.parentElement;
-            data = {
+        const url = window.location.origin + '/api/inventory/'
+        if (e.target.hasAttribute('data-value-rank')) {
+            const div_card = e.target.parentElement;
+            const data = {
                 'rank': e.target.value,
             }
-            response = sendRequestToServer('PATCH', div_card.id.split('_')[1], data);
+            const promise = sendRequestToServer(url, 'PATCH', div_card.dataset.productSlug, data);
+            promise.then((successData)=>{
+                if (!successData.ok)
+                    throw Error(successData)
+                e.target.checked = true
+            }).catch((errorData)=>{
+                div_card.querySelector('[checked]').checked = true
+            })
+        }
+        else if(e.target.name === 'product_status'){
+            const data = {'status': e.target.value}
+            const promise = sendRequestToServer(url, 'PATCH', e.target.dataset.productSlug, data);
+            promise.then((successData)=>{
+                if (!successData.ok)
+                    throw Error(successData)
+                console.log(e.target.value)
+            }).catch((errorData)=>{
+                e.target.querySelector('[selected]').selected = true
+                e.target.dispatchEvent(new Event('changeReverse', { bubbles: true }))
+            })
         }
     });
-    document.addEventListener('change', async function(e){
-        if(e.target.name === 'product_status'){
-            try{
-                const response_ok = sendRequestToServer('PATCH', e.target.id.replace(/-status$/, ""),
-                {'status': e.target.value})
-
-            }
-            catch(error){
-                console.log(error)
-            }
+    document.addEventListener('submit', async (event)=>{
+        if (event.target.id === 'form-review'){
+            await reviewFormSubmit(event)
         }
     });
-    const form = document.getElementById('form-review');
-    const buttonChangeReview = document.getElementById('button-change-review');
-    const buttonShowMore = document.getElementById('link-show-more');
-    if (form)
-        form.addEventListener('submit', handleFormSubmit);
-    if (buttonChangeReview)
-        buttonChangeReview.addEventListener('click', handleButtonChangeReview);
-    if (buttonShowMore)
-        buttonShowMore.addEventListener('click', handleShowMore);
+    document.addEventListener('click', async (event)=>{
+        const linkShowMore = event.target.closest('#link-show-more')
+        if(event.target.id === 'button-change-review'){
+            await buttonReviewChange(event)
+        } else if (linkShowMore){
+            await showMoreClick(linkShowMore)
+        }
+    });
 });
 
 function createReviewContainer(username, rank, review){
@@ -144,15 +148,5 @@ function createReviewContainer(username, rank, review){
     return div;
 };
 
-function createLoader(){
-    const div = document.createElement('div')
-    div.classList.add('container-loader')
-    const textSpan = document.createElement('span')
-    textSpan.textContent = 'Loading'
-    div.appendChild(textSpan)
-    const span = document.createElement('span')
-    span.classList.add('loader', 'small')
-    div.appendChild(span)
-    return div;
-}
+
 

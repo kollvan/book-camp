@@ -79,7 +79,8 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         self.browser.refresh()
 
         RANK_LOCATOR_BUTTON = ('id', f'rank_3-{self.product1.slug}')
-        assert self.wait.until(EC.presence_of_element_located(RANK_LOCATOR_BUTTON)).get_attribute('checked')
+        rank_button = self.wait.until(EC.presence_of_element_located(RANK_LOCATOR_BUTTON))
+        assert rank_button.get_attribute('checked'), f'Don`t exist attribute checked in {rank_button}'
         self.wait.until(EC.visibility_of_element_located(SELECT_STATUS_LOCATOR))
 
         SELECT_OPTION_LOCATOR = ('xpath', f'//select[@class="select-status"]//option[@value={self.CHOICES_STATUS[0]}]')

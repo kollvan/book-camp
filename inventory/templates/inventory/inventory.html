@@ -67,7 +67,7 @@
 
                                 <div class="card-status">
                                     <select title="Изменить статус" class="current-status"
-                                            name="product_status" id="{{item.product.slug}}-status" >
+                                            name="product_status" data-product-slug="{{item.product.slug}}" id="{{item.product.slug}}-status" >
                                         <option value="3" {% if item.status == 3 %} selected {% endif %}>Начато</option>
                                         <option value="2" {% if item.status == 2 %} selected {% endif %}>Отложенно</option>
                                         <option value="1" {% if item.status == 1 %} selected {% endif %}>Добавленно</option>
@@ -87,7 +87,8 @@
                         <div class="card-bottom">
                             {% include 'includes/own_rank.html'%}
                             <button class="card-btn remove" title="Удалить из инвентаря"
-                                    id="id_{{item.product.slug}}-{{item.product.pk}}"></button>
+                                    id="id_{{item.product.slug}}-{{item.product.pk}}"
+                            data-btn-remove data-product-slug="{{item.product.slug}}"></button>
                         </div>
                     </div>
 
@@ -146,8 +147,8 @@
     </section>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" src="{% static 'bookcamp/js/generic.js' %}"></script>
-    <script type ="text/javascript" src="{% static 'bookcamp/js/generic-filter-functional.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/scripts-inventory.js'%}"></script>
-    <script type="text/javascript" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/generic.js' %}"></script>
+    <script type ="module" src="{% static 'bookcamp/js/generic-filter-functional.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/scripts-inventory.js'%}"></script>
+    <script type="module" src="{% static 'bookcamp/js/external-scripts-inventory.js'%}"></script>
 {% endblock %}

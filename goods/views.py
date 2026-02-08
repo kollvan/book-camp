@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView
 
 from common.mixin.generic import CacheViewMixin, SelectRelatedMixin
+from goods import constans
 from goods.models import Product
 from goods.utls import RangeYear, get_current_year, search, FilterParams, FilterQueryset
 
@@ -68,4 +69,5 @@ class ProductView(CacheViewMixin, SelectRelatedMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['product'].name
+        context['reviews_page_size'] = constans.REVIEWS_PAGE_SIZE
         return context

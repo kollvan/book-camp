@@ -1,84 +1,78 @@
+import { sendRequestToServer, sendRequestForWidgets } from './generic.js'
+
 document.addEventListener('DOMContentLoaded', function() {
-        document.addEventListener('click', function(e) {
+    document.addEventListener('click', async function(e) {
 
-            if(e.target.classList.contains('btn-add')){
-                product_info = e.target.id.match(/^id_(.+)_(\d*)$/)
-
-                data = {
-                    'set_product': product_info[2]
-                }
-                response = sendRequestToServer('POST', slug=null, data=data)
-                response.then(async value =>{
-
-                    e.target.remove();
-                    const content = document.querySelector('.content');
-                    html_response = await sendRequestForWidgets(product_info[1], '/inventory/widgets/user_data/');
-                    const html_data = await html_response.json()
-                    content.insertAdjacentHTML('beforeEnd', html_data.user_data);
-
-                    createProductStatus();
-
-                    document.querySelector('.list-reviews').querySelector('details').insertAdjacentHTML(
-                        'beforebegin',
-                        html_data.review_data
-                    );
-                    document.getElementById('form-review').addEventListener('submit', handleFormSubmit)
-                    document.getElementById('button-change-review').addEventListener('click', handleButtonChangeReview)
-                });
-
+        if(e.target.hasAttribute('data-button-add')){
+            const addButton = e.target
+            const slug = addButton.dataset.productSlug
+            const url = window.location.origin + '/api/inventory/'
+            const data = {
+                'set_product': addButton.dataset.productId
             }
+            const promise = sendRequestToServer(url, 'POST', null, data)
+            promise.then(async (value) =>{
+                e.target.remove();
+                const content = document.querySelector('section');
+                const html_response = await sendRequestForWidgets(slug, '/inventory/widgets/user_data/');
+                const html_data = await html_response.json()
+                content.insertAdjacentHTML('beforeEnd', html_data.user_data);
 
-            if(e.target.classList.contains('btn-remove')){
-                product_info = e.target.id.match(/^id_(.+).*$/)
-                response = sendRequestToServer('DELETE', slug=product_info[1])
-                response.then(value =>{
-                    product_status = document.querySelector('.card-status')
-                    div = document.querySelector('.user-data')
-                    product_status.remove();
-                    div.remove()
-                    button_add = document.createElement('button')
-                    button_add.classList.add('btn-user-data', 'btn-add')
-                    button_add.id = 'id_' + document.querySelector('.product-title').id
-                    button_add.textContent = 'Добавить'
-                    tag_list = document.querySelector('.tag-list')
-                    tag_list.after(button_add)
-                    document.querySelector('.product-review').remove()
-                });
+                const product_title = document.querySelector('[data-product-title]');
 
-            }
+                product_title.append( await createProductStatus());
+
+                document.querySelector('[data-list-reviews]').querySelector('details').insertAdjacentHTML(
+                    'beforebegin',
+                    html_data.review_data
+                );
+            }).catch((errorData)=>{
+                console.log(errorData)
+            });
+        }
+
+        if(e.target.hasAttribute('data-button-remove')){
+            const slug = e.target.dataset.productSlug
+            const id = e.target.dataset.productId
+            const response = sendRequestToServer(window.location.origin + '/api/inventory/','DELETE', slug)
+            response.then(value =>{
+                document.querySelector('[data-product-title-status]').remove();
+                document.querySelector('[data-user-main-widget]').remove()
+
+                const button_add = document.createElement('button')
+                button_add.classList.add('btn-user-data', 'btn-add')
+                button_add.dataset.productSlug = slug
+                button_add.dataset.productId = id
+                button_add.dataset.buttonAdd = ''
+                button_add.id = `button-add-${slug}`
+                button_add.textContent = 'Добавить'
+
+                document.querySelector('[data-tag-list]').after(button_add)
+                document.querySelector('[data-user-review]').remove()
+            }).catch((errorData)=>{
+                console.log(errorData)
+            });
+        }
+    });
+    document.addEventListener('change', async function(e) {
+        if (event.target.hasAttribute('name', 'product_status')){
+            const textStatus = e.target.options[e.target.selectedIndex].text;
+            document.querySelector('[data-product-title-status]').textContent = textStatus
+        }
+    });
+    document.addEventListener('changeReverse', async function(e) {
+        if (event.target.hasAttribute('name', 'product_status')){
+            const textStatus = e.target.options[e.target.selectedIndex].text;
+            document.querySelector('[data-product-title-status]').textContent = textStatus
+        }
     });
 });
 
 async function createProductStatus(){
-    const product_title = document.querySelector('.product-title');
-    div_status = document.createElement('div')
+    const div_status = document.createElement('div')
     div_status.classList.add('card-status', 'product-status')
     div_status.textContent = 'Добавленно'
-    product_title.after(div_status)
+    div_status.dataset.productTitleStatus = ''
+    console.log(div_status)
+    return div_status
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('change', function(e) {
-        if (e.target.type === 'radio' && e.target.classList.contains('value-rank')) {
-            div_card = e.target.parentElement;
-            data = {
-                'rank': e.target.value,
-            }
-            try{
-                response_ok = sendRequestToServer('PATCH', div_card.id.split('_')[1], data)
-            }
-            catch(error){
-                console.log(error)
-            }
-        }
-    });
-});
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('change', async function(e){
-        if(e.target.name === 'product_status'){
-            div = document.querySelector('.product-status')
-            div.textContent = e.target.options[e.target.selectedIndex].textContent;
-        }
-
-    });
-});
