@@ -4,10 +4,10 @@
 {% load goods_custom_tags %}
 
 {% block extends_style %}
+    <link rel="stylesheet" href="{% static 'bookcamp/css/filters-style.css'%}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/card.css' %}">
     <link rel="stylesheet" href="{% static 'bookcamp/css/card-catalog.css'%}">
-    <link rel="stylesheet" href="{% static 'bookcamp/css/filters-style.css'%}">
 {% endblock %}
 
 {% block section %}
@@ -133,35 +133,57 @@
                             Сортировка:
                         </summary>
                         <div>
-                            <input type="radio"  {% if ordering == 'author'%}checked{% endif %}
-                                   value="author" name="ordering" id="id_ord_author">
-                            <label for="id_ord_author">По автору</label>
+                            <div>
+                                <input type="radio"  {% if ordering == 'author'%}checked{% endif %}
+                                       value="author" name="ordering" id="id_ord_author">
+                                <label for="id_ord_author">По автору</label>
+                            </div>
+                            <div>
+                                <input type="radio" {% if ordering == 'year_of_publication'%}checked{% endif %}
+                                       value="year_of_publication" name="ordering"  id="id_ord_date">
+                                <label for="id_ord_date">По дате выхода</label>
+                            </div>
+                            <div>
+                                <input type="radio" {% if ordering == 'name'%}checked{% endif %}
+                                       value="name" name="ordering" id="id_ord_name">
+                                <label for="id_ord_name">По названию книги</label>
+                            </div>
                         </div>
+
+                    </details>
+                    <details class="filter-container" open>
+                        <summary class="inscription">
+                            Высокие оценки:
+                        </summary>
                         <div>
-                            <input type="radio" {% if ordering == 'year_of_publication'%}checked{% endif %}
-                                   value="year_of_publication" name="ordering"  id="id_ord_date">
-                            <label for="id_ord_date">По дате выхода</label>
-                        </div>
-                        <div>
-                            <input type="radio" {% if ordering == 'name'%}checked{% endif %}
-                                   value="name" name="ordering" id="id_ord_name">
-                            <label for="id_ord_name">По названию книги</label>
+                            <span class="center">
+                                Средняя оценка 4 и выше:
+                            </span>
+                            <label class="switch">
+                                <input name="is_high_rank"
+                                       {% if is_high_rank %}checked {% endif %}
+                                       type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
                         </div>
                     </details>
                     <details open class="filter-container">
                         <summary class="inscription">
                             Авторы:
                         </summary>
-                        {% get_authors category_slug as authors%}
-                        <ul class="filter-scroll">
-                            {% for author in authors %}
-                            <li class="filter-list">
-                                <input value="{{author.slug}}" {% if author.slug in selected_authors %}checked{% endif %}
-                                       type="checkbox" name="authors" id="id_{{author.slug}}">
-                                <label for="id_{{author.slug}}">{{author.name}}</label>
-                            </li>
-                            {% endfor %}
-                        </ul>
+                        <div>
+                            {% get_authors category_slug as authors%}
+                            <ul class="filter-scroll">
+                                {% for author in authors %}
+                                <li class="filter-list">
+                                    <input value="{{author.slug}}" {% if author.slug in selected_authors %}checked{% endif %}
+                                           type="checkbox" name="authors" id="id_{{author.slug}}">
+                                    <label for="id_{{author.slug}}">{{author.name}}</label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
                     </details>
                     <button class="button" id="filter-submit" type="submit">Применить</button>
                     <button class="button" type="reset">Сбросить</button>

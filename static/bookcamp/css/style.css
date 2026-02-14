@@ -302,6 +302,11 @@ input:checked + label{
     max-width: 4em;
     margin-block: 0.5em;
 }
+
+.filter-container > div{
+    margin-inline: 0.5em;
+    margin-block: 0.2em;
+}
 ::placeholder{
     color: grey;
 }

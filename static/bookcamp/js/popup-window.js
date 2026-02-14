@@ -83,9 +83,3 @@ export class PopupWindow{
         }
     }
 }
-
-// const box = document.querySelector('#box-3')
-// const popup = PopupWindow.createElement('message')
-// box.append(popup)
-// setTimeout(PopupWindow.getHandlerDisappearance(), 10000, popup)
-// document.querySelector('.close-btn').addEventListener('click', PopupWindow.getHandlerClose())
