@@ -12,9 +12,10 @@
             <h1>Регистрация</h1>
             <div class="inputs">
                 <div class="input-field">
-                    <label for="id_username">Логин:</label>
-                    <input id="id_username" value="{% if form.username.value %}{{form.username.value}}{%endif%}"
-                           name="username" type="text" value="">
+                    <label for="id_username" class="required">Логин:</label>
+                    <input id="id_username" name="username" type="text" required minlength="3" maxlength="150"
+                    value="{% if form.username.value %}{{form.username.value}}{%endif%}"
+                    autocomplete="username">
                 </div>
                 {% if form.username.errors %}
                 <div class="errors-field">
@@ -22,9 +23,9 @@
                 </div>
                 {% endif %}
                 <div class="input-field">
-                    <label for="id_email">E-mail:</label>
+                    <label for="id_email" class="required">E-mail:</label>
                     <input id="id_email" value="{% if form.email.value %}{{form.email.value}}{%endif%}"
-                           name="email" type="email" placeholder="myemail@email.com" value="">
+                           name="email" type="email" required placeholder="myemail@email.com" autocomplete="email">
                 </div>
                 {% if form.email.errors %}
                 <div class="errors-field">
@@ -33,12 +34,12 @@
                 {% endif %}
                 <div class="input-field image-field">
                     <label for="id_image">Изображение профиля:</label>
-                    <input id="id_image" name="image" type="file" >
+                    <input id="id_image" name="image" type="file">
                 </div>
                 <div class="input-field">
                     <label for="id_first_name">Имя:</label>
                     <input id="id_first_name" value="{% if form.first_name.value %}{{form.first_name.value}}{% endif %}"
-                           name="first_name" type="text" value="">
+                           minlength="3" maxlength="150" name="first_name" type="text">
                 </div>
                 {% if form.first_name.errors %}
                 <div class="errors-field">
@@ -48,7 +49,7 @@
                 <div class="input-field">
                     <label for="id_last_name">Фамилия:</label>
                     <input id="id_last_name" value="{% if form.last_name.value %}{{form.last_name.value}}{% endif %}"
-                           name="last_name" type="text" value="">
+                           minlength="3" maxlength="150" name="last_name" type="text">
                 </div>
                 {% if form.last_name.errors %}
                 <div class="errors-field">
@@ -56,8 +57,8 @@
                 </div>
                 {% endif %}
                 <div class="input-field">
-                    <label for="id_password1">Пароль:</label>
-                    <input id="id_password1" name="password1" type="password">
+                    <label for="id_password1" class="required">Пароль:</label>
+                    <input id="id_password1" name="password1" required type="password" autocomplete="new-password">
                 </div>
                 {% if form.password1.errors %}
                 <div class="errors-field">
@@ -65,8 +66,8 @@
                 </div>
                 {% endif %}
                 <div class="input-field">
-                    <label for="id_password2">Повторите пароль:</label>
-                    <input id="id_password2" name="password2" type="password">
+                    <label for="id_password2" class="required">Повторите пароль:</label>
+                    <input id="id_password2" name="password2" required type="password" autocomplete="new-password">
                 </div>
                 {% if form.password2.errors %}
                 <div class="errors-field">

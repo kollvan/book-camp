@@ -20,6 +20,26 @@ export class PopupWindow{
         divContentClassElement: ['popup-content'],
         btnClassElement: ['close-btn'],
         animationTime: 3000,
+        visibilityTime: 2000,
+    }
+
+    constructor(){
+        this.bindEvents()
+    }
+
+    bindEvents(){
+        document.addEventListener('click', (event)=>{
+            if (event.target.hasAttribute('data-popup-close')){
+                event.target.closest('[data-popup-message]').remove()
+            }
+        })
+        document.addEventListener('DOMContentLoaded', ()=>{
+            const popupElement = document.querySelector('[data-popup-message]')
+            if (popupElement){
+                const { visibilityTime } = this.initState
+                setTimeout(this.getHandlerDisappearance(), visibilityTime, popupElement)
+            }
+        })
     }
 
     _getMessageLevel(){
@@ -76,10 +96,6 @@ export class PopupWindow{
 
         return containerElement
     }
-
-    getHandlerClose(){
-        return (elem)=>{ 
-            elem.target.closest('#popup-message').remove() 
-        }
-    }
 }
+
+new PopupWindow()

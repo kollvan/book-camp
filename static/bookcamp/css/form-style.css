@@ -61,7 +61,10 @@
     margin-left: 1em;
     cursor: pointer;
 }
-
+label.required::after{
+    content: '*';
+    color: red;
+}
 ::file-selector-button:hover,
 .form-content button:hover{
     box-shadow: 1px -2px 25px 0px #656161 inset;

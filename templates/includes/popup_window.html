@@ -1,6 +1,6 @@
 {% if messages %}
     {% for message in messages %}
-        <div id="popup-message" class="pop-up-message fade-out">
+        <div id="popup-message" class="pop-up-message fade-out" data-popup-message>
             <div class="popup-title
                     {% if message.level == 25 %} success-message
                     {% elif message.level == 20 %} info-message
@@ -13,7 +13,7 @@
                     {% else %} Error
                     {% endif %}
                 </div>
-                <div class="close-btn"></div>
+                <div class="close-btn" data-popup-close></div>
             </div>
             <div class="popup-content">
                 {{ message }}
