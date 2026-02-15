@@ -26,6 +26,7 @@ class CatalogView(SelectRelatedMixin, ListView):
             'selected_authors': context['view'].request.GET.getlist('authors', None),
             'year_from': context['view'].request.GET.get('year_from', None),
             'year_to': context['view'].request.GET.get('year_to', None),
+            'is_high_rank': context['view'].request.GET.get('is_high_rank', None),
             'category_slug': self.kwargs['category_slug'],
         }
         context.update(extra_context)
@@ -50,12 +51,12 @@ class CatalogView(SelectRelatedMixin, ListView):
             tags=self.request.GET.getlist('tags', None),
             authors=self.request.GET.getlist('authors', None),
             years=years,
-            ordering=self.request.GET.get('ordering', None)
+            ordering=self.request.GET.get('ordering', None),
+            is_high_rank=self.request.GET.get('is_high_rank', None),
         )
-        queryset_filter = FilterQueryset(products, params)
-        products = queryset_filter.get_filter_queryset()
 
-        return products
+        queryset_filter = FilterQueryset(products)
+        return queryset_filter.get_filter_queryset(params)
 
 
 class ProductView(CacheViewMixin, SelectRelatedMixin, DetailView):

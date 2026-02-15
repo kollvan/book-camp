@@ -114,11 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     document.addEventListener('click', async (event)=>{
-        const linkShowMore = event.target.closest('#link-show-more')
+
         if(event.target.id === 'button-change-review'){
             await buttonReviewChange(event)
-        } else if (linkShowMore){
-            await showMoreClick(linkShowMore)
+        }
+        else if (event.target.closest('#link-show-more')){
+            await showMoreClick(event)
         }
     });
 });

@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import NamedTuple
 
 from django.contrib.postgres.search import SearchVector, SearchHeadline, SearchQuery, SearchRank
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Avg
 
 from goods.models import Product
 
@@ -40,47 +40,58 @@ class FilterParams:
     authors: list = None
     years: RangeYear = None
     ordering: str = None
+    is_high_rank: bool = None
 
 
 @dataclass
 class Filters:
-    filter_field_tags = 'tags__slug__in'
-    filter_field_author = 'author__slug__in'
-    filter_field_years_of_publication = 'year_of_publication__range'
+    filter_field_tags: str = 'tags__slug__in'
+    filter_field_authors: str = 'author__slug__in'
+    filter_field_years_of_publication: str = 'year_of_publication__range'
+    filter_field_high_rank: str = 'inventory__rank'
 
 
 class FilterQueryset:
-    def __init__(self, queryset: QuerySet, params: FilterParams, filters: Filters = Filters()):
+    def __init__(self, queryset: QuerySet):
         self.queryset = queryset
-        self.params = params
-        self.filters = filters
 
-    def get_filter_queryset(self) -> QuerySet:
+    def get_filter_queryset(self, params: FilterParams, filters: Filters = Filters()) -> QuerySet:
+        params_data = params.__dict__
+        filters_data = filters.__dict__
 
+        print(filters)
         for method_name in self.__dir__():
             if not method_name.startswith('filter_'):
                 continue
 
             method = self.__getattribute__(method_name)
             if callable(method):
-                method()
+                method(**params_data, **filters_data)
 
-        return self.queryset
+        return self.queryset.distinct()
 
-    def filter_tags(self) -> None:
-        if self.params.tags:
-            self.queryset = self.queryset.filter(**{self.filters.filter_field_tags: self.params.tags}).distinct()
+    def filter_tags(self, tags, filter_field_tags, **kwargs) -> None:
+        if tags:
+            self.queryset = self.queryset.filter(**{filter_field_tags: tags})
 
-    def filter_authors(self) -> None:
-        if self.params.authors:
-            self.queryset = self.queryset.filter(**{self.filters.filter_field_author: self.params.authors})
+    def filter_authors(self, authors, filter_field_authors, **kwargs) -> None:
+        if authors:
+            self.queryset = self.queryset.filter(**{filter_field_authors: authors})
 
-    def filter_years(self) -> None:
-        if self.params.years and not self.params.years.is_default():
+    def filter_years(self, years, filter_field_years_of_publication, **kwargs) -> None:
+        if years and not years.is_default():
             self.queryset = self.queryset.filter(
-                **{self.filters.filter_field_years_of_publication: (self.params.years.year_from, self.params.years.year_to)}
+                **{filter_field_years_of_publication: (years.year_from, years.year_to)}
             )
 
-    def filter_ordering(self) -> None:
-        if self.params.ordering:
-            self.queryset = self.queryset.order_by(self.params.ordering)
+    def filter_ordering(self, ordering, **kwargs) -> None:
+        if ordering:
+            self.queryset = self.queryset.order_by(ordering)
+
+    def filter_is_high_rank(self, is_high_rank, filter_field_high_rank, **kwargs) -> None:
+        if is_high_rank:
+            self.queryset = (self.queryset
+                             .filter(**{f'{filter_field_high_rank}__gt':0})
+                             .annotate(avg_rating=Avg(filter_field_high_rank))
+                             .filter(avg_rating__gte=4))
+

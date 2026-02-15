@@ -18,12 +18,12 @@
                 </div>
                 <div class="input-field">
                     <label for="id_username">Логин:</label>
-                    <input id="id_username" name="username" type="text" value="{{ user.username}}">
+                    <input id="id_username" name="username" readonly type="text" value="{{ user.username}}">
                     {{form.username.errors}}
                 </div>
                 <div class="input-field">
                     <label for="id_email">E-mail:</label>
-                    <input id="id_email" placeholder="example@gmail.com" name="email" type="email" value="{{ user.email }}">
+                    <input id="id_email" placeholder="example@gmail.com" readonly name="email" type="email" value="{{ user.email }}">
                     {{ form.email.errors }}
                 </div>
                 <div class="input-field">

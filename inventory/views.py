@@ -62,9 +62,8 @@ class InventoryView(SelectRelatedMixin, LoginRequiredMixin, ListView):
             category=self.request.GET.get('category', None),
         )
 
-        queryset_filter = FilterQuerysetForInventory(inventory, params)
-        inventory = queryset_filter.get_filter_queryset()
-        return inventory
+        queryset_filter = FilterQuerysetForInventory(inventory)
+        return queryset_filter.get_filter_queryset(params)
 
 
 class UserDataView(LoginRequiredMixin, View):

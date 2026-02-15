@@ -1,1 +1,2 @@
 REVIEWS_PAGE_SIZE: int = 5
+CACHE_TIME: int = 60
