@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import ListView
 
 from common.mixin.generic import SelectRelatedMixin
+from common.mixin.search import SearchMixin
 from goods import constans
 from goods.utls import get_current_year, RangeYear
 from inventory.models import Inventory
@@ -14,7 +15,7 @@ from inventory.utls import FilterQuerysetForInventory, InventoryFilterParams
 
 
 # Create your views here.
-class InventoryView(SelectRelatedMixin, LoginRequiredMixin, ListView):
+class InventoryView(SearchMixin, SelectRelatedMixin, LoginRequiredMixin, ListView):
     related_fields = ['product__author']
     prefetch_related_fields = ['product__tags']
     template_name = 'inventory/inventory.html'
@@ -22,6 +23,10 @@ class InventoryView(SelectRelatedMixin, LoginRequiredMixin, ListView):
     context_object_name = 'inventory'
     paginate_by = 20
     model = Inventory
+    search_fields = {
+        'name': 'product__name',
+        'description': 'product__description'
+    }
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -40,7 +45,10 @@ class InventoryView(SelectRelatedMixin, LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        inventory = super().get_queryset().filter(user=self.request.user.pk)
+        if query := self.request.GET.get('q', None):
+            inventory = self.search(query)
+        else:
+            inventory = super().get_queryset().filter(user=self.request.user.pk)
 
         order_fields = {
             'author': 'product__author__name',

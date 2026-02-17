@@ -28,6 +28,7 @@
                     {% for category in categories %}
                         <li><a href="{% url 'goods:catalog' category.slug%}">{{category.name}}</a></li>
                     {% endfor %}
+                        <li><a href="#">Далее...</a></li>
                     </ul>
                 {% endcache %}
             </div>

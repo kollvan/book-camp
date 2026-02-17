@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 
 from common.mixin.generic import CacheViewMixin, SelectRelatedMixin
 from goods import constans
+from goods.constans import DEFAULT_CACHE_TIME
 from goods.models import Product
 from goods.utls import RangeYear, get_current_year, search, FilterParams, FilterQueryset
 
@@ -36,7 +37,7 @@ class CatalogView(SelectRelatedMixin, ListView):
         category_slug = self.kwargs['category_slug']
 
         if query := self.request.GET.get('q', None):
-            products = search(query)
+            products = search(query, ['name', 'description'])
         elif category_slug == 'all':
             products = super().get_queryset()
         else:
@@ -65,7 +66,7 @@ class ProductView(CacheViewMixin, SelectRelatedMixin, DetailView):
     template_name = 'goods/product.html'
     model = Product
     slug_url_kwarg = 'product_slug'
-    cache_time = 360
+    cache_time = DEFAULT_CACHE_TIME * 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

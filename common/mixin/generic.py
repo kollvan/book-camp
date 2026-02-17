@@ -1,6 +1,7 @@
 from django.core.cache import cache
 
 
+
 class CacheViewMixin:
     cache_time = 60
     key_prefix = 'page'

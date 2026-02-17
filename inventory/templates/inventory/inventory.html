@@ -63,7 +63,15 @@
                         <div class="card-main">
                             <div>
                                 <a class="card-title" title="{{item.product.name}}"
-                                   href="{% url 'goods:product' item.product.slug %}">{{ item.product.name|truncatewords:5 }}</a>
+                                   href="{% url 'goods:product' item.product.slug %}">
+                                    {% autoescape off %}
+                                        {% if item.headline_name %}
+                                            {{ item.headline_name|truncatewords:5 }}
+                                        {% else %}
+                                            {{ item.product.name|truncatewords:5 }}
+                                        {% endif %}
+                                    {% endautoescape %}
+                                </a>
 
                                 <div class="card-status">
                                     <select title="Изменить статус" class="current-status"

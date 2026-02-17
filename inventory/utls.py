@@ -14,7 +14,7 @@ class InventoryFilterParams(FilterParams):
 @dataclass
 class InventoryFilters(Filters):
     filter_field_tags: str = 'product__tags__slug__in'
-    filter_field_author: str = 'product__author__slug__in'
+    filter_field_authors: str = 'product__author__slug__in'
     filter_field_years_of_publication: str = 'product__year_of_publication__range'
 
 

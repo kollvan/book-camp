@@ -6,6 +6,7 @@ from django.template import Context
 from django.utils.http import urlencode
 
 from common.custom_tags.generic import cache_custom_tag
+from goods.constans import DEFAULT_CACHE_TIME
 from goods.models import Category, Tag, Author
 from inventory.models import Inventory
 
@@ -25,11 +26,11 @@ def append_params(context: Context, **kwargs) -> str:
 
 @register.simple_tag()
 def get_categories() -> QuerySet:
-    return Category.objects.all()
+    return Category.objects.all()[:5]
 
 
 @register.simple_tag()
-@cache_custom_tag('category_tags')
+@cache_custom_tag('category_tags', DEFAULT_CACHE_TIME)
 def get_all_tags(category_slug: str) -> QuerySet:
     if category_slug == 'all':
         return Tag.objects.all()
@@ -37,7 +38,7 @@ def get_all_tags(category_slug: str) -> QuerySet:
 
 
 @register.simple_tag()
-@cache_custom_tag('category_authors')
+@cache_custom_tag('category_authors', DEFAULT_CACHE_TIME)
 def get_authors(category_slug: str) -> QuerySet:
     if category_slug == 'all':
         return Author.objects.all()
@@ -102,7 +103,7 @@ def get_avg_ranks(products: list[int] | QuerySet) -> dict:
 
 
 @register.simple_tag()
-@cache_custom_tag('product_avg')
+@cache_custom_tag('product_avg', DEFAULT_CACHE_TIME)
 def get_avg_rank(product_slug: int) -> float:
     try:
         value = Inventory.objects.filter(

@@ -1,11 +1,8 @@
 from functools import wraps
 from typing import Callable
 
-from django import template
 from django.core.cache import cache
 from django.db.models import QuerySet
-from django.template import Context
-from django.utils.http import urlencode
 
 
 def cache_custom_tag(cache_key: str, cache_time: int = 60) -> Callable:

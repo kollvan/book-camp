@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NamedTuple
+from typing import NamedTuple, List
 
 from django.contrib.postgres.search import SearchVector, SearchHeadline, SearchQuery, SearchRank
 from django.db.models import QuerySet, Avg
@@ -20,8 +20,8 @@ class RangeYear(NamedTuple):
         return self.year_from == '0' and self.year_to == get_current_year()
 
 
-def search(query: str) -> QuerySet:
-    search_vector = SearchVector('name', 'description')
+def search(query: str, expressions: List[str]) -> QuerySet:
+    search_vector = SearchVector(*expressions)
     query = SearchQuery(query)
     records = Product.objects.annotate(rank=SearchRank(search_vector, query)).filter(rank__gt=0).order_by('-rank')
 
@@ -59,7 +59,6 @@ class FilterQueryset:
         params_data = params.__dict__
         filters_data = filters.__dict__
 
-        print(filters)
         for method_name in self.__dir__():
             if not method_name.startswith('filter_'):
                 continue
