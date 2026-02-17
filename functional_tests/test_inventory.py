@@ -39,7 +39,8 @@ class TestUserAuthenticatedWithFilledDB(FunctionalTestCase):
         INVENTORY_LOCATOR = ('xpath', '//a[text()="Коллекция"]')
         self.wait.until(EC.element_to_be_clickable(INVENTORY_LOCATOR)).click()
 
-        ITEM_TITLE = ('xpath', f'//a[text()="{self.product1.name}"]')
+        ITEM_TITLE = ('xpath', f'//a[@title="{self.product1.name}"]')
+
         item_product1 = self.wait.until(EC.visibility_of_element_located(ITEM_TITLE))
 
         assert item_product1.get_attribute('title') == self.product1.name

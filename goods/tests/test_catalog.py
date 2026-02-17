@@ -1,6 +1,6 @@
 import re
 
-from goods.tests.base import BaseCatalogTestCase
+from goods.tests.base import BaseCatalogTestCase, UserInventory
 from inventory.models import Inventory
 from users.models import User
 
@@ -37,6 +37,19 @@ class TestCatalogWithoutAuthenticatedUser(BaseCatalogTestCase):
         self.assertContains(response, self.product1.name)
         self.assertNotContains(response, self.product2.name)
 
+    def test_filter_by_high_rank(self):
+        self.fill_inventory(
+            ['user1', 'user2'],
+            [
+                [UserInventory(self.product1, rank=5), UserInventory(self.product2, rank=5)],
+                [UserInventory(self.product1, rank=3), UserInventory(self.product2, rank=1)],
+            ]
+        )
+
+        response = self.client.get(f'{self.full_live_server_url}/all/?is_high_rank=on')
+        self.assertContains(response, f'id="id_{self.product1.slug}"')
+        self.assertNotContains(response, f'id="id_{self.product2.slug}"')
+
     def test_search_by_name(self):
         response = self.client.get(f'{self.full_live_server_url}/all/?q=networks')
         self.assertContains(response, self.product1.name)
@@ -54,7 +67,6 @@ class TestCatalogWithoutAuthenticatedUser(BaseCatalogTestCase):
         response = self.client.get(f'{self.full_live_server_url}/all/?q=complex')
         self.assertContains(response, self.product1.name)
         self.assertNotContains(response, self.product2.name)
-
 
 
 class TestCatalogWithAuthenticatedUser(BaseCatalogTestCase):
@@ -83,5 +95,5 @@ class TestCatalogWithAuthenticatedUser(BaseCatalogTestCase):
         tmp_user = User.objects.create(username='test', email='text@mail.com', password='password')
         Inventory.objects.create(user=self.user, rank=4, product=self.product1)
         Inventory.objects.create(user=tmp_user, rank=5, product=self.product1)
-        response = self.client.get(self.full_live_server_url+'/all/')
+        response = self.client.get(self.full_live_server_url + '/all/')
         self.assertContains(response, 'Рейтинг: 4,5')

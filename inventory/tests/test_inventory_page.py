@@ -82,6 +82,7 @@ class TestFilterInventory(BaseInventoryTestCase):
         self.category2 = Category.objects.create(name='network', slug='network')
         self.product2 = Product.objects.create(name='Networks cookbook',
                                                slug='networks-cookbook',
+                                               description='dart vader',
                                                author=self.author2,
                                                category=self.category2,
                                                quantity_page=210,
@@ -116,6 +117,15 @@ class TestFilterInventory(BaseInventoryTestCase):
         self.assertContains(response, self.product1.name)
         self.assertNotContains(response, self.product2.name)
 
+    def test_search_by_title(self):
+        response = self.client.get(self.full_live_server_url + f'?q=python')
+        self.assertContains(response, f'id="card__{self.product1.slug}"')
+        self.assertNotContains(response, f'id="card__{self.product2.slug}"')
+
+    def test_search_by_description(self):
+        response = self.client.get(self.full_live_server_url + f'?q=vader')
+        self.assertNotContains(response, f'id="card__{self.product1.slug}"')
+        self.assertContains(response, f'id="card__{self.product2.slug}"')
 
 
 class InventoryWithUnauthenticated(BaseInventoryTestCase):

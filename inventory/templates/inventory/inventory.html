@@ -47,7 +47,7 @@
         <div class="catalog">
             <div class="row">
                 {% for item in inventory %}
-                <div class="card" id="{{id_item.product.slug}}">
+                <div class="card" id="card__{{item.product.slug}}">
                     <div>
                         <div class="card-img">
                             <a href="{% url 'goods:product' item.product.slug %}">

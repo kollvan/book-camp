@@ -13,7 +13,6 @@ class SearchMixin:
         records = self.model.objects.annotate(
             search_rank=SearchRank(search_vector, query)
         ).filter(search_rank__gt=0).order_by('-search_rank')
-
         headlines = {}
         for key, field_name in self.search_fields.items():
             headline = SearchHeadline(field_name, query, start_sel='<span class="select">', stop_sel='</span>')
