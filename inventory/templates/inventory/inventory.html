@@ -101,6 +101,9 @@
                     </div>
 
                 </div>
+                {% empty %}
+                    <img width="300" class="no-records"
+                         alt="Nothing" src="{% static 'bookcamp/image/no_records.svg'%}">
                 {% endfor %}
             </div>
         </div>

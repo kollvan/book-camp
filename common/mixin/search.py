@@ -6,11 +6,21 @@ from django.db.models import QuerySet
 
 class SearchMixin:
     search_fields: Dict[str, str] = None
+    name_search_param: str = 'q'
 
-    def search(self, query: str) -> QuerySet:
+    def get_search_queryset(self):
+        queryset = super().get_queryset()
+        if query := self.request.GET.get(self.name_search_param, None):
+            queryset = self.search(query, queryset)
+        return queryset
+
+    def get_queryset(self):
+        return self.get_search_queryset()
+
+    def search(self, query: str, queryset: QuerySet) -> QuerySet:
         search_vector = SearchVector(*self.search_fields.values())
         query = SearchQuery(query)
-        records = self.model.objects.annotate(
+        records = queryset.annotate(
             search_rank=SearchRank(search_vector, query)
         ).filter(search_rank__gt=0).order_by('-search_rank')
         headlines = {}

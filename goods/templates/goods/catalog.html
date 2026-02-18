@@ -37,8 +37,8 @@
                                 <a class="card-title" title="{{product.name}}"
                                    href="{% url 'goods:product' product.slug %}">
                                     {% autoescape off %}
-                                    {% if product.headline %}
-                                        {{ product.headline|truncatewords:3 }}
+                                    {% if product.headline_name %}
+                                        {{ product.headline_name|truncatewords:3 }}
                                     {% else %}
                                         {{ product.name|truncatewords:3 }}
                                     {% endif %}
@@ -61,8 +61,8 @@
                                 <p>Дата выхода: {{ product.year_of_publication }}</p>
                                 <p>
                                     {% autoescape off %}
-                                    {% if product.bodyline %}
-                                        {{ product.bodyline|truncatewords:20 }}
+                                    {% if product.headline_description %}
+                                        {{ product.headline_description|truncatewords:20 }}
                                     {% else %}
                                         {{ product.description|truncatewords:10 }}
                                     {% endif %}

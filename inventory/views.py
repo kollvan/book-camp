@@ -15,7 +15,7 @@ from inventory.utls import FilterQuerysetForInventory, InventoryFilterParams
 
 
 # Create your views here.
-class InventoryView(SearchMixin, SelectRelatedMixin, LoginRequiredMixin, ListView):
+class InventoryView(SelectRelatedMixin, SearchMixin, LoginRequiredMixin, ListView):
     related_fields = ['product__author']
     prefetch_related_fields = ['product__tags']
     template_name = 'inventory/inventory.html'
@@ -45,10 +45,7 @@ class InventoryView(SearchMixin, SelectRelatedMixin, LoginRequiredMixin, ListVie
         return context
 
     def get_queryset(self):
-        if query := self.request.GET.get('q', None):
-            inventory = self.search(query)
-        else:
-            inventory = super().get_queryset().filter(user=self.request.user.pk)
+        inventory = super().get_queryset().filter(user=self.request.user.pk)
 
         order_fields = {
             'author': 'product__author__name',

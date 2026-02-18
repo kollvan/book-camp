@@ -1,16 +1,21 @@
 from django.views.generic import ListView, DetailView
 
 from common.mixin.generic import CacheViewMixin, SelectRelatedMixin
+from common.mixin.search import SearchMixin
 from goods import constans
 from goods.constans import DEFAULT_CACHE_TIME
 from goods.models import Product
-from goods.utls import RangeYear, get_current_year, search, FilterParams, FilterQueryset
+from goods.utls import RangeYear, get_current_year, FilterParams, FilterQueryset
 
 
 # Create your views here.
-class CatalogView(SelectRelatedMixin, ListView):
+class CatalogView(SearchMixin, SelectRelatedMixin, ListView):
     template_name = 'goods/catalog.html'
     context_object_name = 'products'
+    search_fields = {
+        'name': 'name',
+        'description': 'description',
+    }
     model = Product
     paginate_by = 12
     related_fields = ['author']
@@ -35,12 +40,9 @@ class CatalogView(SelectRelatedMixin, ListView):
 
     def get_queryset(self):
         category_slug = self.kwargs['category_slug']
+        products = super().get_queryset()
 
-        if query := self.request.GET.get('q', None):
-            products = search(query, ['name', 'description'])
-        elif category_slug == 'all':
-            products = super().get_queryset()
-        else:
+        if category_slug != 'all':
             products = super().get_queryset().filter(category__slug=category_slug)
 
         years = RangeYear(

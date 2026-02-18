@@ -1,3 +1,6 @@
+section{
+    grid-template-rows: auto 1fr;
+}
 .row{
     grid-template-columns: repeat(4, 3fr);
 }
@@ -20,6 +23,19 @@
 }
 .inventory-search:hover{
     box-shadow: 0px 4px 12px 0px rgb(106, 100, 100) inset;
+}
+img.no-records{
+  transform: translate(-50%, -50%);
+  grid-row: 2;
+}
+.row:has(>img.no-records){
+  height: 80vh;
+  place-content: center;
+  grid-template-columns: 0;
+}
+.catalog:has( img.no-records){
+  grid-row: 2/-1;
+  height: 100%;
 }
 @media (max-width: 1500px){
     .row{

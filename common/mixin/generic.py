@@ -1,7 +1,6 @@
 from django.core.cache import cache
 
 
-
 class CacheViewMixin:
     cache_time = 60
     key_prefix = 'page'
@@ -21,6 +20,6 @@ class SelectRelatedMixin:
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset\
-            .select_related(*self.related_fields)\
+        return queryset \
+            .select_related(*self.related_fields) \
             .prefetch_related(*self.prefetch_related_fields)

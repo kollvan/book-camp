@@ -90,7 +90,6 @@ class FilterQueryset:
     def filter_is_high_rank(self, is_high_rank, filter_field_high_rank, **kwargs) -> None:
         if is_high_rank:
             self.queryset = (self.queryset
-                             .filter(**{f'{filter_field_high_rank}__gt':0})
+                             .filter(**{f'{filter_field_high_rank}__gt': 0})
                              .annotate(avg_rating=Avg(filter_field_high_rank))
                              .filter(avg_rating__gte=4))
-

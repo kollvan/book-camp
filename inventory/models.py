@@ -6,6 +6,7 @@ from users.models import User
 
 
 # Create your models here.
+
 class Inventory(models.Model):
     class Status(models.IntegerChoices):
         STARTED = 3, 'Начато'
