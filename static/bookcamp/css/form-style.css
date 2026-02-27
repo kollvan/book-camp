@@ -50,7 +50,9 @@
     color: white;
     border: none;
 }
-
+.input-field input[readonly]{
+    cursor: not-allowed;
+}
 .image-field{
     border-bottom: none;
 }

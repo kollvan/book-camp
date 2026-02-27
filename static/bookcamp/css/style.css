@@ -174,20 +174,28 @@ section{
 
 }
 .filter-scroll{
+    --scrollbar-width: 8px;
+    --scrollbar-background: #f9f9fd;
+    --scrollbar-border-radius: 10px;
+    --scrollbar-thumb-background: linear-gradient(180deg, #a74d45, #161c24);
+
     overflow-y: auto;
     max-height: 10em;
+
+    scrollbar-width: thin;
+    scrollbar-color: #ce2222 var(--scrollbar-background);
 }
 
 .filter-scroll::-webkit-scrollbar{
-    width: 10px;
+    width: var(--scrollbar-width);
 }
 .filter-scroll::-webkit-scrollbar-track {
-    background-color: #f9f9fd;
-    border-radius: 10px;
+    background-color: var(--scrollbar-background);
+    border-radius: var(--scrollbar-border-radius);
 }
 .filter-scroll::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: linear-gradient(180deg, #a74d45, #161c24);
+    border-radius: var(--scrollbar-border-radius);
+    background: var(--scrollbar-thumb-background);
 }
 
 .row{
