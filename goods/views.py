@@ -1,10 +1,11 @@
+from django.db.models import Count
 from django.views.generic import ListView, DetailView
 
 from common.mixin.generic import CacheViewMixin, SelectRelatedMixin
 from common.mixin.search import SearchMixin
 from goods import constans
 from goods.constans import DEFAULT_CACHE_TIME
-from goods.models import Product
+from goods.models import Product, Category
 from goods.utls import RangeYear, get_current_year, FilterParams, FilterQueryset
 
 
@@ -75,3 +76,16 @@ class ProductView(CacheViewMixin, SelectRelatedMixin, DetailView):
         context['title'] = context['product'].name
         context['reviews_page_size'] = constans.REVIEWS_PAGE_SIZE
         return context
+
+
+class CategoriesView(SearchMixin, ListView):
+    model = Category
+    template_name = 'goods/categories.html'
+    context_object_name = 'categories'
+    paginate_by = 20
+    extra_context = {'title': 'Bookcamp - Категории'}
+    search_fields = {'name': 'name'}
+
+    def get_queryset(self):
+        categories = super().get_queryset()
+        return categories.annotate(number=Count('product__pk')).order_by('-number')

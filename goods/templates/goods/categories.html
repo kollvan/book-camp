@@ -2,30 +2,45 @@
 {% load static %}
 {% block extends_style %}
     <link rel="stylesheet" href="{% static 'bookcamp/css/categories-page.css'%}">
+    <link rel="stylesheet" href="{% static 'bookcamp/css/pagination.css' %}">
 {% endblock %}
 {% block section %}
-<div class="catalog width-100">
-    <div class="category-list width-100">
-        <div class="category-search">
-            <form method="get" action="{% url 'goods:categories' %}">
-                <input type="text" placeholder="Название категории" title="Найти категорию" name="q" id="">
-                <button type="submit" title="Поиск">-></button>
-            </form>
-        </div>
-        {% for category in categories %}
-            <div class="category-container width-100">
-                <div class="title width-100">
-                    <a href="{% url 'goods:catalog' category.slug %}" title="{{category.name}}">
-                        {{category.name}} <span>({{category.number}})</span>
-                    </a>
-                </div>
-                <div class="title-line"></div>
-                <div>
-                    {{category.description}}
-                </div>
+<section class="content">
+    <div class="catalog width-100">
+        <div class="category-list width-100">
+            <div class="category-search">
+                <form method="get" action="{% url 'goods:categories' %}">
+                    <input type="text" placeholder="Название категории" title="Найти категорию" name="q" id="">
+                    <button type="submit" title="Поиск">-></button>
+                </form>
             </div>
-        {% endfor %}
+            {% for category in categories %}
+                <div class="category-container width-100">
+                    <div class="title width-100">
+                        <a href="{% url 'goods:catalog' category.slug %}" title="{{category.name}}">
+                            {% autoescape off %}
+                            {% if category.headline_name %}
+                            {{category.headline_name}}
+                            {% else %}
+                            {{category.name}}
+                            {% endif %}
+                            {% endautoescape %}
+                            <span>({{category.number}})</span>
+                        </a>
+                    </div>
+                    <div class="title-line"></div>
+                    <div>
+                        {{category.description}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% include 'includes/pagination.html' %}
     </div>
-    {% include 'includes/pagination.html' %}
-</div>
+</section>
+{% endblock %}
+{% block footer %}
+    <footer>
+        <p>&copy;Bookcamp </p>
+    </footer>
 {% endblock %}

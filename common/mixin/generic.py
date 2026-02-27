@@ -15,8 +15,8 @@ class CacheViewMixin:
 
 
 class SelectRelatedMixin:
-    related_fields = None
-    prefetch_related_fields = None
+    related_fields = []
+    prefetch_related_fields = []
 
     def get_queryset(self):
         queryset = super().get_queryset()

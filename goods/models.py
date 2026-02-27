@@ -3,8 +3,9 @@ from django.db import models
 
 # Create your models here.
 class Category(models.Model):
-    name = models.CharField(max_length=25, unique=True, verbose_name='Название')
+    name = models.CharField(max_length=25, db_index=True, unique=True, verbose_name='Название')
     slug = models.SlugField(max_length=50, unique=True, verbose_name='Slug')
+    description = models.TextField(max_length=200, blank=True, null=True, verbose_name='Описание')
 
     class Meta:
         db_table = 'category'
@@ -42,7 +43,7 @@ class Author(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Название')
+    name = models.CharField(max_length=100, db_index=True, verbose_name='Название')
     slug = models.SlugField(max_length=150, verbose_name='Slug', db_index=True)
     image = models.ImageField(upload_to='image_books', blank=True, null=True, verbose_name='Изображение')
     author = models.ForeignKey(to=Author, on_delete=models.SET_DEFAULT, default=14)
@@ -51,7 +52,7 @@ class Product(models.Model):
     year_of_publication = models.CharField(max_length=4, blank=True, null=True, verbose_name='Год публикации')
     datetime_added = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
-    category = models.ForeignKey(to=Category, on_delete=models.CASCADE, verbose_name='Категория')
+    category = models.ForeignKey(to=Category, on_delete=models.CASCADE,  verbose_name='Категория')
     tags = models.ManyToManyField(to=Tag, related_name='product_tag', blank=True, verbose_name='Теги')
 
     class Meta:
