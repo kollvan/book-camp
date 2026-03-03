@@ -7,9 +7,10 @@
                   id="{{product_slug}}_review"
                   {% if user_inventory_data.review %}disabled{% endif %}
         >{% if user_inventory_data.review %}{{user_inventory_data.review}}{% endif %}</textarea>
-        <div>
+        <div data-review-buttons>
             {% if user_inventory_data.review %}
-                <button type="button" data-product-slug="{{product_slug}}" id="button-change-review">Изменить</button>
+                <button type="button" data-button-change-inventory data-product-slug="{{product_slug}}" id="button-change-review">Изменить</button>
+                <button type="button" data-button-change-inventory data-product-slug="{{product_slug}}" id="button-remove-review">Удалить</button>
             {% else %}
                 <button type="submit" id="button-submit-review">Сохранить</button>
                 <button type="reset" id="button-reset-review">Сбросить</button>

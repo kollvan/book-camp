@@ -69,7 +69,7 @@
             {% endwith %}
         {% endif %}
         {% get_all_reviews product.pk limit=reviews_page_size as reviews %}
-        <details open>
+        <details open data-reviews-list>
             <summary>Отзывы: </summary>
             {% if reviews %}
                 {% for review in reviews %}

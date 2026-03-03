@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     document.addEventListener('change', async function(e) {
-        if (event.target.hasAttribute('name', 'product_status')){
+        if (event.target.getAttribute('name') === 'product_status'){
             const textStatus = e.target.options[e.target.selectedIndex].text;
             document.querySelector('[data-product-title-status]').textContent = textStatus
         }

@@ -1,50 +1,74 @@
 import { Loader } from './loader.js'
 import { sendRequestToServer } from './generic.js'
 
+const createSaveButton = async function(){
+    const save_button = document.createElement('button')
+    save_button.textContent = 'Сохранить'
+    save_button.type = 'submit'
+    save_button.id = 'button-submit-review'
+    return save_button
+};
+const createResetButton = async function(){
+    const reset_button = document.createElement('button')
+    reset_button.textContent = 'Сбросить'
+    reset_button.type = 'reset'
+    reset_button.id = 'button-reset-review'
+    return reset_button
+};
+const createChangeButton = async function(slug){
+    const change_button = document.createElement('button')
+    change_button.textContent = 'Изменить'
+    change_button.type = 'button'
+    change_button.id = 'button-change-review'
+    change_button.dataset.productSlug = slug
+    change_button.setAttribute('data-button-change-inventory', '')
+    return change_button
+};
+const createRemoveButton = async function(slug){
+    const remove_button = document.createElement('button')
+    remove_button.textContent = 'Удалить'
+    remove_button.type = 'button'
+    remove_button.id = 'button-remove-review'
+    remove_button.dataset.productSlug = slug
+    remove_button.setAttribute('data-button-change-inventory', '')
+    return remove_button
+};
 const buttonReviewChange = async function(e){
     const button_change = e.target;
     const div = button_change.parentElement;
     const textarea = document.getElementById(button_change.dataset.productSlug + '_review')
     textarea.removeAttribute('disabled')
 
-    const save_button = document.createElement('button')
-    save_button.textContent = 'Сохранить'
-    save_button.type = 'submit'
-    save_button.id = 'button-submit-review'
-    div.appendChild(save_button)
-    const reset_button = document.createElement('button')
-    reset_button.textContent = 'Сбросить'
-    reset_button.type = 'reset'
-    reset_button.id = 'button-reset-review'
-    div.appendChild(reset_button)
+    div.appendChild(await createSaveButton())
+
+    div.appendChild(await createResetButton())
     button_change.remove()
+    document.querySelector('#button-remove-review').remove()
 };
 const reviewFormSubmit = async function(e){
     e.preventDefault();
     const form = e.target;
+    const divElement = document.querySelector('[data-review-buttons]')
+    const slug = form.dataset.productSlug;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     const url = window.location.origin + '/api/inventory/';
-    const response = await sendRequestToServer(url, 'PATCH', form.dataset.productSlug, data)
+
+    divElement.append(Loader.createLoader())
+    const response = await sendRequestToServer(url, 'PATCH', slug, data)
 
     if (response.ok) {
-        console.log(response)
         const submit_button = document.getElementById('button-submit-review')
         const reset_button = document.getElementById('button-reset-review')
 
-        const change_button = document.createElement('button')
-        change_button.textContent = 'Изменить'
-        change_button.type = 'button'
-        change_button.id = 'button-change-review'
-        change_button.dataset.productSlug = form.dataset.productSlug
-
-
-        submit_button.parentElement.appendChild(change_button)
+        submit_button.parentElement.appendChild(await createChangeButton(slug))
+        submit_button.parentElement.appendChild(await createRemoveButton(slug))
         submit_button.remove()
         reset_button.remove()
 
-        document.getElementById(form.dataset.productSlug + '_review').disabled = true
+        document.getElementById(slug + '_review').disabled = true
     }
+    divElement.querySelector('[data-loader]')?.remove();
 };
 const showMoreClick = async function(e){
     const link = e.target
@@ -73,8 +97,38 @@ const showMoreClick = async function(e){
         else
             link.dataset.reviewsUrl = dataReviews.next;
     }).finally( async () => {
-        document.querySelector('[data-loader]')?.remove();
+        document.querySelector('[data-reviews-list] [data-loader]')?.remove();
         bottomListReviews.classList.remove('invisible');
+    });
+};
+const buttonRemoveClick = async function(e){
+    const slug = e.target.dataset.productSlug;
+    const url = `${window.location.origin}/api/inventory/`
+    const divElement = e.target.parentElement;
+    const data = {
+        'review': null
+    }
+    divElement.append(Loader.createLoader())
+
+    const promise = sendRequestToServer(url, 'PATCH', slug, data)
+        promise.then(async (successData) => {
+        if (!successData.ok)
+            throw new Error(`HTTP error! status: ${response.status}`);
+
+        const ownReviewElement = document.querySelector(`#${slug}_review`)
+        ownReviewElement.value = ''
+        ownReviewElement.disabled = false
+        document.querySelector('#button-change-review').remove()
+        const div = e.target.parentElement;
+        div.appendChild(await createSaveButton())
+
+        div.appendChild(await createResetButton())
+        e.target.remove()
+    }).catch(error => {
+        console.error('Ошибка при Удалении:', error);
+
+    }).finally(()=>{
+        divElement.querySelector('[data-loader]')?.remove();
     });
 };
 
@@ -115,11 +169,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     document.addEventListener('click', async (event)=>{
 
-        if(event.target.id === 'button-change-review'){
-            await buttonReviewChange(event)
-        }
-        else if (event.target.closest('#link-show-more')){
+        if (event.target.closest('#link-show-more')){
             await showMoreClick(event)
+        }else if (event.target.id === 'button-remove-review'){
+            await buttonRemoveClick(event);
+        }else if(event.target.id === 'button-change-review'){
+            await buttonReviewChange(event)
         }
     });
 });

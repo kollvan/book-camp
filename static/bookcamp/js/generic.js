@@ -10,7 +10,6 @@ export async function sendRequestToServer(url, service_method='POST', slug = nul
         url += `${slug}/`;
     if (data)
         baseOptions.body = JSON.stringify(data);
-
     return fetch(url, baseOptions);
 }
 
