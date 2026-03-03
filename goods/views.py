@@ -81,7 +81,7 @@ class ProductView(CacheViewMixin, SelectRelatedMixin, DetailView):
 class CategoriesView(SearchMixin, ListView):
     model = Category
     template_name = 'goods/categories.html'
-    context_object_name = 'categories'
+    context_object_name = 'main_categories'
     paginate_by = 20
     extra_context = {'title': 'Bookcamp - Категории'}
     search_fields = {'name': 'name'}

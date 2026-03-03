@@ -5,6 +5,9 @@
     display: flex;
     justify-content: center;
 }
+#arrow-right{
+    stroke: #fff;
+}
 .category-search input{
     font-size: 1em;
     width: 92%;
@@ -26,6 +29,10 @@
 .category-search button:active{
     border-right: 3px solid var(--color-button-active);
 }
+.category-search button:active polyline,
+.category-search button:active line {
+    stroke: var(--color-button-active);
+}
 .category-search button{
     flex: 1;
     font-size: 1em;
@@ -34,6 +41,9 @@
     background-color: transparent;
     border: none;
     color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .category-search > form{
     background-color: transparent;
