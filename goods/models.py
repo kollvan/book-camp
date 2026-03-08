@@ -42,17 +42,24 @@ class Author(models.Model):
         return self.name
 
 
+def product_image_upload_to(instance: models.Model, filename: str):
+    ext = filename.split('.')[-1]
+    category_slug = instance.category.slug
+    product_slug = instance.slug
+    return f'image_books/{category_slug}/{product_slug}.{ext}'
+
+
 class Product(models.Model):
     name = models.CharField(max_length=100, db_index=True, verbose_name='Название')
     slug = models.SlugField(max_length=150, verbose_name='Slug', db_index=True)
-    image = models.ImageField(upload_to='image_books', blank=True, null=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to=product_image_upload_to, blank=True, null=True, verbose_name='Изображение')
     author = models.ForeignKey(to=Author, on_delete=models.SET_DEFAULT, default=14)
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     quantity_page = models.PositiveSmallIntegerField(verbose_name='Количество страниц')
     year_of_publication = models.CharField(max_length=4, blank=True, null=True, verbose_name='Год публикации')
     datetime_added = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
-    category = models.ForeignKey(to=Category, on_delete=models.CASCADE,  verbose_name='Категория')
+    category = models.ForeignKey(to=Category, on_delete=models.CASCADE, verbose_name='Категория')
     tags = models.ManyToManyField(to=Tag, related_name='product_tag', blank=True, verbose_name='Теги')
 
     class Meta:

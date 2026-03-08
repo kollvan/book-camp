@@ -2,40 +2,45 @@
 {% load static %}
 
 {% block extends_style %}
-    <link rel="stylesheet" href="{% static 'bookcamp/css/profile.css'%}">
+<link rel="stylesheet" href="{% static 'bookcamp/css/profile.css'%}">
 {% endblock %}
 
 {% block section %}
-    <section class="content">
-        <div class="profile-container">
+<section class="content">
+    <div class="profile-container">
+        <picture>
+            <source srcset="" type="image/avif"/>
+            <source srcset="" type="image/webp"/>
             <img class="profile-img"
                  src="{% if user.image %}{{user.image.url}}{% else %}{% static 'bookcamp/image/default_profile_image.jpg'%}{% endif %}"
-                 alt="Аватар пользователя">
-            <div class="profile-content">
-                <div>
-                    <p>Логин: {{ user.username }}</p>
-                </div>
-                <div>
-                    <p>E-mail: {{ user.email}}</p>
-                </div>
-                <div>
-                    <p>Имя: {{ user.first_name}}</p>
-                </div>
-                <div>
-                    <p>Фамилия: {{ user.last_name }}</p>
-                </div>
-                <div>
-                    <p>Дата создания профиля: {{ user.registration_date.date }}</p>
-                </div>
-                <a href="{% url 'users:edit' %}">Редактировать профиль</a>
-                <p><a href="{% url 'users:logout' %}">Выйти из профиля</a></p>
+                 title="Аватар пользователя {{user.username}}"
+                 alt="Аватар пользователя {{user.username}}"/>
+        </picture>
+        <div class="profile-content">
+            <div>
+                <p>Логин: {{ user.username }}</p>
             </div>
+            <div>
+                <p>E-mail: {{ user.email}}</p>
+            </div>
+            <div>
+                <p>Имя: {{ user.first_name}}</p>
+            </div>
+            <div>
+                <p>Фамилия: {{ user.last_name }}</p>
+            </div>
+            <div>
+                <p>Дата создания профиля: {{ user.registration_date.date }}</p>
+            </div>
+            <a href="{% url 'users:edit' %}">Редактировать профиль</a>
+            <p><a href="{% url 'users:logout' %}">Выйти из профиля</a></p>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}
 
 {% block footer %}
-    <footer>
-        <p>&copy;Bookcamp </p>
-    </footer>
+<footer>
+    <p>&copy;Bookcamp </p>
+</footer>
 {% endblock %}
