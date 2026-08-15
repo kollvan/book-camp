@@ -6,6 +6,7 @@ Bookcamp - это сайт являющийся онлайн библиотек�
 ## Содержание
 ---
 - [Технологии](#-технологии)
+- [Схема базы данных](#-схема-базы-данных)
 - [Использование](#-использование)
 - [Настройка окружения](#-настройка-окружения)
 - [Тестирование](#-тестирование)
@@ -21,6 +22,78 @@ Bookcamp - это сайт являющийся онлайн библиотек�
 - [drf](https://www.django-rest-framework.org/)
 - [docker](https://www.docker.com/)
 - [nginx](https://nginx.org/)
+
+## Схема базы данных
+---
+```mermaid
+--- 
+title: ER-диаграмма (BookCamp)
+---
+
+erDiagram
+	PRODUCT ||--o{ PRODUCT_TAG : ""
+	CATEGORY ||--o{ PRODUCT : ""
+	AUTHOR ||--o{ PRODUCT : ""
+	TAG ||--o{ PRODUCT_TAG : ""
+	USER ||--o{ INVENTORY : ""
+	PRODUCT ||--o{ INVENTORY : ""
+
+    CATEGORY {
+        int id PK
+        string name
+        slug slug
+        text description
+    }
+    
+    TAG {
+	    int id PK
+	    string name
+	    slug slug
+    }
+    
+    PRODUCT_TAG {
+	    int id PK
+	    int product_id FK
+	    int tag_id FK
+    }
+    
+    AUTHOR {
+	    int id PK
+	    string name
+	    slug slug
+    }
+    
+    PRODUCT {
+	    int id PK
+	    string name
+	    slug slug
+	    image image
+	    int author FK
+	    text description
+	    int quantity_page
+	    string char_of_publication
+	    datetime datetime_added
+	    int category FK
+	    int tags FK
+    }
+    
+    INVENTORY {
+	    int id PK
+	    datetime date_added
+	    IntegerChoices status
+	    decimal rank
+	    text review
+	    int product FK
+	    int user FK
+    }
+    
+    USER {
+	    int id PK
+	    image image
+	    datetime registration_date
+	    email email
+    }
+```
 
 ## Использование
 ---
